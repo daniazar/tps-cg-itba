@@ -47,6 +47,37 @@ public class Plane extends Object {
 
 	}
 
+	public Point3f GetIntersectionPoint(Ray ray){
+		float den = ray.direction.dot(n); 
+
+		if( den == 0)
+		{
+			ray.missed();
+			return null;
+		}
+		
+		float num = -d - n.dot(new Vector3f(ray.position));
+		
+		if(num == 0)
+		{
+			ray.missed();
+			return null;
+		}
+		
+		float t = num / den;
+		
+		if(t < 0)
+		{
+			ray.missed();
+			return null;
+		}
+		else
+		{
+		
+			return ray.getLinePoint(t);
+		}
+	}
+
 	@Override
 	public Color getColor() {
 		return material.diffuse;

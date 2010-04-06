@@ -15,6 +15,22 @@
 		<radius>100</radius>
 		<matID>3</matID>
 	</sphere>
+	<triangle>
+		<pt1>500;200;-1</pt1>
+		<pt2>550;300;0</pt2>
+		<pt3>600;200;-1</pt3>
+		<matID>1</matID>
+	</triangle>
+
+	<quadrilateral>
+		<pt1>50;100;-10</pt1>
+		<pt2>50;200;-5</pt2>
+		<pt3>150;200;-23</pt3>
+		<pt4>150;100;-10</pt4>
+		
+		<matID>3</matID>
+	</quadrilateral>
+	
 	<plane>
 		<point>0;0;0</point>
 		<normal>0;0;-1</normal>
