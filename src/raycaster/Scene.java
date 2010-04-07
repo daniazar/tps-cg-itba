@@ -58,6 +58,7 @@ public class Scene {
 		  ParseQuadrilateral(nodeLst);
 		  
 		  
+		  
 		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -329,6 +330,8 @@ public class Scene {
 		Node dimNode = camNode.getElementsByTagName("dimensions").item(0).getFirstChild();
 		Node posNode = camNode.getElementsByTagName("position").item(0).getFirstChild();
 		Node dirNode = camNode.getElementsByTagName("direction").item(0).getFirstChild();
+		Node upNode = camNode.getElementsByTagName("up").item(0).getFirstChild();
+		Node distNode = camNode.getElementsByTagName("distance").item(0).getFirstChild();
 		
 		Scanner sc = new Scanner(dimNode.getNodeValue());
 		sc.useDelimiter(";");
@@ -348,10 +351,22 @@ public class Scene {
 		float diry = sc.nextFloat();
 		float dirz = sc.nextFloat();
 		
+		sc = new Scanner(upNode.getNodeValue());
+		sc.useDelimiter(";");
+		float upx = sc.nextFloat();
+		float upy = sc.nextFloat();
+		float upz = sc.nextFloat();
+		
+		sc= new Scanner(distNode.getNodeValue());
+		float dist = sc.nextFloat();
+		
 		Point2i dim = new Point2i(dimx,dimy);
 		Point3f pos = new Point3f(px,py,pz);
 		Vector3f dir = new Vector3f(dirx, diry, dirz);
-		cam = new Camera(pos, dir, dim);
+
+		Vector3f up = new Vector3f(upx, upy, upz);
+		
+		cam = new Camera(pos, dir, dim, up, dist);
 		
 	}
 	

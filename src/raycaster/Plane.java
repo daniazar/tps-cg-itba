@@ -56,7 +56,7 @@ public class Plane extends Object {
 			return null;
 		}
 		
-		float num = -d - n.dot(new Vector3f(ray.position));
+		double num = -d - n.dot(new Vector3f(ray.position));
 		
 		if(num == 0)
 		{
@@ -64,7 +64,7 @@ public class Plane extends Object {
 			return null;
 		}
 		
-		float t = num / den;
+		double t = num / den;
 		
 		if(t < 0)
 		{
@@ -74,7 +74,7 @@ public class Plane extends Object {
 		else
 		{
 		
-			return ray.getLinePoint(t);
+			return ray.getLinePoint((float)t);
 		}
 	}
 

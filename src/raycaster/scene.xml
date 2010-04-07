@@ -15,27 +15,28 @@
 		<radius>100</radius>
 		<matID>3</matID>
 	</sphere>
-	<triangle>
-		<pt1>500;200;-1</pt1>
-		<pt2>550;300;0</pt2>
-		<pt3>600;200;-1</pt3>
+	<trianglea>
+		<pt1>500;200;-50</pt1>
+		<pt2>550;300;-50</pt2>
+		<pt3>600;200;-50</pt3>
 		<matID>1</matID>
-	</triangle>
-
-	<quadrilateral>
-		<pt1>50;100;-10</pt1>
-		<pt2>50;200;-5</pt2>
-		<pt3>150;200;-23</pt3>
-		<pt4>150;100;-10</pt4>
-		
+	</trianglea>
+	<quadrilaterala>
+		<pt1>50;100;-50</pt1>
+		<pt2>50;200;-50</pt2>
+		<pt3>50;200;-150</pt3>
+		<pt4>50;100;-150</pt4>
+		<matID>1</matID>
+	</quadrilaterala>
+	<quadrilaterala>
+		<pt1>50;100;-50</pt1>
+		<pt2>50;200;-50</pt2>
+		<pt3>150;200;-50</pt3>
+		<pt4>400;100;-50</pt4>
 		<matID>3</matID>
-	</quadrilateral>
+	</quadrilaterala>
 	
-	<plane>
-		<point>0;0;0</point>
-		<normal>0;0;-1</normal>
-		<matID>4</matID> 
-	</plane>
+
 	<material>
 		<id>1</id>
 		<diffuse>1;1;0</diffuse>
@@ -58,15 +59,18 @@
 	</material>
 	<camera>
 		<dimensions>640;480</dimensions>
-		<position>0;0;-10</position>
+		<position>320;240;-200</position>
 		<direction>0;0;1</direction>
+		<up>0;1;0</up>
+		<distance>100.0</distance>
 	</camera>
+	<plane>
+		<normal>0;0;-1</normal>
+		<point>0;0;100</point>
+		<matID>3</matID>
+	</plane>
 	<light>
-		<position>0;240;-100</position>
-		<intensity>1;1;1</intensity>
-	</light>
-	<light>
-		<position>640;240;-10000</position>
+		<position>0;0;-500</position>
 		<intensity>0.6;0.7;1.0</intensity>
 	</light>
 </scene>

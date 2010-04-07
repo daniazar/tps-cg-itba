@@ -30,7 +30,7 @@ public class Sphere extends Object {
 		
 		float discr  = (float)(Math.pow(B, 2) - 4*C);
 		
-		if(discr < 0)
+		if(discr <= 0)
 		{
 			ray.missed();
 			return;
@@ -40,7 +40,7 @@ public class Sphere extends Object {
 		if(t0 < 0.0001 )
 		{
 			float t1 = (float)((-B + Math.sqrt(Math.pow(B, 2) - 4*C)) / 2);
-			if(t1 >= 0.0001f)
+			if(t1 > 0.0001f)
 			{
 				ray.hit(new Point3f(ray.position.x + t1*ray.direction.x,
 						ray.position.y + t1*ray.direction.y, 
@@ -54,7 +54,7 @@ public class Sphere extends Object {
 			}
 				
 		}
-		else if(t0 >=  0.0001f)
+		else if(t0 > 0.0001f)
 		{
 			ray.hit(new Point3f(ray.position.x + t0*ray.direction.x,
 					ray.position.y + t0*ray.direction.y, 
