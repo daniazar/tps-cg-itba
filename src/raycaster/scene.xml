@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <scene>
 	<sphere>
-		<center>233;190;0</center>
+		<center>233;290;0</center>
 		<radius>100</radius>
 		<matID>1</matID>
 	</sphere>
 	<sphere>
-		<center>407;190;0</center>
+		<center>407;290;0</center>
 		<radius>100</radius>
 		<matID>2</matID>
 	</sphere>
 	<sphere>
-		<center>320;40;0</center>
+		<center>320;140;0</center>
 		<radius>100</radius>
 		<matID>3</matID>
 	</sphere>
@@ -35,8 +35,6 @@
 		<pt4>140;100;-50</pt4>
 		<matID>3</matID>
 	</quadrilateral>
-	
-
 	<material>
 		<id>1</id>
 		<diffuse>1;1;0</diffuse>
@@ -59,11 +57,18 @@
 	</material>
 	<camera>
 		<dimensions>640;480</dimensions>
-		<position>320;510;-610</position>
+		<position>320;590;-590</position>
 		<direction>0;-0.5;1</direction>
 		<up>0;1;1</up>
 		<fovX>60</fovX>
 	</camera>
+	<cameraa>
+		<dimensions>640;480</dimensions>
+		<position>320;240;-655</position>
+		<direction>0;0;1</direction>
+		<up>0;1;0</up>
+		<fovX>60</fovX>
+	</cameraa>
 	<plane>
 		<normal>0;0;-1</normal>
 		<point>0;0;100</point>

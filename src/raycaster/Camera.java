@@ -18,7 +18,7 @@ public class Camera {
 	public float distance;
 	public float fovX;
 	public float fovY;
-	private int MAX_REFLECTIONS = 100;
+	private int MAX_REFLECTIONS = 10;
 
 	public Camera(Point3f pos, Vector3f dir, Point2i dim, Vector3f up, 
 			float fovx) {
@@ -58,7 +58,8 @@ public class Camera {
 		upauxi.scale(-(float) dimensions.y / 2);
 		startingPoint.add(upauxi);
 
-
+		System.out.println("Starting Point del Plano de Proyeccion:"+startingPoint);
+		
 		for (int i = 0; i < dimensions.x; i++) {
 
 			for (int j = 0; j < dimensions.y; j++) {
