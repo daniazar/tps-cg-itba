@@ -31,7 +31,7 @@ public class Ray {
 		}
 		else
 		{
-			if(position.distance(IntPoint) < position.distance(intersectionPoint))
+			if(position.distance(IntPoint) < (position.distance(intersectionPoint)+ 0.1))
 			{
 				intersectionPoint = IntPoint;
 				newbesthit = true;
@@ -93,11 +93,10 @@ public class Ray {
 		if(!isPointInRay(p))
 			return false;
 		
-		
 		float distancesegment = SegmentStart.distance(SegmentFinish);
 		float dStartP = SegmentStart.distance(p);
 		float dFinishP = SegmentStart.distance(p);
-		if(dStartP < distancesegment && dFinishP < distancesegment )
+		if(dStartP <( distancesegment + 0.1) && dFinishP < (distancesegment +0.1))
 			return true;
 		else
 			return false;
@@ -125,5 +124,10 @@ public class Ray {
 			return false;
 		
 		return true;
+	}
+	
+	public String toString()
+	{
+		 return "Ray:{Pos: "+position+",Dir: "+direction+"}";
 	}
 }

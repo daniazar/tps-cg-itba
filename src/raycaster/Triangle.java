@@ -13,6 +13,8 @@ public class Triangle extends Object {
 	private Point3f p1;
 	private Vector3f n;
 	private Material material;
+	
+
 
 	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Material material) {
 		super();
@@ -43,8 +45,12 @@ public class Triangle extends Object {
 
 		//Para no copiar codigo de plane Agregue una funcion que me retorne t si intersecta
 		Point3f i  = p.GetIntersectionPoint(ray);
+
 		if( i == null)
 			return;
+		
+
+		
 		
 		//http://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/raycast/sld019.htm
 		
@@ -68,13 +74,15 @@ public class Triangle extends Object {
 	    // get and test parametric coords
 	    float s, t;
 	    s = (uv * wv - vv * wu) / D;
-	    if (s < 0.0 || s > 1.0)        // I is outside T
+	    
+	    
+	    if (s < 0.0001 || s > 1.01)        // I is outside T
 	    {    
 			ray.missed();
 			return;
 	    }
 	    t = (uv * wu - uu * wv) / D;
-	    if (t < 0.0 || (s + t) > 1.0)  // I is outside T
+	    if (t < 0.0001 || (s + t) > 1.01)  // I is outside T
 	    {    
 			ray.missed();
 			return;

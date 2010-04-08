@@ -16,25 +16,30 @@ public class Camera {
 	public Vector3f right;
 	public Point2i dimensions;
 	public float distance;
-	public float fovHor;
-	public float fovVert;
-	private int MAX_REFLECTIONS = 60;
+	public float fovX;
+	public float fovY;
+	private int MAX_REFLECTIONS = 100;
 
-	public Camera(Point3f pos, Vector3f dir, Point2i dim, Vector3f up,
-			float dist) {
+	public Camera(Point3f pos, Vector3f dir, Point2i dim, Vector3f up, 
+			float fovx) {
 		position = pos;
 		direction = dir;
 		direction.normalize();
 		this.up = up;
-		up.normalize();
+		this.up.normalize();
+		
 		right = new Vector3f();
 		right.cross(direction, up);
 		dimensions = dim;
 		dimensions.absolute();
-		distance = dist;
+		
+		fovX = fovx;
 
-		float ratio = dimensions.x / dimensions.y;
-		fovVert = fovHor * ratio;
+		// distancia focal a partir del fov y la imagen
+		
+		fovY = ((float)(dimensions.y) * fovX) / dimensions.x;
+		distance = (float)(dimensions.x /(2*Math.tan( Math.toRadians(fovX) /2)));
+
 
 	}
 
@@ -53,6 +58,7 @@ public class Camera {
 		upauxi.scale(-(float) dimensions.y / 2);
 		startingPoint.add(upauxi);
 
+
 		for (int i = 0; i < dimensions.x; i++) {
 
 			for (int j = 0; j < dimensions.y; j++) {
@@ -65,9 +71,8 @@ public class Camera {
 				pixelPos.add(upauxi);
 				
 				Vector3f dir = new Vector3f(pixelPos.x - position.x, pixelPos.y - position.y, pixelPos.z - position.z);
-
-				if(dir.x == 0 && dir.y == 0 )
-				System.out.println(dir +":"+pixelPos);
+				dir.normalize();
+				
 				Ray ray = new Ray(dir, pixelPos);
 
 				int level = 0;
@@ -98,6 +103,7 @@ public class Camera {
 							intersectionToLight.normalize();
 							Ray lightRay = new Ray(intersectionToLight,
 									ray.intersectionPoint);
+
 							for (Object objShadow : Scene.objects)
 								objShadow.Intersects(lightRay);
 
@@ -108,10 +114,12 @@ public class Camera {
 								if (!lightRay.isPointInSegment(
 										lightRay.position, l.position,
 										lightRay.intersectionPoint))
-									lightHit = true;
+									lightHit = false;
 								else
 									lightHit = false;
 							}
+							
+
 							if (lightHit) {
 								// Lambert
 								// Calculo el coseno de la luz que incide sobre

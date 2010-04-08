@@ -21,7 +21,7 @@ public class Plane extends Object {
 	public void Intersects(Ray ray) {
 		float den = ray.direction.dot(n); 
 
-		if( den == 0)
+		if(Math.abs(den)<  0.01f)
 		{
 			ray.missed();
 			return;
@@ -29,7 +29,7 @@ public class Plane extends Object {
 		
 		float num = -d - n.dot(new Vector3f(ray.position));
 		
-		if(num == 0)
+		if(Math.abs(num)<  0.01f)
 		{
 			ray.missed();
 			return;
@@ -37,7 +37,7 @@ public class Plane extends Object {
 		
 		float t = num / den;
 		
-		if(t < 0)
+		if(t < 0.1)
 			ray.missed();
 		else
 		{
@@ -50,7 +50,7 @@ public class Plane extends Object {
 	public Point3f GetIntersectionPoint(Ray ray){
 		float den = ray.direction.dot(n); 
 
-		if( den == 0)
+		if( Math.abs(den)<  0.01f)
 		{
 			ray.missed();
 			return null;
@@ -58,7 +58,7 @@ public class Plane extends Object {
 		
 		double num = -d - n.dot(new Vector3f(ray.position));
 		
-		if(num == 0)
+		if(Math.abs(num)<  0.01f)
 		{
 			ray.missed();
 			return null;
@@ -66,7 +66,7 @@ public class Plane extends Object {
 		
 		double t = num / den;
 		
-		if(t < 0)
+		if(t < 0.1)
 		{
 			ray.missed();
 			return null;

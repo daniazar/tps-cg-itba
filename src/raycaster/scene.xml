@@ -1,40 +1,40 @@
 <?xml version="1.0"?>
 <scene>
 	<sphere>
-		<center>233;290;0</center>
+		<center>233;190;0</center>
 		<radius>100</radius>
 		<matID>1</matID>
 	</sphere>
 	<sphere>
-		<center>407;290;0</center>
+		<center>407;190;0</center>
 		<radius>100</radius>
 		<matID>2</matID>
 	</sphere>
 	<sphere>
-		<center>320;140;0</center>
+		<center>320;40;0</center>
 		<radius>100</radius>
 		<matID>3</matID>
 	</sphere>
-	<trianglea>
+	<triangle>
 		<pt1>500;200;-50</pt1>
 		<pt2>550;300;-50</pt2>
 		<pt3>600;200;-50</pt3>
 		<matID>1</matID>
-	</trianglea>
-	<quadrilaterala>
-		<pt1>50;100;-50</pt1>
-		<pt2>50;200;-50</pt2>
-		<pt3>50;200;-150</pt3>
-		<pt4>50;100;-150</pt4>
+	</triangle>
+	<quadrilateral>
+		<pt1>50;100;0</pt1>
+		<pt2>50;200;0</pt2>
+		<pt3>50;200;-100</pt3>
+		<pt4>50;100;-100</pt4>
 		<matID>1</matID>
-	</quadrilaterala>
-	<quadrilaterala>
-		<pt1>50;100;-50</pt1>
-		<pt2>50;200;-50</pt2>
-		<pt3>150;200;-50</pt3>
-		<pt4>400;100;-50</pt4>
+	</quadrilateral>
+	<quadrilateral>
+		<pt1>40;100;-50</pt1>
+		<pt2>40;200;-50</pt2>
+		<pt3>140;200;-50</pt3>
+		<pt4>140;100;-50</pt4>
 		<matID>3</matID>
-	</quadrilaterala>
+	</quadrilateral>
 	
 
 	<material>
@@ -55,22 +55,26 @@
 		<material>
 		<id>4</id>
 		<diffuse>0.5;0.5;0.5</diffuse>
-		<reflection>0.5</reflection>
+		<reflection>1</reflection>
 	</material>
 	<camera>
 		<dimensions>640;480</dimensions>
-		<position>320;240;-200</position>
-		<direction>0;0;1</direction>
-		<up>0;1;0</up>
-		<distance>100.0</distance>
+		<position>320;510;-610</position>
+		<direction>0;-0.5;1</direction>
+		<up>0;1;1</up>
+		<fovX>60</fovX>
 	</camera>
 	<plane>
 		<normal>0;0;-1</normal>
 		<point>0;0;100</point>
-		<matID>3</matID>
+		<matID>4</matID>
 	</plane>
 	<light>
-		<position>0;0;-500</position>
+		<position>640;240;-1000</position>
 		<intensity>0.6;0.7;1.0</intensity>
+	</light>
+	<light>
+		<position>0;240;-100</position>
+		<intensity>1;1;1</intensity>
 	</light>
 </scene>

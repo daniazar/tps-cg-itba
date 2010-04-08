@@ -331,7 +331,8 @@ public class Scene {
 		Node posNode = camNode.getElementsByTagName("position").item(0).getFirstChild();
 		Node dirNode = camNode.getElementsByTagName("direction").item(0).getFirstChild();
 		Node upNode = camNode.getElementsByTagName("up").item(0).getFirstChild();
-		Node distNode = camNode.getElementsByTagName("distance").item(0).getFirstChild();
+		Node fovxNode = camNode.getElementsByTagName("fovX").item(0).getFirstChild();
+
 		
 		Scanner sc = new Scanner(dimNode.getNodeValue());
 		sc.useDelimiter(";");
@@ -357,8 +358,10 @@ public class Scene {
 		float upy = sc.nextFloat();
 		float upz = sc.nextFloat();
 		
-		sc= new Scanner(distNode.getNodeValue());
-		float dist = sc.nextFloat();
+
+		sc= new Scanner(fovxNode.getNodeValue());
+		float fovx = sc.nextFloat();
+
 		
 		Point2i dim = new Point2i(dimx,dimy);
 		Point3f pos = new Point3f(px,py,pz);
@@ -366,7 +369,7 @@ public class Scene {
 
 		Vector3f up = new Vector3f(upx, upy, upz);
 		
-		cam = new Camera(pos, dir, dim, up, dist);
+		cam = new Camera(pos, dir, dim, up, fovx);
 		
 	}
 	
