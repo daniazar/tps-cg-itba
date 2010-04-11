@@ -36,9 +36,12 @@ public class Camera {
 		fovX = fovx;
 
 		// distancia focal a partir del fov y la imagen
-		
-		fovY = ((float)(dimensions.y) * fovX) / dimensions.x;
 		distance = (float)(dimensions.x /(2*Math.tan( Math.toRadians(fovX) /2)));
+		
+		//Calculo del fovY
+		fovY = 2 *(float)Math.atan(dimensions.y/(2 * distance));
+		fovY = (float)Math.toDegrees(fovY);
+
 
 
 	}
