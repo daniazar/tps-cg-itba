@@ -18,31 +18,32 @@ public class Camera {
 	public float distance;
 	public float fovX;
 	public float fovY;
-	private int MAX_REFLECTIONS = 10;
+	
+	private int MAX_REFLECTIONS = 0;
+	private boolean lightingEnabled = false;
 
-	public Camera(Point3f pos, Vector3f dir, Point2i dim, Vector3f up, 
+	public Camera(Point3f pos, Vector3f dir, Point2i dim, Vector3f up,
 			float fovx) {
 		position = pos;
 		direction = dir;
 		direction.normalize();
 		this.up = up;
 		this.up.normalize();
-		
+
 		right = new Vector3f();
 		right.cross(direction, up);
 		dimensions = dim;
 		dimensions.absolute();
-		
+
 		fovX = fovx;
 
 		// distancia focal a partir del fov y la imagen
-		distance = (float)(dimensions.x /(2*Math.tan( Math.toRadians(fovX) /2)));
-		
-		//Calculo del fovY
-		fovY = 2 *(float)Math.atan(dimensions.y/(2 * distance));
-		fovY = (float)Math.toDegrees(fovY);
+		distance = (float) (dimensions.x / (2 * Math
+				.tan(Math.toRadians(fovX) / 2)));
 
-
+		// Calculo del fovY
+		fovY = 2 * (float) Math.atan(dimensions.y / (2 * distance));
+		fovY = (float) Math.toDegrees(fovY);
 
 	}
 
@@ -61,8 +62,9 @@ public class Camera {
 		upauxi.scale(-(float) dimensions.y / 2);
 		startingPoint.add(upauxi);
 
-		System.out.println("Starting Point del Plano de Proyeccion:"+startingPoint);
-		
+		System.out.println("Starting Point del Plano de Proyeccion:"
+				+ startingPoint);
+
 		for (int i = 0; i < dimensions.x; i++) {
 
 			for (int j = 0; j < dimensions.y; j++) {
@@ -73,10 +75,11 @@ public class Camera {
 				upauxi = new Vector3f(up);
 				upauxi.scale(dimensions.y - j);
 				pixelPos.add(upauxi);
-				
-				Vector3f dir = new Vector3f(pixelPos.x - position.x, pixelPos.y - position.y, pixelPos.z - position.z);
+
+				Vector3f dir = new Vector3f(pixelPos.x - position.x, pixelPos.y
+						- position.y, pixelPos.z - position.z);
 				dir.normalize();
-				
+
 				Ray ray = new Ray(dir, pixelPos);
 
 				int level = 0;
@@ -91,64 +94,78 @@ public class Camera {
 
 						n = o.getNormal(ray.intersectionPoint);
 
-						for (Light l : Scene.lights) {
+						if (lightingEnabled) {
+							for (Light l : Scene.lights) {
 
-							Vector3f intersectionToLight = new Vector3f(
-									l.position.x - ray.intersectionPoint.x,
-									l.position.y - ray.intersectionPoint.y,
-									l.position.z - ray.intersectionPoint.z);
+								Vector3f intersectionToLight = new Vector3f(
+										l.position.x - ray.intersectionPoint.x,
+										l.position.y - ray.intersectionPoint.y,
+										l.position.z - ray.intersectionPoint.z);
 
-							// Si estamos opuestos no hay luz aqui
-							if (n.dot(intersectionToLight) < 0)
-								continue;
+								// Si estamos opuestos no hay luz aqui
+								if (n.dot(intersectionToLight) < 0)
+									continue;
 
-							// Creo un rayo de luz desde el punto de
-							// interseccion hasta la luz
-							intersectionToLight.normalize();
-							Ray lightRay = new Ray(intersectionToLight,
-									ray.intersectionPoint);
+								// Creo un rayo de luz desde el punto de
+								// interseccion hasta la luz
+								intersectionToLight.normalize();
+								Ray lightRay = new Ray(intersectionToLight,
+										ray.intersectionPoint);
 
-							for (Object objShadow : Scene.objects)
-								objShadow.Intersects(lightRay);
+								for (Object objShadow : Scene.objects)
+									objShadow.Intersects(lightRay);
 
-							boolean lightHit = false;
-							if (!lightRay.hit())
-								lightHit = true;
-							else {
-								if (!lightRay.isPointInSegment(
-										lightRay.position, l.position,
-										lightRay.intersectionPoint))
-									lightHit = false;
-								else
-									lightHit = false;
+								boolean lightHit = false;
+								if (!lightRay.hit())
+									lightHit = true;
+								else {
+									if (!lightRay.isPointInSegment(
+											lightRay.position, l.position,
+											lightRay.intersectionPoint))
+										lightHit = false;
+									else
+										lightHit = false;
+								}
+
+								if (lightHit) {
+									// Lambert
+									// Calculo el coseno de la luz que incide
+									// sobre
+									// la superficie
+									// Si esta entra perpendicular, lo ilumina
+									// mas
+									// Saco el coseno mediante producto y lo
+									// multiplico por el coef
+									// que se va modificando con la
+									// reflectividad
+									// del material.
+									float lambert = (lightRay.direction.dot(n))
+											* coef;
+
+									float[] objectColor = ray.getObject()
+											.getColor()
+											.getColorComponents(null);
+									float[] lightColor = l.intensity
+											.getColorComponents(null);
+									red += lambert * objectColor[0]
+											* lightColor[0];
+									green += lambert * objectColor[1]
+											* lightColor[1];
+									blue += lambert * objectColor[2]
+											* lightColor[2];
+								}
+
 							}
-							
-
-							if (lightHit) {
-								// Lambert
-								// Calculo el coseno de la luz que incide sobre
-								// la superficie
-								// Si esta entra perpendicular, lo ilumina mas
-								// Saco el coseno mediante producto y lo
-								// multiplico por el coef
-								// que se va modificando con la reflectividad
-								// del material.
-								float lambert = (lightRay.direction.dot(n))
-										* coef;
-
-								float[] objectColor = ray.getObject()
-										.getColor().getColorComponents(null);
-								float[] lightColor = l.intensity
-										.getColorComponents(null);
-								red += lambert * objectColor[0] * lightColor[0];
-								green += lambert * objectColor[1]
-										* lightColor[1];
-								blue += lambert * objectColor[2]
-										* lightColor[2];
-							}
-
 						}
+						else
+						{
+							float[] objectColor = ray.getObject().getColor()
+							.getColorComponents(null);
 
+							red = objectColor[0];
+							green = objectColor[1];
+							blue = objectColor[2];
+						}
 						coef *= ray.getObject().getReflection();
 
 						Point3f newstartingPoint = ray.getIntersectionPoint();
@@ -162,20 +179,21 @@ public class Camera {
 					} else
 						coef = 0;
 				} while (coef > 0.0f && level < MAX_REFLECTIONS);
-				red = Math.min(red, 1);
-				green = Math.min(green, 1);
-				blue = Math.min(blue, 1);
+				
+					red = Math.min(red, 1);
+					green = Math.min(green, 1);
+					blue = Math.min(blue, 1);
+
 
 				Color c = new Color(red, green, blue);
 
 				im.setRGB(i, j, c.getRGB());
 
 			}
-			
+
 			rightauxi = new Vector3f(right);
 			rightauxi.scale(-1);
 			startingPoint.add(rightauxi);
-
 
 		}
 		File render = new File("render");

@@ -55,20 +55,20 @@
 		<diffuse>0.5;0.5;0.5</diffuse>
 		<reflection>1</reflection>
 	</material>
-	<camera>
+	<cameraa>
 		<dimensions>640;480</dimensions>
 		<position>320;590;-590</position>
 		<direction>0;-0.5;1</direction>
 		<up>0;1;1</up>
 		<fovX>60</fovX>
-	</camera>
-	<cameraa>
+	</cameraa>
+	<camera>
 		<dimensions>640;480</dimensions>
 		<position>320;240;-655</position>
 		<direction>0;0;1</direction>
 		<up>0;1;0</up>
 		<fovX>60</fovX>
-	</cameraa>
+	</camera>
 	<plane>
 		<normal>0;0;-1</normal>
 		<point>0;0;100</point>
