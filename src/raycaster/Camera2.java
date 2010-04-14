@@ -33,8 +33,6 @@ public class Camera2 {
 
 		right = new Vector3f();
 		right.cross(direction, up);
-		up.scale(0.1f);
-		right.scale(0.1f);		
 		dimensions = dim;
 		dimensions.absolute();
 		fovX = fovx;
@@ -42,8 +40,13 @@ public class Camera2 {
         di = new Point2f();
 		distance = dist;
 		di.x = (float) (dist * Math.tan(Math.toRadians(fovX/2))) ;
-System.out.println(distance);
-		di.y = di.x*dimensions.y/dimensions.x;
+System.out.println(dimensions + ",       " + fovX);
+
+// Calculo del fovY
+fovY = ((float)dimensions.y)/ ((float)dimensions.x)*fovX;
+		System.out.println("fovY: " + fovY);
+		
+		di.y = (float) (dist * Math.tan(Math.toRadians(fovY/2))) ;;
 		// Calculo del fovY
 		right.scale(-di.x /dimensions.x);
 		this.up.scale(-di.y /dimensions.y);
@@ -61,11 +64,11 @@ System.out.println(distance);
 				(position.z + direction.z * distance));
 		System.out.println(position + "," +direction + ";" +distance);
 		Vector3f rightauxi = new Vector3f(right);
-		rightauxi.scale((float) dimensions.x*10 );
+		rightauxi.scale((float) dimensions.x );
 		startingPoint.add(rightauxi);
 
 		Vector3f upauxi = new Vector3f(up);
-		upauxi.scale(-(float) dimensions.y*10 );
+		upauxi.scale(-(float) dimensions.y );
 		startingPoint.add(upauxi);
 
 		System.out.println("Starting Point del Plano de Proyeccion:"
@@ -79,7 +82,7 @@ System.out.println(distance);
 				Point3f pixelPos = new Point3f(startingPoint);
 
 				upauxi = new Vector3f(up);
-				upauxi.scale(j*20);
+				upauxi.scale(j*2);
 				pixelPos.add(upauxi);
 				Vector3f dir = new Vector3f(pixelPos.x - position.x, pixelPos.y
 						- position.y, pixelPos.z - position.z);
@@ -200,7 +203,7 @@ System.out.println(distance);
 			}
 
 			rightauxi = new Vector3f(right);
-			rightauxi.scale(-20);
+			rightauxi.scale(-2);
 			startingPoint.add(rightauxi);
 			//System.out.println(startingPoint);
 		}
