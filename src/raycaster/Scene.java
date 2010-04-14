@@ -28,8 +28,9 @@ public class Scene {
 	public static ArrayList<Light> lights = new ArrayList<Light>();
 	public static Hashtable<Integer, Material> materials = new Hashtable<Integer, Material>();
 	
-	static String filename = "scene3.xml";
-	public static Camera2 cam;
+	public static String filename = "scene.xml";
+	public static Camera cam;
+	
 	
 	
 	
@@ -336,7 +337,7 @@ public class Scene {
 		Node dirNode = camNode.getElementsByTagName("direction").item(0).getFirstChild();
 		Node upNode = camNode.getElementsByTagName("up").item(0).getFirstChild();
 		Node fovxNode = camNode.getElementsByTagName("fovX").item(0).getFirstChild();
-		Node distNode = camNode.getElementsByTagName("dist").item(0).getFirstChild();
+	
 
 		
 		Scanner sc = new Scanner(dimNode.getNodeValue());
@@ -373,26 +374,28 @@ public class Scene {
 		Vector3f dir = new Vector3f(dirx, diry, dirz);
 
 		Vector3f up = new Vector3f(upx, upy, upz);
-		sc= new Scanner(distNode.getNodeValue());
-		float dist = sc.nextFloat();
+
 		
-		cam = new Camera2(pos, dir, dim, up, fovx, dist);
+		cam = new Camera(pos, dir, dim, up, fovx);
 		
 	}
 	
 	public static void main(String[] args)
 	{
-		File scene = null;
-		try {
-			scene = new File(new URI(Scene.class.getResource(filename).toString()));
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			return;
-		}
-		ParseFile(scene);
 
-		cam.Raytrace();
 		
 	}
+	
+	public static void startScene(String name)
+	{
+		File scene = null;
+		scene = new File(name);
+		ParseFile(scene);
+
+		//cam.Raytrace();
+		
+	}
+	
+	
 }
 	

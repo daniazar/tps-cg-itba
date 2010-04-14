@@ -26,7 +26,8 @@ public class RandomColorChooser extends PlainColorChooser {
 			ans =  c;
 		}
 		float baseDist = ray.getObject().getDistanceToClosestPoint(ray.position);
-		return variator.changeColor(baseDist, ans, ray.getIntersectionPoint().distance(ray.position));
+//		return variator.changeColor(baseDist, ans, ray.getIntersectionPoint().distance(ray.position));
+		return ans;
 		
 
 	}

@@ -9,15 +9,15 @@ public class Parameters {
 	public static final String pointSeparator = "x";
 	
 	//nombre de archivo input
-	public String i;
+	public String i = "scene2.xml";
 	
 	//nombre de archivo output
-	public String o;
+	public static String o = "render";
 	
-	public Point size;
-	public double fov;
-	public String cm;
-	public String cv;
+	public Point size = new Point(640,480);
+	public double fov = 60;
+	public String cm = "random";
+	public String cv = "linear";
 	public boolean time = false;
 	
 	private String paramsString;
@@ -34,9 +34,8 @@ public class Parameters {
 	}
 
 	public void ParseParameters() {
-		Matcher m = Pattern.compile("-([a-z]+)\\s([^\\s]+)?", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(paramsString);
+		Matcher m = Pattern.compile("-([a-z]+)\\s([^\\s-]+)?", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(paramsString);
 		while(m.find()) {
-			System.out.println(m.group(1) + " " + m.group(2));
 			
 			
 			try {
@@ -60,7 +59,6 @@ public class Parameters {
 				System.err.println("There was an error when parsing the command line arguments : " + e.getMessage());
 			}
 		}
-		System.out.println(this);
 	}
 	
 	@Override

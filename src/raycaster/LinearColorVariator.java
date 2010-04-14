@@ -4,6 +4,7 @@ import java.awt.Color;
 
 public class LinearColorVariator extends ColorVariator {
 
+	private float step = 0.006f;
 	@Override
 	public Color changeColor(float baseDistance, Color baseColor, float distance) {
 		
@@ -11,9 +12,9 @@ public class LinearColorVariator extends ColorVariator {
 		
 		while(distance > baseDistance)
 		{
-			colors[0] += 0.003;
-			colors[1] += 0.003;
-			colors[2] += 0.003;
+			colors[0] -= step;
+			colors[1] -= step;
+			colors[2] -= step;
 			distance--;
 		}
 		colors[0] = Math.max(colors[0], 0);

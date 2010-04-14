@@ -521,11 +521,11 @@
 		<matID>4</matID>
 	</planea>
 	<light>
-		<position>640;240;-1000</position>
+		<position>0;0;0</position>
 		<intensity>0.6;0.7;1.0</intensity>
 	</light>
 	<light>
-		<position>0;240;-100</position>
+		<position>0;0;0</position>
 		<intensity>1;1;1</intensity>
 	</light>
 

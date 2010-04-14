@@ -24,7 +24,8 @@ public class Camera2 {
 	private boolean lightingEnabled = false;
 
 	public Camera2(Point3f pos, Vector3f dir, Point2i dim, Vector3f up,
-			float fovx, float dist) {
+			float fovx) {
+		float dist = 1;
 		position = pos;
 		direction = dir;
 		direction.normalize();
@@ -40,19 +41,17 @@ public class Camera2 {
         di = new Point2f();
 		distance = dist;
 		di.x = (float) (dist * Math.tan(Math.toRadians(fovX/2))) ;
-System.out.println(dimensions + ",       " + fovX);
+
 
 // Calculo del fovY
 fovY = ((float)dimensions.y)/ ((float)dimensions.x)*fovX;
-		System.out.println("fovY: " + fovY);
-		
+
+
 		di.y = (float) (dist * Math.tan(Math.toRadians(fovY/2))) ;;
 		// Calculo del fovY
 		right.scale(-di.x /dimensions.x);
 		this.up.scale(-di.y /dimensions.y);
-		System.out.println(right + "    ,    " + this.up);
-		System.out.println(dimensions);
-		System.out.println(di);
+
 		
 	}
 
