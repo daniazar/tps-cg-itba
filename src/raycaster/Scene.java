@@ -29,7 +29,7 @@ public class Scene {
 	public static Hashtable<Integer, Material> materials = new Hashtable<Integer, Material>();
 	
 	static String filename = "sceneForDistance.xml";
-	public static Camera cam;
+	public static Camera2 cam;
 	
 	
 	
@@ -336,6 +336,7 @@ public class Scene {
 		Node dirNode = camNode.getElementsByTagName("direction").item(0).getFirstChild();
 		Node upNode = camNode.getElementsByTagName("up").item(0).getFirstChild();
 		Node fovxNode = camNode.getElementsByTagName("fovX").item(0).getFirstChild();
+		Node distNode = camNode.getElementsByTagName("dist").item(0).getFirstChild();
 
 		
 		Scanner sc = new Scanner(dimNode.getNodeValue());
@@ -372,8 +373,10 @@ public class Scene {
 		Vector3f dir = new Vector3f(dirx, diry, dirz);
 
 		Vector3f up = new Vector3f(upx, upy, upz);
+		sc= new Scanner(distNode.getNodeValue());
+		float dist = sc.nextFloat();
 		
-		cam = new Camera(pos, dir, dim, up, fovx);
+		cam = new Camera2(pos, dir, dim, up, fovx, dist);
 		
 	}
 	
