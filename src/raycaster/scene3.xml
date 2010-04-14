@@ -151,7 +151,7 @@
 		<position>0;0;10</position>
 		<direction>0;0;-1</direction>
 		<up>0;1;0</up>
-		<fovX>100</fovX>
+		<fovX>60</fovX>
 				<dist>1</dist>
 		
 	</camera>

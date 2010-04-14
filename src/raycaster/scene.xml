@@ -38,25 +38,25 @@
 		<matID>2</matID>
 	</sphere>
 	<sphere>
-		<center>5.5;5.5;0</center>
+		<center>3.22;3.22;0</center>
 		<radius>0.5</radius>
 		<matID>2</matID>
 	</sphere>
 	
 		<sphere>
-		<center>-5.5;5.5;0</center>
+		<center>-3.22;3.22;0</center>
 		<radius>0.5</radius>
 		<matID>2</matID>
 	</sphere>
 	
 		<sphere>
-		<center>5.5;-5.5;0</center>
+		<center>3.22;-3.22;0</center>
 		<radius>0.5</radius>
 		<matID>2</matID>
 	</sphere>
 	
 		<sphere>
-		<center>-5.5;-5.5;0</center>
+		<center>-3.22;-3.22;0</center>
 		<radius>0.5</radius>
 		<matID>2</matID>
 	</sphere>
@@ -89,7 +89,7 @@
 		<position>0;0;10</position>
 		<direction>0;0;-1</direction>
 		<up>0;1;0</up>
-		<fovX>100</fovX>
+		<fovX>60</fovX>
 				<dist>1</dist>
 		
 	</camera>
