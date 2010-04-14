@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<scene>	
+<cube1>
+	<quadrilateral>
+		<pt1>-1;-1;-1</pt1>
+		<pt2>-1;1;-1</pt2>
+		<pt3>1;1;-1</pt3>
+		<pt4>1;-1;-1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+	
+	<quadrilateral>
+		<pt1>-1;-1;1</pt1>
+		<pt2>-1;1;1</pt2>
+		<pt3>1;1;1</pt3>
+		<pt4>1;-1;1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+	
+	<quadrilateral>
+		<pt1>-1;-1;1</pt1>
+		<pt2>-1;1;1</pt2>
+		<pt3>-1;1;-1</pt3>
+		<pt4>-1;-1;-1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+
+	<quadrilateral>
+		<pt1>1;-1;1</pt1>
+		<pt2>1;1;1</pt2>
+		<pt3>1;1;-1</pt3>
+		<pt4>1;-1;-1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+	
+	
+</cube1>
+
+<cube2>
+	<quadrilateral>
+		<pt1>3;-1;-1</pt1>
+		<pt2>3;1;-1</pt2>
+		<pt3>5;1;-1</pt3>
+		<pt4>5;-1;-1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+	
+	<quadrilateral>
+		<pt1>3;-1;1</pt1>
+		<pt2>3;1;1</pt2>
+		<pt3>5;1;1</pt3>
+		<pt4>5;-1;1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+	
+	<quadrilateral>
+		<pt1>3;-1;1</pt1>
+		<pt2>3;1;1</pt2>
+		<pt3>3;1;-1</pt3>
+		<pt4>3;-1;-1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+
+	<quadrilateral>
+		<pt1>5;-1;1</pt1>
+		<pt2>5;1;1</pt2>
+		<pt3>5;1;-1</pt3>
+		<pt4>5;-1;-1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+	
+	
+</cube2>
+
+
+<cube3>
+	<quadrilateral>
+		<pt1>-3;-1;-1</pt1>
+		<pt2>-3;1;-1</pt2>
+		<pt3>-5;1;-1</pt3>
+		<pt4>-5;-1;-1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+	
+	<quadrilateral>
+		<pt1>-3;-1;1</pt1>
+		<pt2>-3;1;1</pt2>
+		<pt3>-5;1;1</pt3>
+		<pt4>-5;-1;1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+	
+	<quadrilateral>
+		<pt1>-3;-1;1</pt1>
+		<pt2>-3;1;1</pt2>
+		<pt3>-3;1;-1</pt3>
+		<pt4>-3;-1;-1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+
+	<quadrilateral>
+		<pt1>-5;-1;1</pt1>
+		<pt2>-5;1;1</pt2>
+		<pt3>-5;1;-1</pt3>
+		<pt4>-5;-1;-1</pt4>
+		<matID>1</matID>
+	</quadrilateral>
+	
+	
+</cube3>
+
+
+	<sphere>
+		<center>2;0;0</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>-2;0;0</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	
+	<material>
+		<id>1</id>
+		<diffuse>1;1;0</diffuse>
+		<reflection>0.5</reflection>
+	</material>
+	<material>
+		<id>2</id>
+		<diffuse>0;1;1</diffuse>
+		<reflection>0.5</reflection>
+	</material>
+	<material>
+		<id>3</id>
+		<diffuse>1;0;1</diffuse>
+		<reflection>0.5</reflection>
+	</material>
+		<material>
+		<id>4</id>
+		<diffuse>0.5;0.5;0.5</diffuse>
+		<reflection>1</reflection>
+	</material>
+
+
+
+	<camera>
+		<dimensions>640;480</dimensions>
+		<position>0;0;10</position>
+		<direction>0;0;-1</direction>
+		<up>0;1;0</up>
+		<fovX>100</fovX>
+				<dist>1</dist>
+		
+	</camera>
+	<planea>
+		<normal>0;0;-1</normal>
+		<point>0;0;100</point>
+		<matID>4</matID>
+	</planea>
+	<light>
+		<position>640;240;-1000</position>
+		<intensity>0.6;0.7;1.0</intensity>
+	</light>
+	<light>
+		<position>0;240;-100</position>
+		<intensity>1;1;1</intensity>
+	</light>
+
+</scene>

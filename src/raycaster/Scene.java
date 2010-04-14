@@ -28,7 +28,7 @@ public class Scene {
 	public static ArrayList<Light> lights = new ArrayList<Light>();
 	public static Hashtable<Integer, Material> materials = new Hashtable<Integer, Material>();
 	
-	static String filename = "scene.xml";
+	static String filename = "scene3.xml";
 	public static Camera2 cam;
 	
 	

@@ -101,6 +101,384 @@
 	
 	
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<sphere>
+		<center>-2.5;0;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;0;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;0;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;0;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	
+	<sphere>
+		<center>-2.5;2.5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;2.5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;2.5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;2.5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	
+	<sphere>
+		<center>-2.5;-2.5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;-2.5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;-2.5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;-2.5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>	
+	
+	
+	<sphere>
+		<center>-2.5;5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;5;-2.5</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<sphere>
+		<center>-2.5;0;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;0;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;0;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;0;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	
+	<sphere>
+		<center>-2.5;2.5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;2.5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;2.5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;2.5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	
+	<sphere>
+		<center>-2.5;-2.5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;-2.5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;-2.5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;-2.5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>	
+	
+	
+	<sphere>
+		<center>-2.5;5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;5;2.5</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<sphere>
+		<center>-2.5;0;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;0;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;0;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;0;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	
+	<sphere>
+		<center>-2.5;2.5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;2.5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;2.5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;2.5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	
+	<sphere>
+		<center>-2.5;-2.5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;-2.5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;-2.5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;-2.5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>	
+	
+	
+	<sphere>
+		<center>-2.5;5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>0;5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>2.5;5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>
+	
+	<sphere>
+		<center>5;5;-5</center>
+		<radius>1</radius>
+		<matID>4</matID>
+	</sphere>	
+
+
+
 	
 	
 	
@@ -121,7 +499,7 @@
 		<diffuse>1;0;1</diffuse>
 		<reflection>0.5</reflection>
 	</material>
-		<material>
+	<material>
 		<id>4</id>
 		<diffuse>0.5;0.5;0.5</diffuse>
 		<reflection>1</reflection>
