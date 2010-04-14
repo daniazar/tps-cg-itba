@@ -89,8 +89,9 @@
 		<position>0;0;10</position>
 		<direction>0;0;-1</direction>
 		<up>0;1;0</up>
-		<dist>1</dist>
 		<fovX>100</fovX>
+				<dist>1</dist>
+		
 	</camera>
 	<planea>
 		<normal>0;0;-1</normal>

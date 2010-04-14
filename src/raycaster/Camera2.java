@@ -45,8 +45,8 @@ public class Camera2 {
 System.out.println(distance);
 		di.y = di.x*dimensions.y/dimensions.x;
 		// Calculo del fovY
-		right.scale(di.x /dimensions.x);
-		this.up.scale(di.y /dimensions.y);
+		right.scale(-di.x /dimensions.x);
+		this.up.scale(-di.y /dimensions.y);
 		System.out.println(right + "    ,    " + this.up);
 		System.out.println(dimensions);
 		System.out.println(di);
