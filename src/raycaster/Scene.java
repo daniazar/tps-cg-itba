@@ -28,8 +28,11 @@ public class Scene {
 	public static ArrayList<Light> lights = new ArrayList<Light>();
 	public static Hashtable<Integer, Material> materials = new Hashtable<Integer, Material>();
 	
-	static String filename = "scene.xml";
+	static String filename = "sceneForDistance.xml";
 	public static Camera cam;
+	
+	
+	
 	
 	private static void ParseFile(File file)
 	{
@@ -50,12 +53,12 @@ public class Scene {
 		  ParseSpheres(nodeLst);
 		  nodeLst = doc.getElementsByTagName("plane");
 		  ParsePlanes(nodeLst);
-		  nodeLst = doc.getElementsByTagName("camera");
-		  ParseCamera(nodeLst);
 		  nodeLst = doc.getElementsByTagName("triangle");
 		  ParseTriangle(nodeLst);
 		  nodeLst = doc.getElementsByTagName("quadrilateral");
 		  ParseQuadrilateral(nodeLst);
+		  nodeLst = doc.getElementsByTagName("camera");
+		  ParseCamera(nodeLst);
 		  
 		  
 		  
@@ -164,6 +167,7 @@ public class Scene {
 			    	
 			    	Integer id = Integer.parseInt(matNode.getNodeValue());
 			    	objects.add(new Triangle(p1,p2,p3,materials.get(id)));
+
 			    	
 			    }
 
@@ -383,6 +387,7 @@ public class Scene {
 			return;
 		}
 		ParseFile(scene);
+
 		cam.Raytrace();
 		
 	}

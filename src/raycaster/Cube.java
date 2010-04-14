@@ -35,5 +35,20 @@ public class Cube extends Object {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public void setColor(Color c) {
+		// TODO Auto-generated method stub
+	
+	}
+	@Override
+	public Point3f getAnyPoint() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Point3f getClosestPoint(Point3f point) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

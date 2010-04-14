@@ -48,10 +48,7 @@ public class Triangle extends Object {
 
 		if( i == null)
 			return;
-		
 
-		
-		
 		//http://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/raycast/sld019.htm
 		
 		//P= a(V2+p1)+b(V3+p1)
@@ -109,4 +106,44 @@ public class Triangle extends Object {
 		return material.reflection;
 	}
 
+
+	@Override
+	public void setColor(Color c) {
+		this.material.diffuse  = c;
+		
+	}
+
+	@Override
+	public Point3f getAnyPoint() {
+		// TODO Auto-generated method stub
+		return p1;
+	}
+
+	public boolean equals(Object o)
+	{
+		if(!(o instanceof Triangle))
+		{
+
+			return false;
+		}
+		else
+		{
+			Triangle t = (Triangle)o;
+			if(t.p1.equals(p1) )
+				return true;
+			else
+				return false;
+		}
+	}
+	
+	public String toString()
+	{
+		return "Triangle";
+	}
+
+
+	@Override
+	public Point3f getClosestPoint(Point3f point) {
+		return getAnyPoint();
+	}
 }

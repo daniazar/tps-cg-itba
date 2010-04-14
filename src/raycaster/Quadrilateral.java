@@ -22,7 +22,21 @@ public class Quadrilateral extends Object {
 	public void Intersects(Ray ray) {
 		t1.Intersects(ray);
 		t2.Intersects(ray);	
-		// Para optimizar hacer que le pregunte al primero si lo toca y no invocar al segundo. 
+		if(!ray.hit)
+			return;
+		else if(ray.getObject().equals(t1))
+		{
+			
+				ray.hit(ray.intersectionPoint, this);
+		}
+		else if(ray.getObject().equals(t2))
+		{
+				ray.hit(ray.intersectionPoint,this);
+		}
+		else
+		{
+			ray.missed();
+		}
 
 		return;
 	}
@@ -40,5 +54,49 @@ public class Quadrilateral extends Object {
 	@Override
 	public float getReflection() {
 		return t1.getReflection();
+	}
+
+
+	@Override
+	public void setColor(Color c) {
+		t1.setColor(c);
+		t2.setColor(c);
+		
+	}
+
+
+	@Override
+	public Point3f getAnyPoint() {
+		// TODO Auto-generated method stub
+		return t1.getAnyPoint();
+	}
+	
+	public boolean equals(Object o)
+	{
+	
+
+		if(o instanceof Quadrilateral)
+		{
+			Quadrilateral q = (Quadrilateral)o;
+			if(q.t1.equals(t1) && q.t2.equals(t2)||(
+					q.t1.equals(t2)||q.t2.equals(t1)))
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+		
+	}
+	
+	public String toString()
+	{
+		return "Quad";
+	}
+
+
+	@Override
+	public Point3f getClosestPoint(Point3f point) {
+		return getAnyPoint();
 	}
 }

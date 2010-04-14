@@ -89,6 +89,47 @@ public class Sphere extends Object {
 		return n;
 	}
 
+	@Override
+	public void setColor(Color c) {
+		this.material.diffuse  = c;
+		
+	}
+
+	@Override
+	public Point3f getAnyPoint() {
+		// TODO Auto-generated method stub
+		return new Point3f(center.x, center.y, center.z - radius);
+	}
+
+	public boolean equals(Object o)
+	{
+		if(!(o instanceof Sphere))
+			return false;
+		else
+		{
+			Sphere s = (Sphere)o;
+			if(s.radius == radius && s.center.equals(center) )
+				return true;
+			else
+				return false;
+		}
+	}
+	
+	public String toString()
+	{
+		return "Esfera";
+	}
+
+	@Override
+	public Point3f getClosestPoint(Point3f point) {
+		
+		Vector3f dirPointSphere = new Vector3f(center.x - point.x ,
+				center.y - point.y, center.z - point.z);
+		Ray ray = new Ray(dirPointSphere,point);
+		Intersects(ray);
+		return ray.intersectionPoint;
+		
+	}
 
 
 

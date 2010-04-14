@@ -92,5 +92,38 @@ public class Plane extends Object {
 	public float getReflection() {
 		return material.reflection;
 	}
+	@Override
+	public void setColor(Color c) {
+		this.material.diffuse  = c;
+		
+	}
+	@Override
+	public Point3f getAnyPoint() {
+		// TODO Auto-generated method stub
+		return new Point3f(n.x,n.y,n.z + d);
+	}
 
+	public boolean equals(Object o)
+	{
+
+		if(!(o instanceof Plane))
+			return false;
+		else
+		{
+			Plane p = (Plane)o;
+			if(p.d == d && p.n.equals(n))
+				return true;
+			else
+				return false;
+		}
+	}
+	
+	public String toString()
+	{
+		return "Plane";
+	}
+	@Override
+	public Point3f getClosestPoint(Point3f point) {
+		return getAnyPoint();
+	}
 }

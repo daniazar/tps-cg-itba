@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
-public abstract class Object {
+public abstract class Object implements Cloneable{
 
 	public abstract void Intersects(Ray ray);
 	
@@ -14,5 +14,13 @@ public abstract class Object {
 	public abstract Vector3f getNormal(Point3f point);
 	
 	public abstract float getReflection();
+	
+	public abstract void setColor(Color c);
+	
+	public abstract Point3f getAnyPoint();
+	
+	public abstract Point3f getClosestPoint(Point3f point);
+	
+
 	
 }
