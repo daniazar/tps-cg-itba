@@ -35,7 +35,7 @@ public class DistanceColorChooser extends PlainColorChooser {
 
 		int index = lejania % colores.length;
 		//Aplico el variador de color
-		float baseDistance = ray.getObject().getClosestPoint(camPos).distance(camPos);
+		float baseDistance = ray.getObject().getDistanceToClosestPoint(camPos);
 		return variator.changeColor(baseDistance,  colores[index], ray.getIntersectionPoint().distance(camPos) );
 
 	}

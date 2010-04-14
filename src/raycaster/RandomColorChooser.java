@@ -14,15 +14,19 @@ public class RandomColorChooser extends PlainColorChooser {
 	ArrayList<Object> assignedPrimitives = new ArrayList<Object>();
 	public Color getColor(Ray ray) {
 		
+		
+		Color ans = null;
 		if(assignedPrimitives.contains(ray.getObject()))
-				return ray.getObject().getColor();
+				ans = ray.getObject().getColor();
 		else
 		{	
 			Color c = new Color(r.nextFloat(),r.nextFloat(),r.nextFloat());
 			ray.getObject().setColor(c);
 			assignedPrimitives.add(ray.getObject());
-			return c;
+			ans =  c;
 		}
+		float baseDist = ray.getObject().getDistanceToClosestPoint(ray.position);
+		return variator.changeColor(baseDist, ans, ray.getIntersectionPoint().distance(ray.position));
 		
 
 	}

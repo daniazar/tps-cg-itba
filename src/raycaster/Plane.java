@@ -123,7 +123,10 @@ public class Plane extends Object {
 		return "Plane";
 	}
 	@Override
-	public Point3f getClosestPoint(Point3f point) {
-		return getAnyPoint();
+	public float getDistanceToClosestPoint(Point3f origin) {
+		// TODO Auto-generated method stub
+		return getAnyPoint().distance(origin);
 	}
+
+
 }

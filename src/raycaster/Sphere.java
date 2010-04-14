@@ -120,15 +120,15 @@ public class Sphere extends Object {
 		return "Esfera";
 	}
 
+
+
 	@Override
-	public Point3f getClosestPoint(Point3f point) {
-		
-		Vector3f dirPointSphere = new Vector3f(center.x - point.x ,
-				center.y - point.y, center.z - point.z);
-		Ray ray = new Ray(dirPointSphere,point);
+	public float getDistanceToClosestPoint(Point3f origin) {
+		Vector3f dirPointSphere = new Vector3f(center.x - origin.x ,
+				center.y - origin.y, center.z - origin.z);
+		Ray ray = new Ray(dirPointSphere,origin);
 		Intersects(ray);
-		return ray.intersectionPoint;
-		
+		return ray.intersectionPoint.distance(origin);
 	}
 
 

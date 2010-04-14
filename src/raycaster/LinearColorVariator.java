@@ -11,9 +11,9 @@ public class LinearColorVariator extends ColorVariator {
 		
 		while(distance > baseDistance)
 		{
-			colors[0] += 0.002;
-			colors[1] += 0.002;
-			colors[2] += 0.002;
+			colors[0] += 0.003;
+			colors[1] += 0.003;
+			colors[2] += 0.003;
 			distance--;
 		}
 		colors[0] = Math.max(colors[0], 0);

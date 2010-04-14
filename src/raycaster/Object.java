@@ -19,7 +19,7 @@ public abstract class Object implements Cloneable{
 	
 	public abstract Point3f getAnyPoint();
 	
-	public abstract Point3f getClosestPoint(Point3f point);
+	public abstract float getDistanceToClosestPoint(Point3f origin);
 	
 
 	

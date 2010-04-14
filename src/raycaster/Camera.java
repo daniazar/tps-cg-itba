@@ -50,7 +50,7 @@ public class Camera {
 		fovY = (float) Math.toDegrees(fovY);
 
 		//Sacar
-		colorchooser = new DistanceColorChooser(pos, colorvariator);
+	//	colorchooser = new DistanceColorChooser(pos, colorvariator);
 	}
 
 	public void setColorChooser(PlainColorChooser chooser)
