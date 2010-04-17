@@ -3,8 +3,8 @@ package org.cg.rendering.color;
 import java.awt.Color;
 
 import org.cg.primitives.Primitive;
+import org.cg.raycaster.ray.Ray;
 
-import raycaster.Ray;
 
 public class ObjectColorChooser extends PlainColorChooser {
 
@@ -20,7 +20,7 @@ public class ObjectColorChooser extends PlainColorChooser {
 		Color ans = null;
 		if(o != null )
 		{
-			ans = o.getColor();
+			ans = o.getBaseColor();
 		}
 		
 		return ans;

@@ -5,9 +5,9 @@ import java.awt.Color;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
 
-import raycaster.Ray;
 
 public class Quadrilateral extends Primitive {
 
@@ -35,8 +35,8 @@ public class Quadrilateral extends Primitive {
 	}
 
 	@Override
-	public Color getColor() {
-		return t1.getColor();
+	public Color getBaseColor() {
+		return t1.getBaseColor();
 	}
 
 	@Override
@@ -50,15 +50,14 @@ public class Quadrilateral extends Primitive {
 	}
 
 	@Override
-	public void setColor(Color c) {
-		t1.setColor(c);
-		t2.setColor(c);
+	public void setBaseColor(Color c) {
+		t1.setBaseColor(c);
+		t2.setBaseColor(c);
 
 	}
 
 	@Override
 	public Point3f getAnyPoint() {
-		// TODO Auto-generated method stub
 		return t1.getAnyPoint();
 	}
 
@@ -66,23 +65,21 @@ public class Quadrilateral extends Primitive {
 
 		if (o instanceof Quadrilateral) {
 			Quadrilateral q = (Quadrilateral) o;
-			if (q.t1.equals(t1) && q.t2.equals(t2)
-					|| (q.t1.equals(t2) || q.t2.equals(t1)))
+			if ((q.t1.equals(t1) && q.t2.equals(t2)) || (q.t1.equals(t2) && q.t2.equals(t1)))
 				return true;
-			else
-				return false;
-		} else
-			return false;
+		}
+		return false;
 
-	}
-
-	public String toString() {
-		return "Quad";
 	}
 
 	@Override
 	public float getDistanceToClosestPoint(Point3f origin) {
 		return getAnyPoint().distance(origin);
+	}
+
+	@Override
+	public String toString() {
+		return "Quadrilateral [t1=" + t1 + ", t2=" + t2 + "]";
 	}
 
 }

@@ -1,4 +1,4 @@
-package raycaster;
+package org.cg.raycaster;
 import java.awt.Point;
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
@@ -9,10 +9,10 @@ public class Parameters {
 	public static final String pointSeparator = "x";
 	
 	//nombre de archivo input
-	public String i = "scene2.xml";
+	public static String i = "scene3.xml";
 	
 	//nombre de archivo output
-	public static String o = "render";
+	public String o = "render.png";
 	
 	public Point size = new Point(640,480);
 	public double fov = 60;
@@ -22,7 +22,9 @@ public class Parameters {
 	
 	private String paramsString;
 	
-	public Parameters(String[] args) {
+	static Parameters instance;
+	
+	private Parameters(String[] args) {
 		StringBuilder params = new StringBuilder();
 		for (String string : args) {
 			params.append(string).append(" ");
@@ -33,6 +35,23 @@ public class Parameters {
 		
 	}
 
+	public static Parameters getInstance() {
+		if(instance != null) {
+			return instance;
+		}
+	
+		return null;
+	}
+	
+	public static Parameters getInstance(String []args) {
+		if(instance != null) {
+			return instance;
+		}
+
+		instance = new Parameters(args);
+		return instance;
+	}
+	
 	public void ParseParameters() {
 		Matcher m = Pattern.compile("-([a-z]+)\\s([^\\s-]+)?", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(paramsString);
 		while(m.find()) {
@@ -72,10 +91,10 @@ public class Parameters {
 	}
 
 	public void setI(String i) {
-		this.i = i;
+		Parameters.i = i;
 	}
 
-	public String getO() {
+	public String getOutputFile() {
 		return o;
 	}
 

@@ -5,9 +5,9 @@ import java.awt.Color;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
 
-import raycaster.Ray;
 
 public class Plane extends Primitive {
 
@@ -75,7 +75,7 @@ public class Plane extends Primitive {
 	}
 
 	@Override
-	public Color getColor() {
+	public Color getBaseColor() {
 		return material.getDiffuse();
 	}
 
@@ -90,7 +90,7 @@ public class Plane extends Primitive {
 	}
 
 	@Override
-	public void setColor(Color c) {
+	public void setBaseColor(Color c) {
 		this.material.setDiffuse(c);
 
 	}
@@ -113,8 +113,9 @@ public class Plane extends Primitive {
 		}
 	}
 
+	@Override
 	public String toString() {
-		return "Plane";
+		return "Plane [d=" + d + ", material=" + material + ", n=" + n + "]";
 	}
 
 	@Override

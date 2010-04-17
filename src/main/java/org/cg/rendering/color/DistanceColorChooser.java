@@ -8,9 +8,9 @@ import java.util.Comparator;
 import javax.vecmath.Point3f;
 
 import org.cg.primitives.Primitive;
+import org.cg.raycaster.Scene;
+import org.cg.raycaster.ray.Ray;
 
-import raycaster.Ray;
-import raycaster.Scene;
 
 //Calcula el color en base a la distancia a la camara.
 

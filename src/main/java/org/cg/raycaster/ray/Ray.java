@@ -1,4 +1,4 @@
-package raycaster;
+package org.cg.raycaster.ray;
 
 import javax.vecmath.*;
 

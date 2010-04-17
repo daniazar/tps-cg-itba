@@ -5,9 +5,9 @@ import java.awt.Color;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
 
-import raycaster.Ray;
 
 public class Triangle extends Primitive {
 
@@ -17,11 +17,8 @@ public class Triangle extends Primitive {
 	private Point3f p1;
 	private Vector3f n;
 	private Material material;
-	
-
 
 	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Material material) {
-		super();
 
 	   // vector form triangle pt1 to pt2
 		u = new Vector3f();
@@ -96,7 +93,7 @@ public class Triangle extends Primitive {
 	}
 
 	@Override
-	public Color getColor() {
+	public Color getBaseColor() {
 		return material.getDiffuse();
 	}
 
@@ -112,7 +109,7 @@ public class Triangle extends Primitive {
 
 
 	@Override
-	public void setColor(Color c) {
+	public void setBaseColor(Color c) {
 		this.material.setDiffuse(c);
 		
 	}
@@ -139,17 +136,15 @@ public class Triangle extends Primitive {
 		}
 	}
 	
-	public String toString()
-	{
-		return "Triangle";
-	}
-
-
 	@Override
 	public float getDistanceToClosestPoint(Point3f origin) {
 		return getAnyPoint().distance(origin);
 	}
 
-
+	@Override
+	public String toString() {
+		return "Triangle [material=" + material + ", n=" + n + ", p1=" + p1
+				+ ", u=" + u + ", v=" + v + "]";
+	}
 
 }

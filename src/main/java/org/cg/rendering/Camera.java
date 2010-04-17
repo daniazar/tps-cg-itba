@@ -1,4 +1,4 @@
-package raycaster;
+package org.cg.rendering;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -12,6 +12,9 @@ import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
 import org.cg.primitives.Primitive;
+import org.cg.raycaster.Parameters;
+import org.cg.raycaster.Scene;
+import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.color.ColorVariator;
 import org.cg.rendering.color.DistanceColorChooser;
 import org.cg.rendering.color.LambertianColorChooser;
@@ -42,8 +45,7 @@ public class Camera {
 	private int MAX_REFLECTIONS = 0;
 	private boolean lightingEnabled = false;
 
-	public Camera(Point3f pos, Vector3f dir, Point dim, Vector3f up,
-			float fovx) {
+	public Camera(Point3f pos, Vector3f dir, Point dim, Vector3f up, float fovx) {
 		distance = 1;
 		position = pos;
 		direction = dir;
@@ -135,7 +137,7 @@ public class Camera {
 			
 			
 	}
-	public void Raytrace() {
+	public BufferedImage Raytrace() {
 		
 		BufferedImage im = new BufferedImage(dimensions.x, dimensions.y,
 				BufferedImage.TYPE_INT_RGB);
@@ -215,17 +217,7 @@ public class Camera {
 			startingPoint.add(rightauxi);
 
 		}
-		File render = new File(Parameters.o);
-		try {
-			if(Parameters.o.contains(".bmp"))
-				extension = "bmp";
-			else
-				extension = "png";
-			
-			ImageIO.write(im, extension, render);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		return im;
 	}
 }

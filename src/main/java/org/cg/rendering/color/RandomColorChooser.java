@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.cg.primitives.Primitive;
+import org.cg.raycaster.ray.Ray;
 
-import raycaster.Ray;
 
 public class RandomColorChooser extends PlainColorChooser {
 
@@ -21,11 +21,11 @@ public class RandomColorChooser extends PlainColorChooser {
 		
 		Color ans = null;
 		if(assignedPrimitives.contains(ray.getObject()))
-				ans = ray.getObject().getColor();
+				ans = ray.getObject().getBaseColor();
 		else
 		{	
 			Color c = new Color(r.nextFloat(),r.nextFloat(),r.nextFloat());
-			ray.getObject().setColor(c);
+			ray.getObject().setBaseColor(c);
 			assignedPrimitives.add(ray.getObject());
 			ans =  c;
 		}

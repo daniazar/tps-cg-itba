@@ -5,10 +5,10 @@ import java.awt.Color;
 import javax.vecmath.Vector3f;
 
 import org.cg.primitives.Primitive;
-import org.cg.rendering.Light;
+import org.cg.raycaster.Scene;
+import org.cg.raycaster.ray.Ray;
+import org.cg.rendering.PointLight;
 
-import raycaster.Ray;
-import raycaster.Scene;
 
 public class LambertianColorChooser implements LightColorChooser {
 
@@ -33,7 +33,7 @@ public class LambertianColorChooser implements LightColorChooser {
 		float blue = colors[2];
 		
 		n = o.getNormal(ray.intersectionPoint);
-		for (Light l : Scene.lights) {
+		for (PointLight l : Scene.lights) {
 
 			Vector3f intersectionToLight = new Vector3f(l.getPosition().x
 					- ray.intersectionPoint.x, l.getPosition().y
@@ -67,7 +67,7 @@ public class LambertianColorChooser implements LightColorChooser {
 				// del material.
 				float lambert = (lightRay.direction.dot(n)) * coef;
 
-				float[] objectColor = ray.getObject().getColor()
+				float[] objectColor = ray.getObject().getBaseColor()
 						.getColorComponents(null);
 				float[] lightColor = l.getIntensity().getColorComponents(null);
 				red += lambert * objectColor[0] * lightColor[0];

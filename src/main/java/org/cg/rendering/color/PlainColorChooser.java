@@ -2,7 +2,8 @@ package org.cg.rendering.color;
 
 import java.awt.Color;
 
-import raycaster.Ray;
+import org.cg.raycaster.ray.Ray;
+
 
 public  abstract class PlainColorChooser {
 

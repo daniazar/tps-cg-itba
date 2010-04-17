@@ -4,12 +4,12 @@ import java.awt.Color;
 
 import javax.vecmath.*;
 
-public class Light {
+public class PointLight {
 	
 	private Point3f position;
 	private Color intensity;
 	
-	public Light(Point3f position, Color intensity)
+	public PointLight(Point3f position, Color intensity)
 	{
 		this.setPosition(position);
 		this.setIntensity(intensity);
