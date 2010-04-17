@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import javax.vecmath.Point2f;
-import javax.vecmath.Point2i;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
@@ -28,7 +27,7 @@ public class Camera {
 	public Vector3f direction;
 	public Vector3f up;
 	public Vector3f right;
-	public Point2i dimensions;
+	public Point dimensions;
 	public float distance;
 	public Point2f di;
 	public float fovX;
@@ -41,7 +40,7 @@ public class Camera {
 	private int MAX_REFLECTIONS = 0;
 	private boolean lightingEnabled = false;
 
-	public Camera(Point3f pos, Vector3f dir, Point2i dim, Vector3f up, float fovx) {
+	public Camera(Point3f pos, Vector3f dir, Point dim, Vector3f up, float fovx) {
 		distance = 1;
 		position = pos;
 		direction = dir;
@@ -61,7 +60,7 @@ public class Camera {
 
 	public  void setImageDim(int x, int y)
 	{
-		dimensions = new Point2i(x,y);
+		dimensions = new Point(x,y);
 	}
 	
 	public  void setImageFov(float fov)
@@ -70,7 +69,7 @@ public class Camera {
 	}
 	
 	private void prepare() {
-		dimensions.absolute();
+		makeAbsolute(dimensions);
 		
 		// distancia focal a partir del fov y la imagen
         di = new Point2f();
