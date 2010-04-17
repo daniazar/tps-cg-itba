@@ -5,8 +5,7 @@ import java.awt.Color;
 import org.cg.raycaster.ray.Ray;
 
 
-public  abstract class PlainColorChooser {
-
+public abstract class PlainColorChooser {
 
 	ColorVariator variator;
 	
@@ -14,5 +13,6 @@ public  abstract class PlainColorChooser {
 	{
 		variator = var;
 	}
+	
 	public abstract Color getColor(Ray ray);
 }

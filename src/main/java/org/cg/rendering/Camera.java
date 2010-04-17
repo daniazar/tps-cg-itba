@@ -1,6 +1,5 @@
 package org.cg.rendering;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
@@ -8,16 +7,12 @@ import javax.vecmath.Point2f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
-import org.cg.primitives.Primitive;
-import org.cg.raycaster.Scene;
-import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.color.ColorVariator;
 import org.cg.rendering.color.DistanceColorChooser;
 import org.cg.rendering.color.LambertianColorChooser;
 import org.cg.rendering.color.LightColorChooser;
 import org.cg.rendering.color.LinearColorVariator;
 import org.cg.rendering.color.LogColorVariator;
-import org.cg.rendering.color.ObjectColorChooser;
 import org.cg.rendering.color.PlainColorChooser;
 import org.cg.rendering.color.RandomColorChooser;
 
@@ -32,12 +27,11 @@ public class Camera {
 	public Point2f di;
 	public float fovX;
 	public float fovY;
-	
+
 	private ColorVariator colorvariator = new LinearColorVariator();
-	private PlainColorChooser colorchooser = new ObjectColorChooser(colorvariator);
+	private PlainColorChooser colorchooser = new RandomColorChooser(colorvariator);
 	
 	private LightColorChooser lightchooser = new LambertianColorChooser();
-	private int MAX_REFLECTIONS = 0;
 	private boolean lightingEnabled = false;
 
 	public Camera(Point3f pos, Vector3f dir, Point dim, Vector3f up, float fovx) {
@@ -52,143 +46,85 @@ public class Camera {
 		right.cross(direction, up);
 		dimensions = dim;
 	}
-	
+
 	private void makeAbsolute(Point d) {
 		d.x = Math.abs(d.x);
 		d.y = Math.abs(d.y);
 	}
 
-	public  void setImageDim(int x, int y)
-	{
-		dimensions = new Point(x,y);
+	public void setImageDim(int x, int y) {
+		dimensions = new Point(x, y);
 	}
-	
-	public  void setImageFov(float fov)
-	{
+
+	public void setImageFov(float fov) {
 		fovX = fov;
 	}
-	
-	private void prepare() {
+
+	public void prepare() {
 		makeAbsolute(dimensions);
-		
+
 		// distancia focal a partir del fov y la imagen
-        di = new Point2f();
-		di.x = (float) (distance * Math.tan(Math.toRadians(fovX/2))) ;
+		di = new Point2f();
+		di.x = (float) (distance * Math.tan(Math.toRadians(fovX / 2)));
 
-		// 	Calculo del fovY
-		fovY = ((float)dimensions.y)/ ((float)dimensions.x)*fovX;
-		di.y = (float) (distance * Math.tan(Math.toRadians(fovY/2))) ;
+		// Calculo del fovY
+		fovY = ((float) dimensions.y) / ((float) dimensions.x) * fovX;
+		di.y = (float) (distance * Math.tan(Math.toRadians(fovY / 2)));
 
-		right.scale(-di.x /dimensions.x);
-		this.up.scale(-di.y /dimensions.y);
+		right.scale(-di.x / dimensions.x);
+		this.up.scale(-di.y / dimensions.y);
 	}
 
-	public void setColorMode(String mode, String variation) throws Exception
-	{
-		ColorVariator var = null;
-		PlainColorChooser chooser;
-		
-		if(variation.equalsIgnoreCase("linear"))
-		{
-			var = new LinearColorVariator();
+	public void setColorMode(String mode, String variation) throws Exception {
+
+		if (variation.equalsIgnoreCase("linear")) {
+			colorvariator = new LinearColorVariator();
+		} else if (variation.equalsIgnoreCase("log")) {
+			colorvariator = new LogColorVariator();
 		}
-		else if(variation.equalsIgnoreCase("log"))
-		{
-			var = new LogColorVariator();
-		}
-			
-		if(mode.equalsIgnoreCase("random"))
-		{
-			chooser = new RandomColorChooser(var);
-		}
-		else if(mode.equalsIgnoreCase("distance"))
-		{
-			chooser = new DistanceColorChooser(position, var);
-		}
-		else
-			throw new Exception("Valid Args are: linear, log, random, distance. "+mode+";"+variation);
-			
-			
+
+		if (mode.equalsIgnoreCase("random")) {
+			colorchooser = new RandomColorChooser(colorvariator);
+		} else if (mode.equalsIgnoreCase("distance")) {
+			colorchooser = new DistanceColorChooser(position, colorvariator);
+		} else
+			throw new Exception(
+					"Valid Args are: linear, log, random, distance. " + mode
+							+ ";" + variation);
 	}
-	public BufferedImage Raytrace() {
-		
-		this.prepare();
-		
-		BufferedImage im = new BufferedImage(dimensions.x, dimensions.y,
-				BufferedImage.TYPE_INT_RGB);
-		Point3f startingPoint = new Point3f((position.x + direction.x
+
+	public BufferedImage getBufferedImage() {
+		return new BufferedImage(dimensions.x, dimensions.y,BufferedImage.TYPE_INT_RGB);
+	}
+
+	public Point3f getStartingPoint() {
+		return new Point3f((position.x + direction.x
 				* distance), (position.y + direction.y * distance),
 				(position.z + direction.z * distance));
-
-		Vector3f rightauxi = new Vector3f(right);
-		rightauxi.scale((float) dimensions.x );
-		startingPoint.add(rightauxi);
-
-		Vector3f upauxi = new Vector3f(up);
-		upauxi.scale(-(float) dimensions.y );
-		startingPoint.add(upauxi);
-
-		for (int i = 0; i < dimensions.x; i++) {
-
-			for (int j = 0; j < dimensions.y; j++) {
-				float coef = 1.0f;
-				Color c = new Color(0,0,0);
-				Point3f pixelPos = new Point3f(startingPoint);
-
-				upauxi = new Vector3f(up);
-				upauxi.scale(j*2);
-				pixelPos.add(upauxi);
-
-				Vector3f dir = new Vector3f(pixelPos.x - position.x, pixelPos.y
-						- position.y, pixelPos.z - position.z);
-				dir.normalize();
-
-				Ray ray = new Ray(dir, pixelPos);
-
-				int level = 0;
-
-				do {
-					for (Primitive o : Scene.objects)
-						o.Intersects(ray);
-
-					if (ray.hit()) {
-						
-						Vector3f n = ray.getObject().getNormal(ray.getIntersectionPoint());
-						
-						if (lightingEnabled) 
-						{
-							c = lightchooser.getColor(ray, coef, c);
-							coef *= ray.getObject().getReflection();
-
-							Point3f newstartingPoint = ray.getIntersectionPoint();
-							float reflet = 2 * n.dot(ray.direction);
-							Vector3f newDirection = new Vector3f(ray.direction.x
-									- reflet * n.x, ray.direction.y - reflet * n.y,
-									ray.direction.z - reflet * n.z);
-
-							ray = new Ray(newDirection, newstartingPoint);
-							level++;
-						}
-						else	
-							c = colorchooser.getColor(ray);
-				
-					} else
-						coef = 0;
-				} while (coef > 0.0f && level < MAX_REFLECTIONS && lightingEnabled);
-				
-
-				
-				im.setRGB(i, j, c.getRGB());
-
-
-			}
-
-			rightauxi = new Vector3f(right);
-			rightauxi.scale(-2);
-			startingPoint.add(rightauxi);
-
-		}
-		
-		return im;
 	}
+
+	public void setLightingEnabled(boolean lightingEnabled) {
+		this.lightingEnabled = lightingEnabled;
+	}
+
+	public boolean isLightingEnabled() {
+		return lightingEnabled;
+	}
+
+	public void setLightchooser(LightColorChooser lightchooser) {
+		this.lightchooser = lightchooser;
+	}
+
+	public LightColorChooser getLightchooser() {
+		return lightchooser;
+	}
+
+	public void setColorchooser(PlainColorChooser colorchooser) {
+		this.colorchooser = colorchooser;
+	}
+
+	public PlainColorChooser getColorchooser() {
+		return colorchooser;
+	}
+
 }

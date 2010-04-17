@@ -10,6 +10,22 @@ import org.cg.raycaster.ray.Ray;
 
 public abstract class Primitive implements Cloneable{
 
+	Boolean colorHasBeenSet = false;
+	
+		public Color getOrSetBaseColor(Color c) {
+			if(colorHasBeenSet)
+				return getBaseColor();
+			synchronized (colorHasBeenSet) {
+				if(colorHasBeenSet)
+					return getBaseColor();
+				
+				colorHasBeenSet = true;
+				setBaseColor(c);
+				
+				return c;
+			}
+		}
+	
 	public abstract void Intersects(Ray ray);
 	
 	public abstract Color getBaseColor();

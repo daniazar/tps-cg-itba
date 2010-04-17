@@ -26,7 +26,7 @@ public class Material {
 	public Material(Color diffuse, float reflection)
 	{
 		this.diffuse = diffuse;
-		this.reflection =  reflection;
+		this.reflection = reflection;
 	}
 
 }

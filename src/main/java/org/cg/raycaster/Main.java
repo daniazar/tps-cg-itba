@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import org.cg.raycaster.ray.Raycaster;
 import org.cg.rendering.Camera;
 import org.cg.util.RenderTimer;
 
@@ -20,10 +21,14 @@ public class Main {
 		
 		Scene.startScene(p.getI());
 		Camera c = Scene.cam;
+		Raycaster raycaster = new Raycaster();
+		
 		c.setColorMode(p.getCm(), p.getCv());
 		c.setImageDim(p.getSize().x, p.getSize().y);
 		c.setImageFov((float)p.getFov());
-		BufferedImage im = c.Raytrace();
+		raycaster.setCamera(c);
+		
+		BufferedImage im = raycaster.raycast();
 		
 		String extension;
 		File render = new File(p.getOutputFile());
