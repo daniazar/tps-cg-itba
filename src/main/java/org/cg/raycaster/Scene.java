@@ -1,12 +1,12 @@
 package org.cg.raycaster;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Scanner;
 
+import javax.vecmath.Point2i;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 import javax.xml.parsers.DocumentBuilder;
@@ -18,8 +18,8 @@ import org.cg.primitives.Quadrilateral;
 import org.cg.primitives.Sphere;
 import org.cg.primitives.Triangle;
 import org.cg.rendering.Camera;
-import org.cg.rendering.PointLight;
 import org.cg.rendering.Material;
+import org.cg.rendering.PointLight;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -376,7 +376,7 @@ public class Scene {
 		sc = new Scanner(fovxNode.getNodeValue());
 		float fovx = sc.nextFloat();
 
-		Point dim = new Point(dimx, dimy);
+		Point2i dim = new Point2i(dimx, dimy);
 		Point3f pos = new Point3f(px, py, pz);
 		Vector3f dir = new Vector3f(dirx, diry, dirz);
 

@@ -3,16 +3,13 @@ package org.cg.rendering;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.vecmath.Point2f;
+import javax.vecmath.Point2i;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
 import org.cg.primitives.Primitive;
-import org.cg.raycaster.Parameters;
 import org.cg.raycaster.Scene;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.color.ColorVariator;
@@ -31,12 +28,11 @@ public class Camera {
 	public Vector3f direction;
 	public Vector3f up;
 	public Vector3f right;
-	public Point dimensions;
+	public Point2i dimensions;
 	public float distance;
 	public Point2f di;
 	public float fovX;
 	public float fovY;
-	public String extension = "png";
 	
 	private ColorVariator colorvariator = new LinearColorVariator();
 	private PlainColorChooser colorchooser = new ObjectColorChooser(colorvariator);
@@ -45,34 +41,17 @@ public class Camera {
 	private int MAX_REFLECTIONS = 0;
 	private boolean lightingEnabled = false;
 
-	public Camera(Point3f pos, Vector3f dir, Point dim, Vector3f up, float fovx) {
+	public Camera(Point3f pos, Vector3f dir, Point2i dim, Vector3f up, float fovx) {
 		distance = 1;
 		position = pos;
 		direction = dir;
 		direction.normalize();
 		this.up = up;
 		this.up.normalize();
-
+		fovX = fovx;
 		right = new Vector3f();
 		right.cross(direction, up);
 		dimensions = dim;
-		makeAbsolute(dimensions);
-		fovX = fovx;
-		// distancia focal a partir del fov y la imagen
-        di = new Point2f();
-
-		di.x = (float) (distance * Math.tan(Math.toRadians(fovX/2))) ;
-
-
-		// 	Calculo del fovY
-		fovY = ((float)dimensions.y)/ ((float)dimensions.x)*fovX;
-
-
-		di.y = (float) (distance * Math.tan(Math.toRadians(fovY/2))) ;
-
-		right.scale(-di.x /dimensions.x);
-		this.up.scale(-di.y /dimensions.y);
-		
 	}
 	
 	private void makeAbsolute(Point d) {
@@ -82,33 +61,28 @@ public class Camera {
 
 	public  void setImageDim(int x, int y)
 	{
-		right.scale(((float)dimensions.x)/-di.x);
-		this.up.scale(((float)dimensions.y)/-di.y);
-		Point dim = new Point(x,y);
-		dimensions = dim;
-		makeAbsolute(dimensions);
-        di = new Point2f();
-		fovY = ((float)dimensions.y)/ ((float)dimensions.x)*fovX;
-		di.y = (float) (distance * Math.tan(Math.toRadians(fovY/2))) ;
-		di.x = (float) (distance * Math.tan(Math.toRadians(fovX/2))) ;
-		right.scale(-di.x /dimensions.x);
-		this.up.scale(-di.y /dimensions.y);
+		dimensions = new Point2i(x,y);
 	}
 	
 	public  void setImageFov(float fov)
 	{
-		fovX = fov;		
-		right.scale(((float)dimensions.x)/-di.x);
-		this.up.scale(((float)dimensions.y)/-di.y);
-		di = new Point2f();
+		fovX = fov;
+	}
+	
+	private void prepare() {
+		dimensions.absolute();
+		
+		// distancia focal a partir del fov y la imagen
+        di = new Point2f();
+		di.x = (float) (distance * Math.tan(Math.toRadians(fovX/2))) ;
+
+		// 	Calculo del fovY
 		fovY = ((float)dimensions.y)/ ((float)dimensions.x)*fovX;
 		di.y = (float) (distance * Math.tan(Math.toRadians(fovY/2))) ;
-		di.x = (float) (distance * Math.tan(Math.toRadians(fovX/2))) ;
+
 		right.scale(-di.x /dimensions.x);
 		this.up.scale(-di.y /dimensions.y);
 	}
-	
-	
 
 	public void setColorMode(String mode, String variation) throws Exception
 	{
@@ -139,6 +113,8 @@ public class Camera {
 	}
 	public BufferedImage Raytrace() {
 		
+		this.prepare();
+		
 		BufferedImage im = new BufferedImage(dimensions.x, dimensions.y,
 				BufferedImage.TYPE_INT_RGB);
 		Point3f startingPoint = new Point3f((position.x + direction.x
@@ -152,10 +128,6 @@ public class Camera {
 		Vector3f upauxi = new Vector3f(up);
 		upauxi.scale(-(float) dimensions.y );
 		startingPoint.add(upauxi);
-
-
-		System.out.println("Starting Point del Plano de Proyeccion:"
-				+ startingPoint);
 
 		for (int i = 0; i < dimensions.x; i++) {
 
