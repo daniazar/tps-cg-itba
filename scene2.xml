@@ -511,7 +511,7 @@
 		<dimensions>640;480</dimensions>
 		<position>0;0;10</position>
 		<direction>0;0;-1</direction>
-		<up>0;1;0</up>
+		<up>0;-1;0</up>
 		<dist>1</dist>
 		<fovX>60</fovX>
 	</camera>

@@ -86,9 +86,9 @@
 
 	<camera>
 		<dimensions>640;480</dimensions>
-		<position>0;0;10</position>
-		<direction>0;0;-1</direction>
-		<up>0;1;0</up>
+		<position>0;20;10</position>
+		<direction>0;-1;-0.2</direction>
+		<up>0.25;0;0.1</up>
 		<fovX>60</fovX>
 				<dist>1</dist>
 		

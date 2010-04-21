@@ -13,6 +13,7 @@ import org.cg.rendering.color.LambertianColorChooser;
 import org.cg.rendering.color.LightColorChooser;
 import org.cg.rendering.color.LinearColorVariator;
 import org.cg.rendering.color.LogColorVariator;
+import org.cg.rendering.color.ObjectColorChooser;
 import org.cg.rendering.color.PlainColorChooser;
 import org.cg.rendering.color.RandomColorChooser;
 
@@ -82,8 +83,9 @@ public class Camera {
 		} else if (variation.equalsIgnoreCase("log")) {
 			colorvariator = new LogColorVariator();
 		}
-
-		if (mode.equalsIgnoreCase("random")) {
+		if (mode.equalsIgnoreCase("object")) {
+			colorchooser = new ObjectColorChooser(colorvariator);
+		} else if (mode.equalsIgnoreCase("random")) {
 			colorchooser = new RandomColorChooser(colorvariator);
 		} else if (mode.equalsIgnoreCase("distance")) {
 			colorchooser = new DistanceColorChooser(position, colorvariator);
