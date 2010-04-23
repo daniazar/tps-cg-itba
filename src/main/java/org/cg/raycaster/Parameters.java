@@ -14,7 +14,7 @@ public class Parameters {
 	//nombre de archivo output
 	public String o = "render.png";
 	
-	public Point size = new Point(2400,2400);
+	public Point size = new Point(640,480);
 	public double fov = 60;
 	public String cm = "object";
 	public String cv = "linear";

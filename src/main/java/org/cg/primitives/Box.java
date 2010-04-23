@@ -134,6 +134,17 @@ public class Box extends Primitive {
 
 
 	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Box [q1=" + q1 + ", q2=" + q2 + ", q3=" + q3 + ", q4=" + q4
+				+ ", q5=" + q5 + ", q6=" + q6 + "]";
+	}
+
+
+
+	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

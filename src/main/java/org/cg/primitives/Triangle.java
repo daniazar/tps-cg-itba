@@ -74,13 +74,13 @@ public class Triangle extends Primitive {
 	    s = (uv * wv - vv * wu) / D;
 	    
 	    
-	    if (s < 0.0001 || s > 1.01)        // I is outside T
+	    if (s < 0.000001 || s > 1.000001)        // I is outside T
 	    {    
 			ray.missed();
 			return;
 	    }
 	    t = (uv * wu - uu * wv) / D;
-	    if (t < 0.0001 || (s + t) > 1.01)  // I is outside T
+	    if (t < 0.000001 || (s + t) > 1.000001)  // I is outside T
 	    {    
 			ray.missed();
 			return;

@@ -9,6 +9,8 @@ import javax.vecmath.Vector3f;
 import org.cg.primitives.Primitive;
 import org.cg.raycaster.Scene;
 import org.cg.rendering.Camera;
+import org.cg.rendering.color.LightColorChooser;
+import org.cg.rendering.color.PlainColorChooser;
 
 public class Raycaster {
 
@@ -38,6 +40,9 @@ public class Raycaster {
 		upauxi.scale(-(float) camera.dimensions.y );
 		startingPoint.add(upauxi);
 
+		LightColorChooser light = camera.getLightchooser();
+		boolean islightEnabled = camera.isLightingEnabled();
+		PlainColorChooser colorChooser = camera.getColorchooser();
 		for (int i = 0; i < camera.dimensions.x; i++) {
 
 			for (int j = 0; j < camera.dimensions.y; j++) {
@@ -62,6 +67,10 @@ public class Raycaster {
 						o.Intersects(ray);
 
 					if (ray.hit()) {
+
+						
+						
+						
 						
 //						Vector3f n = ray.getObject().getNormal(ray.getIntersectionPoint());
 //						
@@ -80,14 +89,34 @@ public class Raycaster {
 //							level++;
 //						}
 //						else	
-							c = camera.getColorchooser().getColor(ray);
-				
-					} else
-						coef = 0;
-				} while (coef > 0.0f && level < MAX_REFLECTIONS && camera.isLightingEnabled());
-				
-				im.setRGB(i, j, c.getRGB());
+						
+						
+						
+/*                        Vector3f n = ray.getObject().getNormal(ray.getIntersectionPoint());
+                        
+                        if (islightEnabled) 
+          no              {
+                                c = light.getColor(ray, coef, c);
+                                coef *= ray.getObject().getReflection();
 
+                                Point3f newstartingPoint = ray.getIntersectionPoint();
+                                float reflet = 2 * n.dot(ray.direction);
+                                Vector3f newDirection = new Vector3f(ray.direction.x
+                                                - reflet * n.x, ray.direction.y - reflet * n.y,
+                                                ray.direction.z - reflet * n.z);
+
+                                ray = new Ray(newDirection, newstartingPoint);
+                                level++;
+                        }
+                        else    
+                                c = colorChooser.getColor(ray);
+        */
+                } else
+                        coef = 0;
+        } while (coef > 0.0f && level < MAX_REFLECTIONS && islightEnabled);
+        
+        im.setRGB(i, j, c.getRGB());
+						
 
 			}
 

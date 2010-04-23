@@ -1,5 +1,18 @@
 <?xml version="1.0"?>
 <scene>	
+<box>
+		<pt1>-1;-1;-1</pt1>
+		<pt2>-1;1;-1</pt2>
+		<pt3>1;1;-1</pt3>
+		<pt4>1;-1;-1</pt4>
+		<pt5>-1;1;1</pt5>
+		<pt6>1;-1;1</pt6>
+		<pt7>1;1;1</pt7>
+		<pt8>-1;-1;1</pt8>
+		
+		<matID>1</matID>
+</box>
+
 <cube1>
 	<quadrilateral>
 		<pt1>-1;-1;-1</pt1>
@@ -148,8 +161,8 @@
 
 	<camera>
 		<dimensions>640;480</dimensions>
-		<position>0;0;10</position>
-		<direction>0;0;-1</direction>
+		<position>7;22;10</position>
+		<direction>-.7;-2.2;-1</direction>
 		<up>0;1;0</up>
 		<fovX>60</fovX>
 				<dist>1</dist>
