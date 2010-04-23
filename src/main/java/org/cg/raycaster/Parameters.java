@@ -9,14 +9,14 @@ public class Parameters {
 	public static final String pointSeparator = "x";
 	
 	//nombre de archivo input
-	public static String i = "scene.xml";
+	public static String i = "scene3.xml";
 	
 	//nombre de archivo output
 	public String o = "render.png";
 	
 	public Point size = new Point(2400,2400);
 	public double fov = 60;
-	public String cm = "random";
+	public String cm = "object";
 	public String cv = "linear";
 	public boolean time = false;
 	

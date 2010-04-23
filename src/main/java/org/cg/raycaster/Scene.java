@@ -12,6 +12,7 @@ import javax.vecmath.Vector3f;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.cg.primitives.Box;
 import org.cg.primitives.Plane;
 import org.cg.primitives.Primitive;
 import org.cg.primitives.Quadrilateral;
@@ -56,6 +57,9 @@ public class Scene {
 			ParseTriangle(nodeLst);
 			nodeLst = doc.getElementsByTagName("quadrilateral");
 			ParseQuadrilateral(nodeLst);
+			nodeLst = doc.getElementsByTagName("box");
+			ParseBox(nodeLst);
+			
 			nodeLst = doc.getElementsByTagName("camera");
 			ParseCamera(nodeLst);
 
@@ -127,6 +131,113 @@ public class Scene {
 		}
 	}
 
+	private static void ParseBox(NodeList nodeLst) {
+		for (int s = 0; s < nodeLst.getLength(); s++) {
+
+			Node node = nodeLst.item(s);
+
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+				Element quadrilateralNode = (Element) node;
+
+				Node pt1 = quadrilateralNode.getElementsByTagName("pt1")
+						.item(0).getFirstChild();
+				Node pt2 = quadrilateralNode.getElementsByTagName("pt2")
+						.item(0).getFirstChild();
+				Node pt3 = quadrilateralNode.getElementsByTagName("pt3")
+						.item(0).getFirstChild();
+				Node pt4 = quadrilateralNode.getElementsByTagName("pt4")
+						.item(0).getFirstChild();
+				Node pt5 = quadrilateralNode.getElementsByTagName("pt5")
+				.item(0).getFirstChild();
+				Node pt6 = quadrilateralNode.getElementsByTagName("pt6")
+				.item(0).getFirstChild();
+				Node pt7 = quadrilateralNode.getElementsByTagName("pt7")
+				.item(0).getFirstChild();
+				Node pt8 = quadrilateralNode.getElementsByTagName("pt8")
+				.item(0).getFirstChild();
+
+				Node matNode = quadrilateralNode.getElementsByTagName("matID")
+						.item(0).getFirstChild();
+				Scanner sc = new Scanner(pt1.getNodeValue());
+				sc.useDelimiter(";");
+
+				float x = sc.nextFloat();
+				float y = sc.nextFloat();
+				float z = sc.nextFloat();
+
+				Point3f p1 = new Point3f(x, y, z);
+				sc = new Scanner(pt2.getNodeValue());
+				sc.useDelimiter(";");
+
+				x = sc.nextFloat();
+				y = sc.nextFloat();
+				z = sc.nextFloat();
+
+				Point3f p2 = new Point3f(x, y, z);
+
+				sc = new Scanner(pt3.getNodeValue());
+				sc.useDelimiter(";");
+
+				x = sc.nextFloat();
+				y = sc.nextFloat();
+				z = sc.nextFloat();
+
+				Point3f p3 = new Point3f(x, y, z);
+				sc = new Scanner(pt4.getNodeValue());
+				sc.useDelimiter(";");
+
+				x = sc.nextFloat();
+				y = sc.nextFloat();
+				z = sc.nextFloat();
+
+				Point3f p4 = new Point3f(x, y, z);
+
+				sc = new Scanner(pt5.getNodeValue());
+				sc.useDelimiter(";");
+
+				x = sc.nextFloat();
+				y = sc.nextFloat();
+				z = sc.nextFloat();
+
+				Point3f p5 = new Point3f(x, y, z);
+
+				sc = new Scanner(pt6.getNodeValue());
+				sc.useDelimiter(";");
+
+				x = sc.nextFloat();
+				y = sc.nextFloat();
+				z = sc.nextFloat();
+
+				Point3f p6 = new Point3f(x, y, z);
+
+				sc = new Scanner(pt7.getNodeValue());
+				sc.useDelimiter(";");
+
+				x = sc.nextFloat();
+				y = sc.nextFloat();
+				z = sc.nextFloat();
+
+				Point3f p7 = new Point3f(x, y, z);
+
+				sc = new Scanner(pt8.getNodeValue());
+				sc.useDelimiter(";");
+
+				x = sc.nextFloat();
+				y = sc.nextFloat();
+				z = sc.nextFloat();
+
+				Point3f p8 = new Point3f(x, y, z);
+
+				Integer id = Integer.parseInt(matNode.getNodeValue());
+				objects
+						.add(new Box(p1, p2, p3, p4,p5, p6, p7, p8, materials
+								.get(id)));
+			}
+		}
+	}
+
+	
 	private static void ParseTriangle(NodeList nodeLst) {
 		for (int s = 0; s < nodeLst.getLength(); s++) {
 
