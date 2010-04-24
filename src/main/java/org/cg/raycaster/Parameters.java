@@ -6,23 +6,26 @@ import java.util.regex.Pattern;
 
 public class Parameters {
 
-	public static final String pointSeparator = "x";
+	private static final String pointSeparator = "x";
 	
 	//nombre de archivo input
-	public static String i = "scene3.xml";
+	private static String i = "scene1.xml";
 	
 	//nombre de archivo output
-	public String o = "render.png";
-	
+	private String o = null;
+
 	public Point size = new Point(640,480);
 	public double fov = 60;
 	public String cm = "object";
 	public String cv = "linear";
+	
 	public boolean time = false;
+	private boolean progress = false;
+	private boolean show = false;
 	
 	private String paramsString;
 	
-	static Parameters instance;
+	private static Parameters instance;
 	
 	private Parameters(String[] args) {
 		StringBuilder params = new StringBuilder();
@@ -56,7 +59,6 @@ public class Parameters {
 		Matcher m = Pattern.compile("-([a-z]+)\\s([^\\s-]+)?", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(paramsString);
 		while(m.find()) {
 			
-			
 			try {
 				Field aField = this.getClass().getField(m.group(1));
 				//If a field is not followed by a value then it's a boolean
@@ -86,15 +88,22 @@ public class Parameters {
 				+ i + ", o=" + o + ", size=" + size + ", time=" + time + "]";
 	}
 
-	public String getI() {
+	public String getInputFile() {
 		return i;
 	}
 
-	public void setI(String i) {
+	public void setInputFile(String i) {
 		Parameters.i = i;
 	}
 
 	public String getOutputFile() {
+		if(o == null) {
+			o = i.replaceAll("([^.]*).sc", "$1.png");
+			if(!o.matches("[^.]*.png")) {
+				o += ".png";
+			}
+		}
+		
 		return o;
 	}
 
@@ -140,5 +149,21 @@ public class Parameters {
 
 	public void setTime(boolean time) {
 		this.time = time;
+	}
+
+	public boolean isProgress() {
+		return progress;
+	}
+
+	public void setProgress(boolean progress) {
+		this.progress = progress;
+	}
+
+	public boolean isShow() {
+		return show;
+	}
+
+	public void setShow(boolean show) {
+		this.show = show;
 	}
 }
