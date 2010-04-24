@@ -2,6 +2,7 @@ package org.cg.raycaster.ray;
 
 import javax.vecmath.*;
 
+import org.cg.boundingbox.BoundingBox;
 import org.cg.primitives.Primitive;
 
 public class Ray {
@@ -11,7 +12,8 @@ public class Ray {
 	public boolean hit = false;
 	public boolean newbesthit = false;
 	public Point3f intersectionPoint;
-	private Primitive obj; 
+	private Primitive obj;
+	private BoundingBox bbox; 
 	
 	public Ray(Vector3f dir, Point3f pos)
 	{
@@ -48,6 +50,33 @@ public class Ray {
 		}
 	}
 
+	public void hit(Point3f IntPoint, BoundingBox o)
+	{
+		if(!hit)
+		{
+			intersectionPoint = IntPoint;
+			newbesthit = true;
+			hit = true;
+			setBoundingBox(o);
+			return;
+		}
+		else
+		{
+			if(position.distance(IntPoint) < (position.distance(intersectionPoint)+ 0.1))
+			{
+				intersectionPoint = IntPoint;
+				newbesthit = true;
+				setBoundingBox(o);
+
+			}
+			else
+			{
+				newbesthit = false;
+			}
+
+		}
+	}
+	
 	public Point3f getLinePoint(float t)
 	{
 		Point3f ans = new Point3f(direction);
@@ -131,5 +160,13 @@ public class Ray {
 	public String toString()
 	{
 		 return "Ray:{Pos: "+position+",Dir: "+direction+"}";
+	}
+
+	public void setBoundingBox(BoundingBox bbox) {
+		this.bbox = bbox;
+	}
+
+	public BoundingBox getBoundingBox() {
+		return bbox;
 	}
 }

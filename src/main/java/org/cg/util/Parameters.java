@@ -1,4 +1,4 @@
-package org.cg.raycaster;
+package org.cg.util;
 import java.awt.Point;
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
@@ -9,7 +9,7 @@ public class Parameters {
 	private static final String pointSeparator = "x";
 	
 	//nombre de archivo input
-	private static String i = "scene1.xml";
+	private static String i = "sceneForDistance.xml";
 	
 	//nombre de archivo output
 	private String o = null;
@@ -19,7 +19,7 @@ public class Parameters {
 	public String cm = "object";
 	public String cv = "linear";
 	
-	public boolean time = false;
+	public boolean time = true;
 	private boolean progress = false;
 	private boolean show = false;
 	
@@ -98,7 +98,7 @@ public class Parameters {
 
 	public String getOutputFile() {
 		if(o == null) {
-			o = i.replaceAll("([^.]*).sc", "$1.png");
+			o = i.replaceAll("([^.]*).\\w+", "$1.png");
 			if(!o.matches("[^.]*.png")) {
 				o += ".png";
 			}

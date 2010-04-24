@@ -1,6 +1,10 @@
 package org.cg.boundingbox;
 
+import org.cg.raycaster.ray.Ray;
 
-public class BoundingBox{
 
+public interface BoundingBox{
+
+	public boolean Intersects(Ray ray);
+	
 }

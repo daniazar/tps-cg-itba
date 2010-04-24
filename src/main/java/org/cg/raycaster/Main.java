@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 import org.cg.raycaster.ray.Raycaster;
 import org.cg.rendering.Camera;
+import org.cg.util.Parameters;
 import org.cg.util.RenderTimer;
 
 public class Main {
