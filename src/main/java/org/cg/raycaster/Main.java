@@ -19,7 +19,7 @@ public class Main {
 		Parameters p = Parameters.getInstance(args);
 		p.ParseParameters();
 		
-		Scene.startScene(p.getI());
+		Scene.startScene(p.getInputFile());
 		Camera c = Scene.cam;
 		Raycaster raycaster = new Raycaster();
 		
