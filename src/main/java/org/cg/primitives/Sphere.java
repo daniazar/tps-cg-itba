@@ -4,20 +4,52 @@ import java.awt.Color;
 
 import javax.vecmath.*;
 
+import org.cg.boundingbox.SphereBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
 
 
 public class Sphere extends Primitive {
 
-	public Point3f center;
+	private Point3f center;
 	private float radius;
 	private Material material;
 
+	public Point3f getCenter() {
+		return center;
+	}
+
+	public void setCenter(Point3f center) {
+		this.center = center;
+	}
+
+	public float getRadius() {
+		return radius;
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
+
+	public Material getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(Material material) {
+		this.material = material;
+	}
+
+	public Sphere() {
+		this.radius = 0;
+		this.center = new Point3f(0,0,0);;
+		this.material = null;
+	}
+	
 	public Sphere(Point3f center, float radius, Material mat) {
 		this.radius = radius;
 		this.center = center;
 		this.material = mat;
+		boundingBox = new SphereBoundingBox(this);
 	}
 
 	public void Intersects(Ray ray) {
@@ -115,6 +147,16 @@ public class Sphere extends Primitive {
 	public String toString() {
 		return "Sphere [center=" + center + ", material=" + material
 				+ ", radius=" + radius + "]";
+	}
+
+	@Override
+	public float getMaxDistanceFromMiddle() {
+		return radius;
+	}
+
+	@Override
+	public Point3f getMiddlePoint() {
+		return center;
 	}
 
 }

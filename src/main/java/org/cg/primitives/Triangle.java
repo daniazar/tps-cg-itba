@@ -5,13 +5,15 @@ import java.awt.Color;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import org.cg.boundingbox.SphereBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
 
 
 public class Triangle extends Primitive {
 
-	
+	private Point3f middlePoint;
+	private float maxDistanceFromMiddle;
 	private Vector3f u;
 	private Vector3f v;
 	private Point3f p1;
@@ -36,6 +38,14 @@ public class Triangle extends Primitive {
 
 		p1 =pt1;
 		this.material = material;
+		
+		middlePoint = new Point3f();
+		middlePoint.x = (pt1.x + pt2.x + pt3.x) / 3;
+		middlePoint.y = (pt1.y + pt2.y + pt3.y) / 3;
+		middlePoint.z = (pt1.z + pt2.z + pt3.z) / 3;
+		
+		maxDistanceFromMiddle = Math.max(Math.max(middlePoint.distance(pt1), middlePoint.distance(pt2)), middlePoint.distance(pt3));
+		boundingBox = new SphereBoundingBox(this);
 	}
 
 	
@@ -147,4 +157,13 @@ public class Triangle extends Primitive {
 				+ ", u=" + u + ", v=" + v + "]";
 	}
 
+	@Override
+	public Point3f getMiddlePoint() {
+		return middlePoint;
+	}
+	
+	@Override
+	public float getMaxDistanceFromMiddle() {
+		return maxDistanceFromMiddle;
+	}
 }

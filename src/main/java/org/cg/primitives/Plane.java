@@ -19,6 +19,7 @@ public class Plane extends Primitive {
 		this.d = -n.dot(new Vector3f(p));
 		this.n = n;
 		this.material = mat;
+		
 	}
 
 	@Override
@@ -121,6 +122,18 @@ public class Plane extends Primitive {
 	@Override
 	public float getDistanceToClosestPoint(Point3f origin) {
 		return getAnyPoint().distance(origin);
+	}
+
+	@Override
+	public float getMaxDistanceFromMiddle() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Point3f getMiddlePoint() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

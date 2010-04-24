@@ -5,26 +5,31 @@ import java.awt.Color;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import org.cg.boundingbox.BoundingBox;
 import org.cg.raycaster.ray.Ray;
 
 
 public abstract class Primitive implements Cloneable{
 
 	Boolean colorHasBeenSet = false;
+	BoundingBox boundingBox;
 	
-		public Color getOrSetBaseColor(Color c) {
+	public abstract Point3f getMiddlePoint();
+	public abstract float getMaxDistanceFromMiddle();
+	
+	public Color getOrSetBaseColor(Color c) {
+		if(colorHasBeenSet)
+			return getBaseColor();
+		synchronized (colorHasBeenSet) {
 			if(colorHasBeenSet)
 				return getBaseColor();
-			synchronized (colorHasBeenSet) {
-				if(colorHasBeenSet)
-					return getBaseColor();
-				
-				colorHasBeenSet = true;
-				setBaseColor(c);
-				
-				return c;
-			}
+			
+			colorHasBeenSet = true;
+			setBaseColor(c);
+			
+			return c;
 		}
+	}
 	
 	public abstract void Intersects(Ray ray);
 	
