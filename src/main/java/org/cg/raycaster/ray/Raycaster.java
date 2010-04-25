@@ -75,27 +75,6 @@ public class Raycaster {
 						Vector3f n = ray.getObject().getNormal(
 								ray.getIntersectionPoint());
 
-						if (camera.isLightingEnabled()) {
-							c = camera.getLightchooser().getColor(ray, coef, c);
-							coef *= ray.getObject().getReflection();
-
-							Point3f newstartingPoint = ray
-									.getIntersectionPoint();
-							float reflet = 2 * n.dot(ray.direction);
-							Vector3f newDirection = new Vector3f(
-									ray.direction.x - reflet * n.x,
-									ray.direction.y - reflet * n.y,
-									ray.direction.z - reflet * n.z);
-
-							ray = new Ray(newDirection, newstartingPoint);
-							level++;
-						}
-						// else
-						// Vector3f n =
-						// ray.getObject().getNormal(ray.getIntersectionPoint());
-						//						
-						//						
-
 						if (islightEnabled) {
 							c = light.getColor(ray, coef, c);
 							coef *= ray.getObject().getReflection();

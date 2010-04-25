@@ -33,7 +33,7 @@ public class Camera {
 	private PlainColorChooser colorchooser = new RandomColorChooser(colorvariator);
 	
 	private LightColorChooser lightchooser = new LambertianColorChooser();
-	private boolean lightingEnabled = false;
+	private boolean lightingEnabled = true;
 
 	public Camera(Point3f pos, Vector3f dir, Point dim, Vector3f up, float fovx) {
 		distance = 1;
