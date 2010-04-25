@@ -35,6 +35,11 @@ public class Quadrilateral extends Primitive {
 	}
 
 	@Override
+	public float getRefraction() {
+		return t1.getRefraction();
+	}
+	
+	@Override
 	public void Intersects(Ray ray) {
 		t1.Intersects(ray);
 		t2.Intersects(ray);

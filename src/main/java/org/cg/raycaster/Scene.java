@@ -346,10 +346,19 @@ public class Scene {
 						.getElementsByTagName("reflection").item(0)
 						.getFirstChild();
 
+				Node refractionNode = matNode
+						.getElementsByTagName("refraction").item(0)
+						.getFirstChild();
+
+				
 				int id = Integer.parseInt(idNode.getNodeValue());
 
 				float reflection = Float.parseFloat(reflectionNode
 						.getNodeValue());
+
+				float refraction = Float.parseFloat(refractionNode
+						.getNodeValue());
+
 
 				Scanner sc = new Scanner(diffuseNode.getNodeValue());
 				sc.useDelimiter(";");
@@ -359,7 +368,7 @@ public class Scene {
 
 				Color c = new Color(r, g, b);
 
-				materials.put(id, new Material(c, reflection));
+				materials.put(id, new Material(c, reflection, refraction));
 
 			}
 

@@ -101,6 +101,10 @@ public class Plane extends Primitive {
 	public Point3f getAnyPoint() {
 		return new Point3f(n.x, n.y, n.z + d);
 	}
+	@Override
+	public float getRefraction() {
+		return material.getRefraction();
+	}
 
 	public boolean equals(Primitive o) {
 

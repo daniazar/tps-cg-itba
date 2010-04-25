@@ -117,7 +117,10 @@ public class Triangle extends Primitive {
 		return material.getReflection();
 	}
 
-
+	@Override
+	public float getRefraction() {
+		return material.getRefraction();
+	}
 	@Override
 	public void setBaseColor(Color c) {
 		this.material.setDiffuse(c);

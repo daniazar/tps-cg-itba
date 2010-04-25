@@ -115,6 +115,20 @@ public class Ray {
 		return obj;
 	}
 	
+	public Ray Refraction(){
+		Vector3f n = obj.getNormal(intersectionPoint);
+
+		Point3f newstartingPoint = intersectionPoint;
+		float reflet = 2 * n.dot(direction);
+		Vector3f newDirection = new Vector3f(
+				direction.x - reflet * n.x,
+				direction.y - reflet * n.y,
+				direction.z - reflet * n.z);
+
+		return new Ray(newDirection, newstartingPoint);
+		
+	}
+	
 	public boolean isPointInSegment(Point3f SegmentStart, Point3f SegmentFinish,
 			Point3f p) 
 	{
@@ -157,6 +171,19 @@ public class Ray {
 		return true;
 	}
 	
+	public Ray Reflection(){
+		
+		Vector3f n = obj.getNormal(intersectionPoint);
+
+		Point3f newstartingPoint = intersectionPoint;
+		float reflet = 2 * n.dot(direction);
+		Vector3f newDirection = new Vector3f(
+				direction.x - reflet * n.x,
+				direction.y - reflet * n.y,
+				direction.z - reflet * n.z);
+
+		return new Ray(direction, newstartingPoint);
+	}
 	public String toString()
 	{
 		 return "Ray:{Pos: "+position+",Dir: "+direction+"}";

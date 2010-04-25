@@ -14,7 +14,8 @@ import org.cg.rendering.color.PlainColorChooser;
 
 public class Raycaster {
 
-	private final static int MAX_REFLECTIONS = 0;
+	private final static int MAX_REFLECTIONS = 5;
+	private final static int MAX_REFFRACTIONS = 5;
 	private Camera camera;
 
 	public Camera getCamera() {
@@ -25,6 +26,9 @@ public class Raycaster {
 		this.camera = camera;
 	}
 
+	PlainColorChooser colorChooser ;
+	boolean islightEnabled ;
+	LightColorChooser light ;
 	public BufferedImage raycast(boolean progress) {
 
 		camera.prepare();
@@ -40,14 +44,12 @@ public class Raycaster {
 		upauxi.scale(-(float) camera.dimensions.y);
 		startingPoint.add(upauxi);
 
-		LightColorChooser light = camera.getLightchooser();
-		boolean islightEnabled = camera.isLightingEnabled();
-		PlainColorChooser colorChooser = camera.getColorchooser();
+		light = camera.getLightchooser();
+		islightEnabled = camera.isLightingEnabled();
+		colorChooser = camera.getColorchooser();
 		for (int i = 0; i < camera.dimensions.x; i++) {
 
 			for (int j = 0; j < camera.dimensions.y; j++) {
-				float coef = 1.0f;
-				Color c = new Color(0, 0, 0);
 				Point3f pixelPos = new Point3f(startingPoint);
 
 				upauxi = new Vector3f(camera.up);
@@ -62,41 +64,8 @@ public class Raycaster {
 				Ray ray = new Ray(dir, pixelPos);
 
 				int level = 0;
-
-				do {
-					for (Primitive o : Scene.objects) {
-						if (o.intersectsBoundingBox(ray)) {
-							o.Intersects(ray);
-						}
-					}
-
-					if (ray.hit()) {
-
-						Vector3f n = ray.getObject().getNormal(
-								ray.getIntersectionPoint());
-
-						if (islightEnabled) {
-							c = light.getColor(ray, coef, c);
-							coef *= ray.getObject().getReflection();
-
-							Point3f newstartingPoint = ray
-									.getIntersectionPoint();
-							float reflet = 2 * n.dot(ray.direction);
-							Vector3f newDirection = new Vector3f(
-									ray.direction.x - reflet * n.x,
-									ray.direction.y - reflet * n.y,
-									ray.direction.z - reflet * n.z);
-
-							ray = new Ray(newDirection, newstartingPoint);
-							level++;
-						} else
-							c = colorChooser.getColor(ray);
-
-					} else
-						coef = 0;
-				} while (coef > 0.0f && level < MAX_REFLECTIONS
-						&& islightEnabled);
-
+				Color c = traceRay(ray, level, 1.0f);
+				
 				im.setRGB(i, j, c.getRGB());
 
 			}
@@ -109,6 +78,57 @@ public class Raycaster {
 		}
 
 		return im;
+	}
+	
+	
+	public Color traceRay(Ray ray, int depth, Float coef){
+		Color c = new Color(0, 0, 0);
+			for (Primitive o : Scene.objects) {
+				if (o.intersectsBoundingBox(ray)) {
+					o.Intersects(ray);
+				}
+			}
+
+			if (ray.hit()) {
+				if (islightEnabled) {
+					depth++;
+					c = ray.getObject().getBaseColor();
+					if(depth < MAX_REFLECTIONS && coef != 0)
+					{
+						
+						coef *= ray.getObject().getReflection();
+						Color creflect = traceRay(ray.Reflection(), depth, coef);
+						float col[] = c.getRGBColorComponents(null);
+						float col2[] = creflect.getRGBColorComponents(null);
+						col[0] = col[0]* (1-ray.getObject().getReflection()) + col2[0] * ray.getObject().getReflection();
+						col[1] = col[1]* (1-ray.getObject().getReflection()) + col2[1] * ray.getObject().getReflection();
+						col[2] = col[2]*(1-ray.getObject().getReflection())  + col2[2] * ray.getObject().getReflection();
+						c = new Color(col[0], col[1], col[2]);
+					}
+					
+					if(depth < MAX_REFFRACTIONS && coef != 0)
+					{
+						
+						coef *= ray.getObject().getRefraction();
+						
+						Color crefract = traceRay(ray.Refraction(), depth, coef);
+						
+						float col[] = c.getRGBColorComponents(null);
+						float col2[] = crefract.getRGBColorComponents(null);
+						col[0] = col[0]* (1-ray.getObject().getRefraction())  + col2[0] * ray.getObject().getRefraction();
+						col[1] = col[1]* (1-ray.getObject().getRefraction())  + col2[1] * ray.getObject().getRefraction();
+						col[2] = col[2]* (1-ray.getObject().getRefraction())  + col2[2] * ray.getObject().getRefraction();
+						c = new Color(col[0], col[1], col[2]);
+							
+					}
+					c  = light.getColor(ray, coef, c);
+              
+				} else
+					c = colorChooser.getColor(ray);
+
+			} else
+				coef = 0f;
+		return c;
 	}
 
 }

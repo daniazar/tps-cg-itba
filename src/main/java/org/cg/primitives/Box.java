@@ -205,6 +205,10 @@ public class Box extends Primitive {
 		return maxDistanceFromMiddle;
 	}
 
+	@Override
+	public float getRefraction() {
+		return q1.getRefraction();
+	}
 
 
 	@Override

@@ -45,6 +45,9 @@ public abstract class Primitive implements Cloneable{
 	
 	public abstract float getReflection();
 	
+	public abstract float getRefraction();
+	
+	
 	public abstract Point3f getAnyPoint();
 	
 	public abstract float getDistanceToClosestPoint(Point3f origin);

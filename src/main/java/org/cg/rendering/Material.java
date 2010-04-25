@@ -6,6 +6,15 @@ public class Material {
 	
 	protected Color diffuse;
 	protected float reflection;
+	protected float refraction;
+	
+	public float getRefraction() {
+		return refraction;
+	}
+	
+	public void setRefraction(float refraction) {
+		this.refraction = refraction;
+	}
 	
 	public Color getDiffuse() {
 		return diffuse;
@@ -23,10 +32,12 @@ public class Material {
 		this.reflection = reflection;
 	}
 
-	public Material(Color diffuse, float reflection)
+	public Material(Color diffuse, float reflection, float refraction)
 	{
 		this.diffuse = diffuse;
 		this.reflection = reflection;
+		this.refraction = refraction;
+		
 	}
 
 }

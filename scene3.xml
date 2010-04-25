@@ -138,26 +138,35 @@
 		<matID>2</matID>
 	</sphere>
 	
+	<sphere>
+		<center>0;0;0</center>
+		<radius>1</radius>
+		<matID>2</matID>
+	</sphere>	
 	
 	<material>
 		<id>1</id>
 		<diffuse>1;1;0</diffuse>
 		<reflection>0.5</reflection>
+				<refraction>0.1</refraction>
 	</material>
 	<material>
 		<id>2</id>
 		<diffuse>0;1;1</diffuse>
 		<reflection>0.5</reflection>
+				<refraction>0.5</refraction>
 	</material>
 	<material>
 		<id>3</id>
 		<diffuse>1;0;1</diffuse>
+				<refraction>0.5</refraction>
 		<reflection>0.5</reflection>
 	</material>
 		<material>
 		<id>4</id>
 		<diffuse>0.5;0.5;0.5</diffuse>
 		<reflection>1</reflection>
+				<refraction>0</refraction>
 	</material>
 
 

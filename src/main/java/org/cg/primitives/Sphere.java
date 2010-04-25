@@ -99,6 +99,10 @@ public class Sphere extends Primitive {
 	public Color getBaseColor() {
 		return material.getDiffuse();
 	}
+	@Override
+	public float getRefraction() {
+		return material.getRefraction();
+	}
 
 	public float getReflection() {
 		return material.getReflection();
