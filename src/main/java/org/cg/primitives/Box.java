@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import org.cg.boundingbox.SphereBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
 
@@ -35,6 +36,8 @@ public class Box extends Primitive {
             							Math.max(middlePoint.distance(pt4), 
             									Math.max(middlePoint.distance(pt5), middlePoint.distance(pt6)))
             								);
+            
+            boundingBox = new SphereBoundingBox(this);
             
     }
 
