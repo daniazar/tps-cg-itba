@@ -2,9 +2,10 @@ package org.cg.primitives;
 
 import java.awt.Color;
 
-import javax.vecmath.*;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
-import org.cg.boundingbox.SphereBoundingBox;
+import org.cg.boundingbox.NoBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
 
@@ -49,7 +50,7 @@ public class Sphere extends Primitive {
 		this.radius = radius;
 		this.center = center;
 		this.material = mat;
-		boundingBox = new SphereBoundingBox(this);
+		boundingBox = new NoBoundingBox(this);
 	}
 
 	public void Intersects(Ray ray) {
