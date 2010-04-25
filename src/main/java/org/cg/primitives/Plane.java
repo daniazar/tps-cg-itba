@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import org.cg.boundingbox.NoBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
 
@@ -19,7 +20,7 @@ public class Plane extends Primitive {
 		this.d = -n.dot(new Vector3f(p));
 		this.n = n;
 		this.material = mat;
-		
+		this.boundingBox = new NoBoundingBox(this);
 	}
 
 	@Override
