@@ -11,6 +11,7 @@ import org.cg.raycaster.ray.Raycaster;
 import org.cg.rendering.Camera;
 import org.cg.util.Parameters;
 import org.cg.util.RenderTimer;
+import org.cg.util.Screen;
 import org.cg.util.ShowImage;
 
 public class Main {
@@ -19,9 +20,15 @@ public class Main {
 	{
 		RenderTimer timer = new RenderTimer();
 
-		Parameters p = Parameters.getInstance(args);
+		Parameters p = new Parameters(args);
 		p.ParseParameters();
-		
+		if( p.isGui())
+		{
+			new Screen();
+			while (true) {
+				
+			}
+		}
 		Scene.startScene(p.getInputFile());
 		Camera c = Scene.cam;
 		Raycaster raycaster = new Raycaster();

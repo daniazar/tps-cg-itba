@@ -9,10 +9,10 @@ public class Parameters {
 	private static final String pointSeparator = "x";
 	
 	//nombre de archivo input
-	private static String i = "scene3.xml";
+	public static String i = "scene3.xml";
 	
 	//nombre de archivo output
-	private String o = null;
+	public String o = null;
 
 	public Point size = new Point(640,480);
 	public double fov = 60;
@@ -20,14 +20,15 @@ public class Parameters {
 	public String cv = "linear";
 	
 	public boolean time = true;
-	private boolean progress = false;
-	private boolean show = false;
+	public boolean progress = false;
+	public boolean show = false;
+	public boolean gui = false;
 	
 	private String paramsString;
 	
 	private static Parameters instance;
 	
-	private Parameters(String[] args) {
+	public Parameters(String[] args) {
 		StringBuilder params = new StringBuilder();
 		for (String string : args) {
 			params.append(string).append(" ");
@@ -35,9 +36,10 @@ public class Parameters {
 		
 		System.out.println(params);
 		paramsString = params.toString();
-		
+		instance =this;
 	}
 
+	
 	public static Parameters getInstance() {
 		if(instance != null) {
 			return instance;
@@ -60,6 +62,7 @@ public class Parameters {
 		while(m.find()) {
 			
 			try {
+
 				Field aField = this.getClass().getField(m.group(1));
 				//If a field is not followed by a value then it's a boolean
 				if(m.group(2) == null) {
@@ -85,7 +88,7 @@ public class Parameters {
 	@Override
 	public String toString() {
 		return "Parameters [cm=" + cm + ", cv=" + cv + ", fov=" + fov + ", i="
-				+ i + ", o=" + o + ", size=" + size + ", time=" + time + "]";
+				+ i + ", o=" + o + ", size=" + size + ", time=" + time + "gui=" + gui +"]";
 	}
 
 	public String getInputFile() {
@@ -150,7 +153,13 @@ public class Parameters {
 	public void setTime(boolean time) {
 		this.time = time;
 	}
-
+	public boolean isGui() {
+		return gui;
+	}
+	public void setGui(boolean gui) {
+		this.gui = gui;
+	}
+	
 	public boolean isProgress() {
 		return progress;
 	}
