@@ -25,7 +25,7 @@ public class Raycaster {
 		this.camera = camera;
 	}
 
-	public BufferedImage raycast() {
+	public BufferedImage raycast(boolean progress) {
 
 		camera.prepare();
 		BufferedImage im = camera.getBufferedImage();
@@ -100,7 +100,8 @@ public class Raycaster {
 				im.setRGB(i, j, c.getRGB());
 
 			}
-
+			if (progress)
+				System.out.println("Progress = " + (i * 100 / camera.dimensions.x) + "%" );
 			rightauxi = new Vector3f(camera.right);
 			rightauxi.scale(-2);
 			startingPoint.add(rightauxi);

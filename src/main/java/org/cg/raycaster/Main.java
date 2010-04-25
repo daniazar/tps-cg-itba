@@ -31,7 +31,7 @@ public class Main {
 		c.setImageFov((float)p.getFov());
 		raycaster.setCamera(c);
 		
-		BufferedImage im = raycaster.raycast();
+		BufferedImage im = raycaster.raycast(p.isProgress());
 		
 		String extension = "";
 		File render = new File(p.getOutputFile());

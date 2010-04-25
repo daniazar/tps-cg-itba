@@ -21,7 +21,7 @@ public class Parameters {
 	
 	public boolean time = true;
 	private boolean progress = false;
-	private boolean show = true;
+	private boolean show = false;
 	
 	private String paramsString;
 	
