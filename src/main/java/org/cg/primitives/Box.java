@@ -18,13 +18,13 @@ public class Box extends Primitive {
     public Box(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
                     Point3f pt5, Point3f pt6, Point3f pt7, Point3f pt8,
                     Material material) {
-            q1 = new Quadrilateral(pt1, pt2, pt4, pt3, material);
-            q2 = new Quadrilateral(pt2, pt4, pt6, pt5, material);
-            q3 = new Quadrilateral(pt3, pt4, pt6, pt7, material);
-            q4 = new Quadrilateral(pt1, pt2, pt5, pt8, material);
-            q5 = new Quadrilateral(pt7, pt8, pt5, pt6, material);
-            q6 = new Quadrilateral(pt1, pt3, pt7, pt8, material);
-            
+		q1 = new Quadrilateral(pt1, pt2, pt3, pt4, material);//adelante ok
+		q2 = new Quadrilateral(pt8, pt2, pt1, pt7, material);//abajo ok
+		q3 = new Quadrilateral(pt6, pt3, pt2, pt8, material);//derecha ok
+		q4 = new Quadrilateral(pt5, pt4, pt3, pt6, material);//arriba ok
+		q5 = new Quadrilateral(pt1, pt4, pt5, pt7, material);//izq ok
+		q6 = new Quadrilateral(pt5, pt6, pt8, pt7, material);//atras ok
+
             middlePoint = new Point3f();
             middlePoint.x = (pt1.x + pt2.x +pt3.x + pt4.x + pt5.x + pt6.x) / 6;
             middlePoint.y = (pt1.y + pt2.y +pt3.y + pt4.y + pt5.y + pt6.y) / 6;

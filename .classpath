@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/matiaspan/Projects/NearVerse/tpCG/lib/vecmath.jar"/>
+	<classpathentry kind="lib" path="lib/vecmath.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
