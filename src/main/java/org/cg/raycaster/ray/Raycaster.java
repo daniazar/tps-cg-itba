@@ -16,6 +16,8 @@ public class Raycaster {
 
 	private final static int MAX_REFLECTIONS = 5;
 	private final static int MAX_REFFRACTIONS = 5;
+	private final static float MIN_COEF = 0.05f;
+	
 	private Camera camera;
 
 	public Camera getCamera() {
@@ -93,7 +95,7 @@ public class Raycaster {
 				if (islightEnabled) {
 					depth++;
 					c = ray.getObject().getBaseColor();
-					if(depth < MAX_REFLECTIONS && coef != 0)
+					if(depth < MAX_REFLECTIONS && coef > MIN_COEF)
 					{
 						
 						coef *= ray.getObject().getReflection();
@@ -106,7 +108,7 @@ public class Raycaster {
 						c = new Color(col[0], col[1], col[2]);
 					}
 					
-					if(depth < MAX_REFFRACTIONS && coef != 0)
+					if(depth < MAX_REFFRACTIONS && coef > MIN_COEF)
 					{
 						
 						coef *= ray.getObject().getRefraction();
