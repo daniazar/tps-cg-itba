@@ -49,6 +49,7 @@ public class Raycaster {
 		light = camera.getLightchooser();
 		islightEnabled = camera.isLightingEnabled();
 		colorChooser = camera.getColorchooser();
+		int prog= 0;
 		for (int i = 0; i < camera.dimensions.x; i++) {
 
 			for (int j = 0; j < camera.dimensions.y; j++) {
@@ -66,13 +67,23 @@ public class Raycaster {
 				Ray ray = new Ray(dir, pixelPos);
 
 				int level = 0;
+				if(i ==320 && j ==240)
+					i=i;
 				Color c = traceRay(ray, level, 1.0f);
 				
 				im.setRGB(i, j, c.getRGB());
 
 			}
 			if (progress)
-				System.out.println("Progress = " + (i * 100 / camera.dimensions.x) + "%" );
+			{
+				int prog2= (i * 100 / camera.dimensions.x);
+				if(prog != prog2)
+				{
+					prog=prog2;
+				if ((i * 100 / camera.dimensions.x) % 5 == 0)
+					System.out.println("Progress = " + (i * 100 / camera.dimensions.x) + "%" );
+				}
+			}
 			rightauxi = new Vector3f(camera.right);
 			rightauxi.scale(-2);
 			startingPoint.add(rightauxi);
@@ -94,7 +105,7 @@ public class Raycaster {
 			if (ray.hit()) {
 				if (islightEnabled) {
 					depth++;
-					c = ray.getObject().getBaseColor();
+					c  = light.getColor(ray, coef, c);
 					if(depth < MAX_REFLECTIONS && coef > MIN_COEF)
 					{
 						
@@ -102,10 +113,14 @@ public class Raycaster {
 						Color creflect = traceRay(ray.Reflection(), depth, coef);
 						float col[] = c.getRGBColorComponents(null);
 						float col2[] = creflect.getRGBColorComponents(null);
+
+						if(col2[0] != 0 || col2[1] != 0 || col2[2] != 0)
+						{
 						col[0] = col[0]* (1-ray.getObject().getReflection()) + col2[0] * ray.getObject().getReflection();
 						col[1] = col[1]* (1-ray.getObject().getReflection()) + col2[1] * ray.getObject().getReflection();
 						col[2] = col[2]*(1-ray.getObject().getReflection())  + col2[2] * ray.getObject().getReflection();
 						c = new Color(col[0], col[1], col[2]);
+						}
 					}
 					
 					if(depth < MAX_REFFRACTIONS && coef > MIN_COEF)
@@ -117,13 +132,17 @@ public class Raycaster {
 						
 						float col[] = c.getRGBColorComponents(null);
 						float col2[] = crefract.getRGBColorComponents(null);
+
+						if(col2[0] != 0 || col2[1] != 0 || col2[2] != 0)
+						{
+						
 						col[0] = col[0]* (1-ray.getObject().getRefraction())  + col2[0] * ray.getObject().getRefraction();
 						col[1] = col[1]* (1-ray.getObject().getRefraction())  + col2[1] * ray.getObject().getRefraction();
 						col[2] = col[2]* (1-ray.getObject().getRefraction())  + col2[2] * ray.getObject().getRefraction();
 						c = new Color(col[0], col[1], col[2]);
-							
+						}	
 					}
-					c  = light.getColor(ray, coef, c);
+					
               
 				} else
 					c = colorChooser.getColor(ray);
