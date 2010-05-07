@@ -35,7 +35,7 @@ public abstract class Primitive implements Cloneable{
 		return boundingBox.Intersects(ray);
 	}
 	
-	public abstract void Intersects(Ray ray);
+	public abstract boolean Intersects(Ray ray);
 	
 	public abstract Color getBaseColor();
 	

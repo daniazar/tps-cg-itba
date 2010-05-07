@@ -47,7 +47,7 @@ public class Box extends Primitive {
      * @see org.cg.primitives.Primitive#Intersects(org.cg.raycaster.ray.Ray)
      */
     @Override
-    public void Intersects(Ray ray) {
+    public boolean Intersects(Ray ray) {
             q1.Intersects(ray);
             q2.Intersects(ray);
             q3.Intersects(ray);
@@ -63,7 +63,8 @@ public class Box extends Primitive {
                     ray.missed();
             }
 
-            return;*/
+            */
+            return true;
     }
 
     /* (non-Javadoc)

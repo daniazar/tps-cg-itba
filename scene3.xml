@@ -180,11 +180,11 @@
 				<dist>1</dist>
 		
 	</camera>
-	<plane>
+	<planea>
 		<normal>0;0;1</normal>
 		<point>0;0;-50</point>
 		<matID>4</matID>
-	</plane>
+	</planea>
 	<light>
 		<position>10;10;0</position>
 		<intensity>1;1;1.0</intensity>

@@ -53,7 +53,7 @@ public class Sphere extends Primitive {
 		boundingBox = new NoBoundingBox(this);
 	}
 
-	public void Intersects(Ray ray) {
+	public boolean Intersects(Ray ray) {
 
 		float B = 2 * ray.direction.x * (ray.position.x - center.x) + 2
 				* ray.direction.y * (ray.position.y - center.y) + 2
@@ -67,7 +67,7 @@ public class Sphere extends Primitive {
 
 		if (discr <= 0) {
 			ray.missed();
-			return;
+			return false;
 		}
 
 		float t0 = (float) ((-B - Math.sqrt(Math.pow(B, 2) - 4 * C)) / 2);
@@ -77,20 +77,20 @@ public class Sphere extends Primitive {
 				ray.hit(new Point3f(ray.position.x + t1 * ray.direction.x,
 						ray.position.y + t1 * ray.direction.y, ray.position.z
 								+ t1 * ray.direction.z), this);
-				return;
+				return true;
 			} else {
 				ray.missed();
-				return;
+				return false;
 			}
 
 		} else if (t0 > 0.0001f) {
 			ray.hit(new Point3f(ray.position.x + t0 * ray.direction.x,
 					ray.position.y + t0 * ray.direction.y, ray.position.z + t0
 							* ray.direction.z), this);
-			return;
+			return true;
 		} else {
 			ray.missed();
-			return;
+			return false;
 		}
 
 	}

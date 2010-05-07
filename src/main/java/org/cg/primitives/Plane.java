@@ -24,19 +24,19 @@ public class Plane extends Primitive {
 	}
 
 	@Override
-	public void Intersects(Ray ray) {
+	public boolean Intersects(Ray ray) {
 		float den = ray.direction.dot(n);
 
 		if (Math.abs(den) < 0.01f) {
 			ray.missed();
-			return;
+			return false;
 		}
 
 		float num = -d - n.dot(new Vector3f(ray.position));
 
 		if (Math.abs(num) < 0.01f) {
 			ray.missed();
-			return;
+			return false;
 		}
 
 		float t = num / den;
@@ -46,8 +46,9 @@ public class Plane extends Primitive {
 		} else {
 
 			ray.hit(ray.getLinePoint(t), this);
+			return true;
 		}
-
+		return false;
 	}
 
 	public Point3f GetIntersectionPoint(Ray ray) {

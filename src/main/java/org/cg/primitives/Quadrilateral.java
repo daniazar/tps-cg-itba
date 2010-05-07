@@ -40,18 +40,22 @@ public class Quadrilateral extends Primitive {
 	}
 	
 	@Override
-	public void Intersects(Ray ray) {
-		t1.Intersects(ray);
-		t2.Intersects(ray);
+	public boolean Intersects(Ray ray) {
+		if (!t1.Intersects(ray)){
+			t2.Intersects(ray);
+		}
+		
+		
+		
 		if (!ray.hit) {
-			return;
+			return false;
 		} else if (ray.getObject().equals(t1) || ray.getObject().equals(t2)) {
 			ray.hit(ray.intersectionPoint, this);
 		} else {
 			ray.missed();
 		}
 
-		return;
+		return true;
 	}
 
 	@Override

@@ -19,7 +19,9 @@ public class Triangle extends Primitive {
 	private Point3f p1;
 	private Vector3f n;
 	private Material material;
-
+    float    uu, uv, vv, wu, wv, D;
+    Plane p;
+	
 	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Material material) {
 
 	   // vector form triangle pt1 to pt2
@@ -46,19 +48,61 @@ public class Triangle extends Primitive {
 		
 		maxDistanceFromMiddle = Math.max(Math.max(middlePoint.distance(pt1), middlePoint.distance(pt2)), middlePoint.distance(pt3));
 		boundingBox = new SphereBoundingBox(this);
+		
+	    uu = u.dot(u);
+	    uv = u.dot(v);
+	    vv = v.dot(v);
+
+	    D = uv * uv - uu * vv;
+		p = new Plane(n, p1, material);
+
 	}
 
 	
+	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Vector3f n, Material material) {
+
+		   // vector form triangle pt1 to pt2
+			u = new Vector3f();
+			v = new Vector3f();
+			u.x = pt2.x - pt1.x;
+			u.y = pt2.y - pt1.y;
+			u.z = pt2.z - pt1.z;
+
+		   // vector form triangle pt1 to pt3
+			v.x = pt3.x - pt1.x;
+			v.y = pt3.y - pt1.y;
+			v.z = pt3.z - pt1.z;
+			this.n=n;
+			p1 =pt1;
+			this.material = material;
+			
+			middlePoint = new Point3f();
+			middlePoint.x = (pt1.x + pt2.x + pt3.x) / 3;
+			middlePoint.y = (pt1.y + pt2.y + pt3.y) / 3;
+			middlePoint.z = (pt1.z + pt2.z + pt3.z) / 3;
+			
+			maxDistanceFromMiddle = Math.max(Math.max(middlePoint.distance(pt1), middlePoint.distance(pt2)), middlePoint.distance(pt3));
+			boundingBox = new SphereBoundingBox(this);
+			
+		    uu = u.dot(u);
+		    uv = u.dot(v);
+		    vv = v.dot(v);
+
+		    D = uv * uv - uu * vv;
+			p = new Plane(n, p1, material);
+
+		}
+
+	
 	@Override
-	public void Intersects(Ray ray) {
+	public boolean Intersects(Ray ray) {
 		// Para optimizar hay que guardar el plano ya creado.
-		Plane p = new Plane(n, p1, material);
 
 		//Para no copiar codigo de plane Agregue una funcion que me retorne t si intersecta
 		Point3f i  = p.GetIntersectionPoint(ray);
 
 		if( i == null)
-			return;
+			return false;
 
 		//http://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/raycast/sld019.htm
 		
@@ -66,18 +110,13 @@ public class Triangle extends Primitive {
 		//http://softsurfer.com/Archive/algorithm_0105/algorithm_0105.htm
 		
 		  // is I inside the triangle?
-	    float    uu, uv, vv, wu, wv, D;
 	    Vector3f w= new Vector3f();
 		w.x = i.x - p1.x;
 		w.z = i.z - p1.z;
 		w.y = i.y - p1.y;
 		
-	    uu = u.dot(u);
-	    uv = u.dot(v);
-	    vv = v.dot(v);
 	    wu = w.dot(u);
 	    wv = w.dot(v);
-	    D = uv * uv - uu * vv;
 
 	    // get and test parametric coords
 	    float s, t;
@@ -87,18 +126,18 @@ public class Triangle extends Primitive {
 	    if (s < 0.000001 || s > 1.000001)        // I is outside T
 	    {    
 			ray.missed();
-			return;
+			return false;
 	    }
 	    t = (uv * wu - uu * wv) / D;
 	    if (t < 0.000001 || (s + t) > 1.000001)  // I is outside T
 	    {    
 			ray.missed();
-			return;
+			return false;
 	    }
 
 	    ray.hit(i, this);
 
-	    return ;                      // I is in T		
+	    return true;                      // I is in T		
 		
 	}
 
