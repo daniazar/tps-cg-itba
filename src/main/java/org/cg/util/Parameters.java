@@ -20,8 +20,8 @@ public class Parameters {
 	public String cv = "linear";
 	
 	public boolean time = true;
-	public boolean progress = false;
-	public boolean show = false;
+	public boolean progress = true;
+	public boolean show = true;
 	public boolean gui = false;
 	
 	private String paramsString;

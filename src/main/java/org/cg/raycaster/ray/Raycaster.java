@@ -62,28 +62,28 @@ public class Raycaster {
 
 				int level = 0;
 				Color c = new Color(0, 0, 0);
-				float fragmentCoef = 1/ANTIALIASING_RES;
+				float fragmentCoef = 1 / ANTIALIASING_RES;
 				Point3f pixelPos = new Point3f(startingPoint);
 
 				upauxi = new Vector3f(camera.up);
 				upauxi.scale((j) * 2);
 				pixelPos.add(upauxi);
-				
-				float antiStep = 1/(float)Math.sqrt(ANTIALIASING_RES);
-				
+
+				float antiStep = 1 / (float) Math.sqrt(ANTIALIASING_RES);
+
 				for (float fragmentX = 0; fragmentX < 1; fragmentX += antiStep) {
 					for (float fragmentY = 0; fragmentY < 1; fragmentY += antiStep) {
 						Point3f pixelFragPos = new Point3f(pixelPos);
-						
+
 						Vector3f upfragment = new Vector3f(camera.up);
 						upfragment.scale(fragmentY);
 						pixelFragPos.add(upfragment);
-						
-						Vector3f rightfragment = new Vector3f(camera.right); 
-						rightfragment.scale(-2*fragmentX);
+
+						Vector3f rightfragment = new Vector3f(camera.right);
+						rightfragment.scale(-2 * fragmentX);
 						pixelFragPos.add(rightfragment);
-						
-						Color fragColor = new Color(0,0,0);
+
+						Color fragColor = new Color(0, 0, 0);
 						Vector3f dir = new Vector3f(pixelFragPos.x
 								- camera.position.x, pixelFragPos.y
 								- camera.position.y, pixelFragPos.z
@@ -95,25 +95,19 @@ public class Raycaster {
 						float[] cComps = c.getColorComponents(null);
 						float[] fragComps = fragColor.getColorComponents(null);
 						for (int k = 0; k < 3; k++)
-						cComps[k] += fragmentCoef * fragComps[k];
-						c = new Color(cComps[0],cComps[1],cComps[2]);
+							cComps[k] += fragmentCoef * fragComps[k];
+						c = new Color(cComps[0], cComps[1], cComps[2]);
 					}
 
 				}
-				im.setRGB(i, j, c.getRGB());	
+				im.setRGB(i, j, c.getRGB());
 
-				}
-					rightauxi = new Vector3f(camera.right);
-					rightauxi.scale(-2);
-					startingPoint.add(rightauxi);
-				}
-				
-		/*		if(c.getBlue() != 0)
-					System.out.println("EU c es"+c.getBlue()+"en ("+i+","+j+")");
-				im.setRGB(i, j, c.getRGB());*/
-
+			}
+			rightauxi = new Vector3f(camera.right);
+			rightauxi.scale(-2);
+			startingPoint.add(rightauxi);
 			
-/*			if (progress) {
+			if (progress) {
 				int prog2 = (i * 100 / camera.dimensions.x);
 				if (prog != prog2) {
 					prog = prog2;
@@ -121,11 +115,10 @@ public class Raycaster {
 						System.out.println("Progress = "
 								+ (i * 100 / camera.dimensions.x) + "%");
 				}
-			}*/
-		/*	rightauxi = new Vector3f(camera.right);
-			rightauxi.scale(-2);
-			startingPoint.add(rightauxi);*/
-		
+			}
+		}
+
+
 
 		return im;
 	}
@@ -147,13 +140,6 @@ public class Raycaster {
 					if (depth < MAX_REFLECTIONS && coef > MIN_COEF) {
 						Ray lightRay = LightHit(ray, l);
 
-						/*
-						 * boolean lightHit = false; if (!lightRay.hit())
-						 * lightHit = true; else { if
-						 * (!lightRay.isPointInSegment(lightRay.position,
-						 * l.getPosition(), lightRay.intersectionPoint))
-						 * lightHit = false; else lightHit = false; }
-						 */
 						if (!lightRay.hit()) {
 							c = lambertian.getColor(ray, lightRay, coef, c, l
 									.getIntensity());
