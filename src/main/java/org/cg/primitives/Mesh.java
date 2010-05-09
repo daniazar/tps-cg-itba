@@ -135,4 +135,11 @@ public class Mesh extends Primitive {
 		}  
 	}
 
+
+	@Override
+	public Material getMaterial() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

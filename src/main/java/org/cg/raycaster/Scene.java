@@ -349,6 +349,18 @@ public class Scene {
 				Node refractionNode = matNode
 						.getElementsByTagName("refraction").item(0)
 						.getFirstChild();
+				
+				Node shininessNode = matNode.
+				getElementsByTagName("shininess").item(0)
+				.getFirstChild();
+				
+				Node specColorNode = matNode.getElementsByTagName("specularColor")
+				.item(0).getFirstChild();
+				
+				Node specReflectionNode = matNode.getElementsByTagName("specularReflection")
+				.item(0).getFirstChild();
+				
+				
 
 				
 				int id = Integer.parseInt(idNode.getNodeValue());
@@ -359,6 +371,11 @@ public class Scene {
 				float refraction = Float.parseFloat(refractionNode
 						.getNodeValue());
 
+				float specReflection = Float.parseFloat(specReflectionNode
+						.getNodeValue());
+				
+				float shininess = Float.parseFloat(shininessNode
+						.getNodeValue());
 
 				Scanner sc = new Scanner(diffuseNode.getNodeValue());
 				sc.useDelimiter(";");
@@ -367,8 +384,17 @@ public class Scene {
 				float b = sc.nextFloat();
 
 				Color c = new Color(r, g, b);
+				
+				sc = new Scanner(specColorNode.getNodeValue());
+				sc.useDelimiter(";");
+				r = sc.nextFloat();
+				g = sc.nextFloat();
+				b = sc.nextFloat();
+				
+				Color spec = new Color(r,g,b);
 
-				materials.put(id, new Material(c, reflection, refraction));
+				materials.put(id, new Material(c, reflection, refraction,
+						specReflection,spec,shininess));
 
 			}
 

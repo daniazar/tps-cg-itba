@@ -7,6 +7,6 @@ import org.cg.raycaster.ray.Ray;
 
 public interface LightColorChooser {
 	
-	public Color getColor(Ray ray, float coef,  Color c);
+	public Color getColor(Ray ray, Ray lightRay, float coef,  Color baseColor, Color lightColor);
 
 }

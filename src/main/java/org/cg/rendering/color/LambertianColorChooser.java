@@ -22,64 +22,35 @@ public class LambertianColorChooser implements LightColorChooser {
 	// multiplico por el coef
 	// que se va modificando con la
 	// reflectividad
-	public Color getColor(Ray ray, float coef, Color c) {
+
+	@Override
+	public Color getColor(Ray ray, Ray lightRay, float coef, Color baseColor,
+			Color lightColor) {
 
 		Vector3f n = null;
 		Primitive o = ray.getObject();
 		
-		float colors[] = c.getColorComponents(null);
+		float colors[] = baseColor.getColorComponents(null);
 		float red = colors[0];
 		float green = colors[1];
 		float blue = colors[2];
 		
 		n = o.getNormal(ray.intersectionPoint);
-		for (PointLight l : Scene.lights) {
 
-			Vector3f intersectionToLight = new Vector3f(l.getPosition().x
-					- ray.intersectionPoint.x, l.getPosition().y
-					- ray.intersectionPoint.y, l.getPosition().z
-					- ray.intersectionPoint.z);
+		float lambert = (lightRay.direction.dot(n)) * coef;
 
-			// Si estamos opuestos no hay luz aqui
-			if (n.dot(intersectionToLight) < 0)
-				continue;
+		float[] objectColor = ray.getObject().getBaseColor()
+				.getColorComponents(null);
+		float[] lightColorComp = lightColor.getColorComponents(null);
+		red += lambert * objectColor[0] * lightColorComp[0];
+		green += lambert * objectColor[1] * lightColorComp[1];
+		blue += lambert * objectColor[2] * lightColorComp[2];
 
-			// Creo un rayo de luz desde el punto de
-			// interseccion hasta la luz
-			intersectionToLight.normalize();
-			Ray lightRay = new Ray(intersectionToLight, ray.intersectionPoint);
-
-			for (Primitive objShadow : Scene.objects)
-				objShadow.Intersects(lightRay);
-
-			boolean lightHit = false;
-			if (!lightRay.hit())
-				lightHit = true;
-			else {
-				if (!lightRay.isPointInSegment(lightRay.position, l.getPosition(),
-						lightRay.intersectionPoint))
-					lightHit = false;
-				else
-					lightHit = false;
-			}
-
-			if (lightHit) {
-				// del material.
-				float lambert = (lightRay.direction.dot(n)) * coef;
-
-				float[] objectColor = ray.getObject().getBaseColor()
-						.getColorComponents(null);
-				float[] lightColor = l.getIntensity().getColorComponents(null);
-				red += lambert * objectColor[0] * lightColor[0];
-				green += lambert * objectColor[1] * lightColor[1];
-				blue += lambert * objectColor[2] * lightColor[2];
-
-				red = Math.min(red, 1);
-				green = Math.min(green, 1);
-				blue = Math.min(blue, 1);
-			}
-
-		}
+		red = Math.min(red, 1);
+		green = Math.min(green, 1);
+		blue = Math.min(blue, 1);
+	
 		return new Color(red,green,blue);
 	}
+
 }

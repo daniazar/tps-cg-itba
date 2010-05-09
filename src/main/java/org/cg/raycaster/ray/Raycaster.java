@@ -9,14 +9,18 @@ import javax.vecmath.Vector3f;
 import org.cg.primitives.Primitive;
 import org.cg.raycaster.Scene;
 import org.cg.rendering.Camera;
+import org.cg.rendering.PointLight;
 import org.cg.rendering.color.LightColorChooser;
+import org.cg.rendering.color.PhongShader;
 import org.cg.rendering.color.PlainColorChooser;
+
+import com.sun.org.apache.bcel.internal.generic.FMUL;
 
 public class Raycaster {
 
-	private final static int MAX_REFLECTIONS = 5;
-	private final static int MAX_REFFRACTIONS = 5;
-	private final static float MIN_COEF = 0.05f;
+	private final static int MAX_REFLECTIONS = 100;
+	private final static int MAX_REFRACTIONS = 0;
+	private final static float MIN_COEF = 0.00f;
 	
 	private Camera camera;
 
@@ -30,7 +34,8 @@ public class Raycaster {
 
 	PlainColorChooser colorChooser ;
 	boolean islightEnabled ;
-	LightColorChooser light ;
+	LightColorChooser lambertian;
+	LightColorChooser phong = new PhongShader();
 	public BufferedImage raycast(boolean progress) {
 
 		camera.prepare();
@@ -46,7 +51,7 @@ public class Raycaster {
 		upauxi.scale(-(float) camera.dimensions.y);
 		startingPoint.add(upauxi);
 
-		light = camera.getLightchooser();
+		lambertian = camera.getLightchooser();
 		islightEnabled = camera.isLightingEnabled();
 		colorChooser = camera.getColorchooser();
 		int prog= 0;
@@ -67,9 +72,8 @@ public class Raycaster {
 				Ray ray = new Ray(dir, pixelPos);
 
 				int level = 0;
-				if(i ==320 && j ==240)
-					i=i;
-				Color c = traceRay(ray, level, 1.0f);
+				Color c = new Color(0,0,0);
+				c = traceRay(ray, level, 1.0f, c);
 				
 				im.setRGB(i, j, c.getRGB());
 
@@ -94,8 +98,8 @@ public class Raycaster {
 	}
 	
 	
-	public Color traceRay(Ray ray, int depth, Float coef){
-		Color c = new Color(0, 0, 0);
+	public Color traceRay(Ray ray, int depth, Float coef, Color c ){
+		
 			for (Primitive o : Scene.objects) {
 				if (o.intersectsBoundingBox(ray)) {
 					o.Intersects(ray);
@@ -103,53 +107,107 @@ public class Raycaster {
 			}
 
 			if (ray.hit()) {
+				
 				if (islightEnabled) {
-					depth++;
-					c  = light.getColor(ray, coef, c);
-					if(depth < MAX_REFLECTIONS && coef > MIN_COEF)
-					{
-						
-						coef *= ray.getObject().getReflection();
-						Color creflect = traceRay(ray.Reflection(), depth, coef);
-						float col[] = c.getRGBColorComponents(null);
-						float col2[] = creflect.getRGBColorComponents(null);
 
-						if(col2[0] != 0 || col2[1] != 0 || col2[2] != 0)
+
+					for(PointLight l : Scene.lights)
+					{
+
+						if(depth < MAX_REFLECTIONS && coef > MIN_COEF)
 						{
-						col[0] = col[0]* (1-ray.getObject().getReflection()) + col2[0] * ray.getObject().getReflection();
-						col[1] = col[1]* (1-ray.getObject().getReflection()) + col2[1] * ray.getObject().getReflection();
-						col[2] = col[2]*(1-ray.getObject().getReflection())  + col2[2] * ray.getObject().getReflection();
-						c = new Color(col[0], col[1], col[2]);
+							Ray lightRay = LightHit(ray, l);
+							
+						/*	boolean lightHit = false;
+							if (!lightRay.hit())
+								lightHit = true;
+							else {
+								if (!lightRay.isPointInSegment(lightRay.position, l.getPosition(),
+										lightRay.intersectionPoint))
+									lightHit = false;
+								else
+									lightHit = false;
+							}*/
+							if(!lightRay.hit())
+							{
+								c = lambertian.getColor(ray,lightRay, coef, c, l.getIntensity() );
+								c = phong.getColor(ray, lightRay, coef, c, l.getIntensity());
+								float auxicoef = coef;
+								auxicoef *= ray.getObject().getReflection();
+								c = traceRay(ray.Reflection(), depth+1, auxicoef,c);
+							}
+							
 						}
-					}
-					
-					if(depth < MAX_REFFRACTIONS && coef > MIN_COEF)
-					{
 						
-						coef *= ray.getObject().getRefraction();
-						
-						Color crefract = traceRay(ray.Refraction(), depth, coef);
-						
-						float col[] = c.getRGBColorComponents(null);
-						float col2[] = crefract.getRGBColorComponents(null);
-
-						if(col2[0] != 0 || col2[1] != 0 || col2[2] != 0)
+					/*	if(depth < MAX_REFRACTIONS && coef > MIN_COEF)
 						{
+							float auxicoef = coef;
+							auxicoef *= ray.getObject().getRefraction();
+							
+							Color crefract = traceRay(ray.Refraction(), depth, auxicoef,c);
+							if (crefract != null)
+							{
+							
+							float col[] = c.getRGBColorComponents(null);
+							float col2[] = crefract.getRGBColorComponents(null);
+	
+							
+							/*col[0] = col[0]* (1-ray.getObject().getRefraction())  + col2[0] * ray.getObject().getRefraction();
+							col[1] = col[1]* (1-ray.getObject().getRefraction())  + col2[1] * ray.getObject().getRefraction();
+							col[2] = col[2]* (1-ray.getObject().getRefraction())  + col2[2] * ray.getObject().getRefraction();*/
+					/*		col[0] += col2[0];
+							col[1] += col2[1];
+							col[2] += col2[2];
+							col[0] = Math.min(col[0],1);
+							col[1] = Math.min(col[1],1);
+							col[2] = Math.min(col[2],1);
+							c = new Color(col[0], col[1], col[2]);
+							}	
+						}*/
 						
-						col[0] = col[0]* (1-ray.getObject().getRefraction())  + col2[0] * ray.getObject().getRefraction();
-						col[1] = col[1]* (1-ray.getObject().getRefraction())  + col2[1] * ray.getObject().getRefraction();
-						col[2] = col[2]* (1-ray.getObject().getRefraction())  + col2[2] * ray.getObject().getRefraction();
-						c = new Color(col[0], col[1], col[2]);
-						}	
-					}
-					
-              
-				} else
+	              
+					} 
+				}
+				else
 					c = colorChooser.getColor(ray);
-
 			} else
 				coef = 0f;
 		return c;
 	}
+	
+	public Ray LightHit(Ray ray, PointLight l)
+	{
+		Vector3f n = null;
+		Primitive o = ray.getObject();
 
+		n = o.getNormal(ray.intersectionPoint);
+		
+
+		Vector3f intersectionToLight = new Vector3f(l.getPosition().x
+				- ray.intersectionPoint.x, l.getPosition().y
+				- ray.intersectionPoint.y, l.getPosition().z
+				- ray.intersectionPoint.z);
+
+			// Si estamos opuestos no hay luz aqui
+			if (n.dot(intersectionToLight) < 0.0001)
+			{
+				Ray missed = new Ray(new Vector3f(),new Point3f());
+				missed.hit = true;
+				return missed;
+			}
+
+			// Creo un rayo de luz desde el punto de
+			// interseccion hasta la luz
+			intersectionToLight.normalize();
+			
+			Ray lightRay = new Ray(intersectionToLight,  ray.intersectionPoint);
+
+			for (Primitive objShadow : Scene.objects)
+				objShadow.Intersects(lightRay);
+
+			return lightRay;
+
+		
+			
+	}
 }

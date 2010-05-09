@@ -14,6 +14,15 @@ public class Plane extends Primitive {
 
 	private Vector3f n;
 	private float d;
+	
+	public Material getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(Material material) {
+		this.material = material;
+	}
+
 	private Material material;
 
 	public Plane(Vector3f n, Point3f p, Material mat) {

@@ -7,6 +7,7 @@ import javax.vecmath.Vector3f;
 
 import org.cg.boundingbox.BoundingBox;
 import org.cg.raycaster.ray.Ray;
+import org.cg.rendering.Material;
 
 
 public abstract class Primitive implements Cloneable{
@@ -47,6 +48,7 @@ public abstract class Primitive implements Cloneable{
 	
 	public abstract float getRefraction();
 	
+	public abstract Material getMaterial();
 	
 	public abstract Point3f getAnyPoint();
 	

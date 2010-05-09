@@ -181,8 +181,7 @@ public class Ray {
 				direction.x - reflet * n.x,
 				direction.y - reflet * n.y,
 				direction.z - reflet * n.z);
-
-		return new Ray(direction, newstartingPoint);
+		return new Ray(newDirection, newstartingPoint);
 	}
 	public String toString()
 	{

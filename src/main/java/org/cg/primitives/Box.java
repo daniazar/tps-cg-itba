@@ -64,6 +64,7 @@ public class Box extends Primitive {
             }
 
             */
+            
             return true;
     }
 
@@ -215,6 +216,14 @@ public class Box extends Primitive {
 	@Override
 	public Point3f getMiddlePoint() {
 		return middlePoint;
+	}
+
+
+
+	@Override
+	public Material getMaterial() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

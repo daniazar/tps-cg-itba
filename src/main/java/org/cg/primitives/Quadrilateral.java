@@ -116,4 +116,10 @@ public class Quadrilateral extends Primitive {
 		return middlePoint;
 	}
 
+	@Override
+	public Material getMaterial() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

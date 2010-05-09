@@ -19,6 +19,13 @@ public class Triangle extends Primitive {
 	private Point3f p1;
 	private Vector3f n;
 	private Material material;
+	
+	public void setMaterial(Material material) {
+		this.material = material;
+	}
+
+
+
     float    uu, uv, vv, wu, wv, D;
     Plane p;
 	
@@ -123,13 +130,13 @@ public class Triangle extends Primitive {
 	    s = (uv * wv - vv * wu) / D;
 	    
 	    
-	    if (s < 0.000001 || s > 1.000001)        // I is outside T
+	    if (s < 0 || s >1)        // I is outside T
 	    {    
 			ray.missed();
 			return false;
 	    }
 	    t = (uv * wu - uu * wv) / D;
-	    if (t < 0.000001 || (s + t) > 1.000001)  // I is outside T
+	    if (t < 0 || (s + t) > 1)  // I is outside T
 	    {    
 			ray.missed();
 			return false;
@@ -207,5 +214,12 @@ public class Triangle extends Primitive {
 	@Override
 	public float getMaxDistanceFromMiddle() {
 		return maxDistanceFromMiddle;
+	}
+
+
+	@Override
+	public Material getMaterial() {
+		// TODO Auto-generated method stub
+		return material;
 	}
 }

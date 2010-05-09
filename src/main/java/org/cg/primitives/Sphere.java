@@ -71,9 +71,9 @@ public class Sphere extends Primitive {
 		}
 
 		float t0 = (float) ((-B - Math.sqrt(Math.pow(B, 2) - 4 * C)) / 2);
-		if (t0 < 0.0001) {
+		if (t0 < 0.1) {
 			float t1 = (float) ((-B + Math.sqrt(Math.pow(B, 2) - 4 * C)) / 2);
-			if (t1 > 0.0001f) {
+			if (t1 > 0.1f) {
 				ray.hit(new Point3f(ray.position.x + t1 * ray.direction.x,
 						ray.position.y + t1 * ray.direction.y, ray.position.z
 								+ t1 * ray.direction.z), this);
@@ -83,7 +83,7 @@ public class Sphere extends Primitive {
 				return false;
 			}
 
-		} else if (t0 > 0.0001f) {
+		} else if (t0 > 0.1f) {
 			ray.hit(new Point3f(ray.position.x + t0 * ray.direction.x,
 					ray.position.y + t0 * ray.direction.y, ray.position.z + t0
 							* ray.direction.z), this);
