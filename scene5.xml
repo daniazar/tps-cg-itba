@@ -33,7 +33,9 @@
 		<id>1</id>
 		<diffuse>1;1;0</diffuse>
 		<reflection>0.5</reflection>
-		<refraction>0</refraction>
+		<refraction>2.0</refraction>
+		<refract>0.3</refract>
+		
 		<specularColor>1;1;1</specularColor>
 		<specularReflection>0.5</specularReflection>
 		<shininess>10</shininess>	
@@ -42,7 +44,9 @@
 		<id>2</id>
 		<diffuse>0;1;1</diffuse>
 		<reflection>0.5</reflection>
-		<refraction>0.5</refraction>
+		<refraction>3.9</refraction>
+		<refract>0.02</refract>
+		
 		<specularColor>1;1;1</specularColor>
 		<specularReflection>0.5</specularReflection>
 		<shininess>10</shininess>	
@@ -51,7 +55,9 @@
 		<id>3</id>
 		<diffuse>1;0;1</diffuse>
 		<reflection>0.5</reflection>
-		<refraction>0.5</refraction>
+		<refraction>1</refraction>
+		<refract>0.1</refract>
+		
 		<specularColor>1;1;1</specularColor>
 		<specularReflection>0.5</specularReflection>
 		<shininess>10</shininess>		
@@ -60,7 +66,8 @@
 		<id>4</id>
 		<diffuse>1;1;1</diffuse>
 		<reflection>1</reflection>
-		<refraction>1</refraction>
+		<refraction>2</refraction>
+		<refract>0.2</refract>
 		<specularColor>1;1;1</specularColor>
 		<specularReflection>1</specularReflection>
 		<shininess>10</shininess>				
