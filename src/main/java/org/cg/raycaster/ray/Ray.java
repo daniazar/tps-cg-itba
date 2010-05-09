@@ -6,7 +6,7 @@ import org.cg.boundingbox.BoundingBox;
 import org.cg.primitives.Primitive;
 
 public class Ray {
-
+	private static float a_RIndex = 1.0f;
 	public Vector3f direction;
 	public Point3f position;
 	public boolean hit = false;
@@ -116,16 +116,24 @@ public class Ray {
 	}
 	
 	public Ray Refraction(){
-		Vector3f n = obj.getNormal(intersectionPoint);
+		Vector3f N = obj.getNormal(intersectionPoint);
+		float rindex =obj.getMaterial().getRefraction();
+		float n = a_RIndex / rindex;
+		float cosI =  N.dot(direction);
+		float cosT2 = 1.0f - n * n * (1.0f - cosI * cosI);
+		if (cosT2 > 0.0f)
+		{
+			Vector3f d = new Vector3f(direction);
+			d.scale(n);
+			Vector3f normal = new Vector3f(N);
+			normal.scale((float) (n * cosI - Math.sqrt(cosT2)));
+			d.normalize();
+			normal.normalize();
+			d.add(normal);
+			Vector3f T = d;
+			return new Ray(T, intersectionPoint);
 
-		Point3f newstartingPoint = intersectionPoint;
-		float reflet = 2 * n.dot(direction);
-		Vector3f newDirection = new Vector3f(
-				direction.x - reflet * n.x,
-				direction.y - reflet * n.y,
-				direction.z - reflet * n.z);
-
-		return new Ray(newDirection, newstartingPoint);
+		}else return null;
 		
 	}
 	

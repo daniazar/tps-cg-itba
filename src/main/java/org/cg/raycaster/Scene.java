@@ -350,6 +350,11 @@ public class Scene {
 						.getElementsByTagName("refraction").item(0)
 						.getFirstChild();
 				
+				Node refractNode = matNode
+				.getElementsByTagName("refraction").item(0)
+				.getFirstChild();
+
+				
 				Node shininessNode = matNode.
 				getElementsByTagName("shininess").item(0)
 				.getFirstChild();
@@ -370,6 +375,10 @@ public class Scene {
 
 				float refraction = Float.parseFloat(refractionNode
 						.getNodeValue());
+				
+				float refract = Float.parseFloat(refractNode
+						.getNodeValue());
+
 
 				float specReflection = Float.parseFloat(specReflectionNode
 						.getNodeValue());
@@ -394,7 +403,7 @@ public class Scene {
 				Color spec = new Color(r,g,b);
 
 				materials.put(id, new Material(c, reflection, refraction,
-						specReflection,spec,shininess));
+						specReflection,spec,shininess, refract));
 
 			}
 

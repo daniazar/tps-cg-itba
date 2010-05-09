@@ -14,13 +14,11 @@ import org.cg.rendering.color.LightColorChooser;
 import org.cg.rendering.color.PhongShader;
 import org.cg.rendering.color.PlainColorChooser;
 
-import com.sun.org.apache.bcel.internal.generic.FMUL;
-
 public class Raycaster {
 
 	private final static int MAX_REFLECTIONS = 100;
 	private final static int MAX_REFRACTIONS = 0;
-	private final static float MIN_COEF = 0.00f;
+	private final static float MIN_COEF = 0.005f;
 	private final static float ANTIALIASING_RES = 4;
 	private Camera camera;
 
@@ -136,15 +134,16 @@ public class Raycaster {
 			if (islightEnabled) {
 
 				for (PointLight l : Scene.lights) {
-
+					Ray lightRay = LightHit(ray, l);
+					if (!lightRay.hit()) {
+					c = lambertian.getColor(ray, lightRay, coef, c, l
+							.getIntensity());
+					c = phong.getColor(ray, lightRay, coef, c, l
+							.getIntensity());
+					
 					if (depth < MAX_REFLECTIONS && coef > MIN_COEF) {
-						Ray lightRay = LightHit(ray, l);
 
 						if (!lightRay.hit()) {
-							c = lambertian.getColor(ray, lightRay, coef, c, l
-									.getIntensity());
-							c = phong.getColor(ray, lightRay, coef, c, l
-									.getIntensity());
 							float auxicoef = coef;
 							auxicoef *= ray.getObject().getReflection();
 							c = traceRay(ray.Reflection(), depth + 1, auxicoef,
@@ -153,32 +152,38 @@ public class Raycaster {
 
 					}
 
-					/*
-					 * if(depth < MAX_REFRACTIONS && coef > MIN_COEF) { float
-					 * auxicoef = coef; auxicoef *=
-					 * ray.getObject().getRefraction();
-					 * 
-					 * Color crefract = traceRay(ray.Refraction(), depth,
-					 * auxicoef,c); if (crefract != null) {
-					 * 
-					 * float col[] = c.getRGBColorComponents(null); float col2[]
-					 * = crefract.getRGBColorComponents(null);
-					 * 
-					 * 
-					 * /*col[0] = col[0]* (1-ray.getObject().getRefraction()) +
-					 * col2[0] * ray.getObject().getRefraction(); col[1] =
-					 * col[1]* (1-ray.getObject().getRefraction()) + col2[1] *
-					 * ray.getObject().getRefraction(); col[2] = col[2]*
-					 * (1-ray.getObject().getRefraction()) + col2[2] *
-					 * ray.getObject().getRefraction();
-					 */
-					/*
-					 * col[0] += col2[0]; col[1] += col2[1]; col[2] += col2[2];
-					 * col[0] = Math.min(col[0],1); col[1] = Math.min(col[1],1);
-					 * col[2] = Math.min(col[2],1); c = new Color(col[0],
-					 * col[1], col[2]); } }
-					 */
+					
+					if(depth < MAX_REFRACTIONS && coef > MIN_COEF) { 
 
+						if (!lightRay.hit()) {
+							float auxicoef = coef;
+							auxicoef *= ray.getObject().getMaterial().getRefract();
+							Ray ref =ray.Refraction();
+							if (ref != null)
+							{
+							c = traceRay(ref, depth + 1, auxicoef,c);
+							float col[] = c.getRGBColorComponents(null); 
+							float col2[] = c.getRGBColorComponents(null);
+							  col[0] += col2[0]; col[1] += col2[1]; col[2] += col2[2];
+							  col[0] = Math.min(col[0],1); col[1] = Math.min(col[1],1);
+							  col[2] = Math.min(col[2],1); c = new Color(col[0],
+							  col[1], col[2]);
+							
+/* 								Color caux = new Color(0, 0, 0);
+ 						 	float refractCoef = ray.getObject().getMaterial().getRefract();
+							col[0] = col[0] *(1- refractCoef) +refractCoef *col2[0];  
+							col[1] = col[1] *(1- refractCoef) +refractCoef *col2[1];  
+							col[2] = col[2] *(1- refractCoef) +refractCoef *col2[2];  
+							c= new Color(col[0],col[1], col[2]);
+*/
+							
+							                                						
+							}
+						}
+					}
+						
+						
+					}
 				}
 			} else
 				c = colorChooser.getColor(ray);

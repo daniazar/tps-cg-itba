@@ -6,6 +6,7 @@ public class Material {
 	
 	protected Color diffuse;
 	protected float reflection;
+	protected float refract;
 	protected float refraction;
 	protected Color specularColor;
 	protected float shininess;
@@ -60,13 +61,21 @@ public class Material {
 	public void setReflection(float reflection) {
 		this.reflection = reflection;
 	}
+	public void setRefract(float refract) {
+		this.refract = refract;
+	}
+	public float getRefract() {
+		return refract;
+	}
 
 	public Material(Color diffuse, float reflection, float refraction,
-			float specularReflection, Color specularColor, float shininess)
+			float specularReflection, Color specularColor, float shininess, float refract)
 	{
 		this.diffuse = diffuse;
 		this.reflection = reflection;
 		this.refraction = refraction;
+		this.refract = refract;
+		
 		this.specularReflection = specularReflection;
 		this.specularColor = specularColor;
 		this.shininess = shininess;
