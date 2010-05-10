@@ -2,28 +2,20 @@ package org.cg.raycaster;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import javax.vecmath.Matrix4f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.cg.primitives.Primitive;
-import org.cg.primitives.Sphere;
 import org.cg.rendering.Camera;
 import org.cg.rendering.Material;
 import org.cg.rendering.PointLight;
-import org.cg.util.Matrix4;
 import org.cg.util.Parser;
 import org.cg.util.Parser.ParserException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
-import com.sun.servicetag.UnauthorizedAccessException;
 
 public class SunflowScene {
 
@@ -108,7 +100,12 @@ public class SunflowScene {
 		         
 		         System.out.println("type: mirror name :"+ name+" color:" + color);
 		         
-			}else if (p.peekNextToken("glass")){
+			}else if (p.peekNextToken("constant")) {
+	            // backwards compatibility -- peek only
+	            p.peekNextToken("color");
+	            Color color = parseColor();
+	            System.out.println("type: constant name :"+ name+" color:" + color);
+	        }else if (p.peekNextToken("glass")){
 				 p.checkNextToken("eta");
 		         float eta = p.getNextFloat();
 		         
@@ -181,7 +178,7 @@ public class SunflowScene {
 	private static void parseObjectBlock() throws IOException, ParserException, UnsupportedException {
 		System.out.println("parsing objetct");
 		p.checkNextToken("{");
-        Matrix4 transform = null;
+        Matrix4f transform = null;
         String name = null;
         String shader;
         
@@ -411,24 +408,24 @@ public class SunflowScene {
         }
     }	
     
-	 private static Matrix4 parseMatrix() throws IOException, ParserException, UnsupportedException {
-	        if (p.peekNextToken("row")) {
-	            return new Matrix4(parseFloatArray(16), true);
-	        } else if (p.peekNextToken("col")) {
-	            return new Matrix4(parseFloatArray(16), false);
-	        } else {
-	            Matrix4 m = Matrix4.IDENTITY;
+	 private static Matrix4f parseMatrix() throws IOException, ParserException, UnsupportedException {
+		 if (p.peekNextToken("row")) {
+			throw new UnsupportedException("row");
+	     } else if (p.peekNextToken("col")) {
+			throw new UnsupportedException("row");
+	     } else {
+	            Matrix4f m = new Matrix4f();
+	            m.setIdentity();
 	            p.checkNextToken("{");
 	            while (!p.peekNextToken("}")) {
-	                Matrix4 t = null;
+	                Matrix4f t = new Matrix4f();
+	                t.setIdentity();	
 	                if (p.peekNextToken("translate")) {
-	                    p.getNextToken();
-	                    p.getNextToken();
-	                    p.getNextToken();
-	                    System.out.println("translate is not supported");
+	                	Vector3f v = parseVector();
+	                    m.setTranslation(v);
 	                } else if (p.peekNextToken("scaleu")) {
 	                    float s = p.getNextFloat();
-	                    t = Matrix4.scale(s);
+	                    t.setScale(s);
 	                } else if (p.peekNextToken("scale")) {
 	                    p.getNextToken();
 	                    p.getNextToken();
@@ -436,13 +433,13 @@ public class SunflowScene {
 	                    System.out.println("scales is not supported");
 	                } else if (p.peekNextToken("rotatex")) {
 	                    float angle = p.getNextFloat();
-	                    t = Matrix4.rotateX((float) Math.toRadians(angle));
+	                    t.rotX((float) Math.toRadians(angle));
 	                } else if (p.peekNextToken("rotatey")) {
 	                    float angle = p.getNextFloat();
-	                    t = Matrix4.rotateY((float) Math.toRadians(angle));
+	                    t.rotY((float) Math.toRadians(angle));
 	                } else if (p.peekNextToken("rotatez")) {
 	                    float angle = p.getNextFloat();
-	                    t = Matrix4.rotateZ((float) Math.toRadians(angle));
+	                    t.rotZ((float) Math.toRadians(angle));
 	                } else if (p.peekNextToken("rotate")) {
 	                    p.getNextToken();
 	                    p.getNextToken();
@@ -452,7 +449,7 @@ public class SunflowScene {
 	                } else
 	                    throw new UnsupportedException(p.getNextToken());
 	                if (t != null)
-	                    m = t.multiply(m);
+	                    m.mul(t);
 	            }
 	            return m;
 	        }
@@ -461,8 +458,9 @@ public class SunflowScene {
     public static void main(String[] args) throws Exception
     {
     	SunflowScene scene = new SunflowScene();
-    	scene.startScene("scene.sc");
-//    	scene.startScene("scenes/scenes2/objects.sc");
+    	//scene.startScene("scene.sc");
+    	scene.startScene("transforms.sc");
+    	scene.startScene("scenes/scenes2/objects.sc");
     	
 	}
 	
