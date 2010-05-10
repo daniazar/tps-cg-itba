@@ -37,15 +37,14 @@ public class PhongShader implements LightColorChooser {
 		
 		float specColors[] = specularColor.getColorComponents(null);
 		
-
-		
-		red += specularRefl * Math.pow(R.dot(V),shininess)*specColors[0];
-		blue += specularRefl * Math.pow(R.dot(V),shininess)*specColors[1];
-		green += specularRefl * Math.pow(R.dot(V),shininess)*specColors[2];
+		red += coef*specularRefl * Math.pow(R.dot(V),shininess)*specColors[0];
+		blue += coef*specularRefl * Math.pow(R.dot(V),shininess)*specColors[1];
+		green += coef*specularRefl * Math.pow(R.dot(V),shininess)*specColors[2];
 		
 		red = Math.min(1, red);
 		green = Math.min(1, green);
 		blue = Math.min(1, blue);
+		
 		return new Color(red,green,blue);
 	}
 

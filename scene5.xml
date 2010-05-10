@@ -1,41 +1,42 @@
 <?xml version="1.0"?>
 <scene>
-
-
 	<sphere>
-		<center>-2;2;0</center>
-		<radius>1</radius>
-		<matID>3</matID>
-	</sphere>
-		<sphere>
-		<center>2;2;0</center>
+		<center>-1;1;0</center>
 		<radius>1</radius>
 		<matID>1</matID>
 	</sphere>
 		<sphere>
-		<center>0;1;0</center>
+		<center>1;1;0</center>
 		<radius>1</radius>
 		<matID>2</matID>
 	</sphere>
 	<sphere>
-		<center>3.22;1.22;0</center>
-		<radius>0.5</radius>
+		<center>0;0;20</center>
+		<radius>20</radius>
+		<matID>7</matID>
+	</sphere>
+	<sphere>
+		<center>1;-1;0</center>
+		<radius>1</radius>
+		<matID>3</matID>
+	</sphere>
+	<sphere>
+		<center>-1;-1;0</center>
+		<radius>1</radius>
 		<matID>4</matID>
 	</sphere>
 
 	<sphere>
-		<center>0;-2;2</center>
-		<radius>4</radius>
-		<matID>4</matID>
+		<center>0;0;-4</center>
+		<radius>.5</radius>
+		<matID>6</matID>
 	</sphere>
-	
 	<material>
 		<id>1</id>
 		<diffuse>1;1;0</diffuse>
-		<reflection>0.5</reflection>
-		<refraction>2.0</refraction>
-		<refract>0.3</refract>
-		
+		<reflection>0</reflection>
+		<refraction>0</refraction>
+		<density>0</density>
 		<specularColor>1;1;1</specularColor>
 		<specularReflection>0.5</specularReflection>
 		<shininess>10</shininess>	
@@ -43,44 +44,69 @@
 	<material>
 		<id>2</id>
 		<diffuse>0;1;1</diffuse>
-		<reflection>0.5</reflection>
-		<refraction>3.9</refraction>
-		<refract>0.02</refract>
-		
+		<reflection>0</reflection>
+		<refraction>0</refraction>
+		<density>0</density>
+		<specularColor>1;1;1</specularColor>
+		<specularReflection>0.5</specularReflection>
+		<shininess>10</shininess>	
+	</material>	
+	<material>
+		<id>3</id>
+		<diffuse>1;0;1</diffuse>
+		<reflection>0</reflection>
+		<refraction>0</refraction>
+		<density>0</density>
+		<specularColor>1;1;1</specularColor>
+		<specularReflection>0.5</specularReflection>
+		<shininess>10</shininess>	
+	</material>	
+	<material>
+		<id>4</id>
+		<diffuse>1;0;0</diffuse>
+		<reflection>1</reflection>
+		<refraction>0</refraction>
+		<density>0</density>
 		<specularColor>1;1;1</specularColor>
 		<specularReflection>0.5</specularReflection>
 		<shininess>10</shininess>	
 	</material>
-	<material>
-		<id>3</id>
-		<diffuse>1;0;1</diffuse>
-		<reflection>0.5</reflection>
-		<refraction>1</refraction>
-		<refract>0.1</refract>
-		
+		<material>
+		<id>7</id>
+		<diffuse>0.9;0.6;0.6</diffuse>
+		<reflection>0</reflection>
+		<refraction>0</refraction>
+		<density>0</density>
 		<specularColor>1;1;1</specularColor>
 		<specularReflection>0.5</specularReflection>
-		<shininess>10</shininess>		
+		<shininess>60</shininess>	
 	</material>
 		<material>
-		<id>4</id>
+		<id>5</id>
 		<diffuse>1;1;1</diffuse>
 		<reflection>1</reflection>
-		<refraction>2</refraction>
-		<refract>0.2</refract>
+		<refraction>0</refraction>
+		<density>0</density>
+		<specularColor>1;1;1</specularColor>
+		<specularReflection>0.5</specularReflection>
+		<shininess>10</shininess>	
+	</material>
+		<material>
+		<id>6</id>
+		<diffuse>0;0;0</diffuse>
+		<reflection>0.9</reflection>
+		<refraction>0.99</refraction>
+		<density>0.96</density>
 		<specularColor>1;1;1</specularColor>
 		<specularReflection>1</specularReflection>
-		<shininess>10</shininess>				
+		<shininess>10</shininess>	
 	</material>
 	
-
-
-
 	<camera>
 		<dimensions>640;480</dimensions>
-		<position>0;5.8;-6</position>
-		<direction>0;-1;1</direction>
-		<up>0;1;1</up>
+		<position>0;0;-7</position>
+		<direction>0;0;1</direction>
+		<up>0;1;0</up>
 		<fovX>60</fovX>
 				<dist>1</dist>
 		
@@ -90,15 +116,18 @@
 		<point>0;0;4</point>
 		<matID>4</matID>
 	</planea>
-	<light>
-		<position>0;0;10000</position>
+
+		<light>
+		<position>0;0;10</position>
 		<intensity>1;1;1.0</intensity>
 		<pow>100000</pow>		
 	</light>
+
 	<light>
-		<position>0;0;-100</position>
+		<position>0;10;-10</position>
 		<intensity>1;1;1</intensity>
 		<pow>1000</pow>
 	</light>
+
 
 </scene>

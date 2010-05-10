@@ -11,8 +11,17 @@ public class Material {
 	protected Color specularColor;
 	protected float shininess;
 	protected float specularReflection;
+	protected float density;
 	
 	
+	public float getDensity() {
+		return density;
+	}
+
+	public void setDensity(float density) {
+		this.density = density;
+	}
+
 	public Color getSpecular() {
 		return specularColor;
 	}
@@ -68,7 +77,7 @@ public class Material {
 		return refract;
 	}
 
-	public Material(Color diffuse, float reflection, float refraction,
+	public Material(Color diffuse, float reflection, float refraction, float density,
 			float specularReflection, Color specularColor, float shininess, float refract)
 	{
 		this.diffuse = diffuse;
@@ -79,8 +88,10 @@ public class Material {
 		this.specularReflection = specularReflection;
 		this.specularColor = specularColor;
 		this.shininess = shininess;
-		
+		this.density = density;
 		
 	}
+
+
 
 }

@@ -72,8 +72,10 @@ public class Camera {
 		fovY = ((float) dimensions.y) / ((float) dimensions.x) * fovX;
 		di.y = (float) (distance * Math.tan(Math.toRadians(fovY / 2)));
 
+		right.normalize();
+		up.normalize();
 		right.scale(-di.x / dimensions.x);
-		this.up.scale(-di.y / dimensions.y);
+		up.scale(-di.y / dimensions.y);
 	}
 
 	public void setColorMode(String mode, String variation) throws Exception {

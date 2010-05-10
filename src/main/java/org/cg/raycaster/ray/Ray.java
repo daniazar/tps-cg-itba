@@ -4,9 +4,10 @@ import javax.vecmath.*;
 
 import org.cg.boundingbox.BoundingBox;
 import org.cg.primitives.Primitive;
+import org.cg.rendering.Material;
 
 public class Ray {
-	private static float a_RIndex = 1.0f;
+
 	public Vector3f direction;
 	public Point3f position;
 	public boolean hit = false;
@@ -14,12 +15,21 @@ public class Ray {
 	public Point3f intersectionPoint;
 	private Primitive obj;
 	private BoundingBox bbox; 
+	private float cosThetaI;
+	private float cosThetaO;
+	private float sinThetaI;
+	private float sinThetaO;
+	private float reflectance;
+	private float oldRefraction;
+	private float newRefraction;
+	private static float AIR_REFRACTION = 1.0f;
 	
 	public Ray(Vector3f dir, Point3f pos)
 	{
 		this.direction = dir;
 		this.position = pos;
 		this.direction.normalize();
+		newRefraction = AIR_REFRACTION;
 
 	}
 
@@ -116,24 +126,30 @@ public class Ray {
 	}
 	
 	public Ray Refraction(){
-		Vector3f N = obj.getNormal(intersectionPoint);
-		float rindex =obj.getMaterial().getRefraction();
-		float n = a_RIndex / rindex;
-		float cosI =  N.dot(direction);
-		float cosT2 = 1.0f - n * n * (1.0f - cosI * cosI);
-		if (cosT2 > 0.0f)
+		
+		Vector3f normal = getObject().getNormal(getIntersectionPoint());
+		boolean inside = (normal.dot(direction) > 0.0f);
+		oldRefraction = newRefraction;
+		if (inside)
 		{
-			Vector3f d = new Vector3f(direction);
-			d.scale(n);
-			Vector3f normal = new Vector3f(N);
-			normal.scale((float) (n * cosI - Math.sqrt(cosT2)));
-			d.normalize();
-			normal.normalize();
-			d.add(normal);
-			Vector3f T = d;
-			return new Ray(T, intersectionPoint);
-
-		}else return null;
+			normal.scale(-1);
+			//Estoy saliendo del medio
+			newRefraction = AIR_REFRACTION; 
+			
+		}
+		else
+			newRefraction = getObject().getMaterial().getRefraction();
+		
+		Point3f start = getIntersectionPoint();
+		Vector3f vN = new Vector3f(normal);
+		vN.scale(cosThetaI);
+		Vector3f newDir = new Vector3f(direction);
+		newDir.add(vN);
+		newDir.scale(oldRefraction/newRefraction);
+		vN = new Vector3f(normal);
+		vN.scale(-cosThetaO);
+		newDir.add(vN);
+		return new Ray(newDir,start);
 		
 	}
 	
@@ -141,8 +157,6 @@ public class Ray {
 			Point3f p) 
 	{
 
-
-		
 		if(!isPointInRay(p))
 			return false;
 		
@@ -202,5 +216,79 @@ public class Ray {
 
 	public BoundingBox getBoundingBox() {
 		return bbox;
+	}
+	
+	//Ecuaciones de Fresnel, devuelvo la Reflectancia
+	//a partir de esto calculo el coeficiente de Transmitancia
+	//y Reflectividad
+	
+	public float Reflectance()
+	{
+		Material mat = this.getObject().getMaterial();
+		float reflection = mat.getReflection();
+		float refraction = mat.getRefraction();
+		float density = mat.getDensity();
+
+		Vector3f normal = new Vector3f(getObject().getNormal(getIntersectionPoint()));
+		boolean inside = (normal.dot(direction) > 0.0f);
+		if (inside)
+			normal.scale(-1);
+
+		if (reflection != 0 || refraction != 0 || density != 0) {
+	
+			float density1 = newRefraction;
+			float density2;
+			if (inside)
+				density2 = AIR_REFRACTION;
+			else
+				density2 = density;
+
+			cosThetaI = Math.abs(direction.dot(normal));
+
+			if (cosThetaI > 0.9999f) {
+				reflectance = (density1 - density2) / (density1 + density2);
+				reflectance = reflectance * reflectance;
+				sinThetaI = 0;
+				sinThetaO = 0;
+				cosThetaO = 1;
+
+			} else {
+				sinThetaI = (float) Math.sqrt(1 - cosThetaI * cosThetaI);
+				sinThetaO = (density1 / density2) * sinThetaI;
+
+				if (sinThetaI * sinThetaO > 0.9999f) {
+					reflectance = 1;
+					cosThetaO = 0;
+				} else {
+
+					cosThetaO = (float) Math.sqrt(1 - sinThetaO * sinThetaO);
+
+					float reflectanceOrtho = (density1 * cosThetaO - density1
+							* cosThetaI)
+							/ (density2 * cosThetaO + density1 * cosThetaI);
+
+					reflectanceOrtho = reflectanceOrtho * reflectanceOrtho;
+
+					float reflectanceParal = (density1 * cosThetaO - density2
+							* cosThetaI)
+							/ (density1 * cosThetaO + density2 * cosThetaI);
+
+					reflectanceParal = reflectanceParal * reflectanceParal;
+
+					// The reflectance coefficient is the average of those two.
+					// If we consider a light that hasn't been previously
+					// polarized.
+					reflectance = 0.5f * (reflectanceOrtho + reflectanceParal);
+				}
+
+			}
+		}
+		else
+		{
+			reflectance = 1.0f;
+			cosThetaI = 1.0f;
+			cosThetaO = 1.0f;
+		}
+		return reflectance;
 	}
 }

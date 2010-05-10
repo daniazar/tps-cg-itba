@@ -9,6 +9,7 @@ import javax.vecmath.Vector3f;
 import org.cg.primitives.Primitive;
 import org.cg.raycaster.Scene;
 import org.cg.rendering.Camera;
+import org.cg.rendering.Material;
 import org.cg.rendering.PointLight;
 import org.cg.rendering.color.LightColorChooser;
 import org.cg.rendering.color.PhongShader;
@@ -16,10 +17,10 @@ import org.cg.rendering.color.PlainColorChooser;
 
 public class Raycaster {
 
-	private final static int MAX_REFLECTIONS = 100;
-	private final static int MAX_REFRACTIONS = 0;
-	private final static float MIN_COEF = 0.005f;
-	private final static float ANTIALIASING_RES = 4;
+	private final static int MAX_REFLECTIONS = 10;
+	private final static int MAX_REFRACTIONS = 10;
+	private final static float MIN_COEF = 0.00f;
+	private final static float ANTIALIASING_RES = 16;
 	private Camera camera;
 
 	public Camera getCamera() {
@@ -88,12 +89,14 @@ public class Raycaster {
 								- camera.position.z);
 						dir.normalize();
 						Ray ray = new Ray(dir, pixelFragPos);
-
+						
 						fragColor = traceRay(ray, level, 1.0f, fragColor);
 						float[] cComps = c.getColorComponents(null);
 						float[] fragComps = fragColor.getColorComponents(null);
+
 						for (int k = 0; k < 3; k++)
 							cComps[k] += fragmentCoef * fragComps[k];
+
 						c = new Color(cComps[0], cComps[1], cComps[2]);
 					}
 
@@ -104,7 +107,7 @@ public class Raycaster {
 			rightauxi = new Vector3f(camera.right);
 			rightauxi.scale(-2);
 			startingPoint.add(rightauxi);
-			
+
 			if (progress) {
 				int prog2 = (i * 100 / camera.dimensions.x);
 				if (prog != prog2) {
@@ -115,8 +118,6 @@ public class Raycaster {
 				}
 			}
 		}
-
-
 
 		return im;
 	}
@@ -130,60 +131,48 @@ public class Raycaster {
 		}
 
 		if (ray.hit()) {
+			
+			float reflectance = ray.Reflectance();
+			float refraction = ray.getObject().getMaterial()
+					.getRefraction();
+			float reflection = ray.getObject().getMaterial().getReflection();
+			
+			float transmittance = refraction * (1.0f - reflectance);
+
+			reflectance = reflection * reflectance;
+			float total = reflectance + transmittance;
+			if (total > 0) {
+				if (depth < MAX_REFLECTIONS) {
+					float auxicoef = coef * reflectance;
+					auxicoef *= reflection;
+					c = traceRay(ray.Reflection(), depth + 1, auxicoef,
+							c);
+				}
+				if(depth < MAX_REFRACTIONS)
+				{
+			
+					float auxicoef = transmittance * coef;
+					auxicoef *= refraction;
+					c = traceRay(ray.Refraction(),depth+1,auxicoef,c);
+				}
+			}
 
 			if (islightEnabled) {
 
 				for (PointLight l : Scene.lights) {
+
 					Ray lightRay = LightHit(ray, l);
+
 					if (!lightRay.hit()) {
-					c = lambertian.getColor(ray, lightRay, coef, c, l
-							.getIntensity());
-					c = phong.getColor(ray, lightRay, coef, c, l
-							.getIntensity());
-					
-					if (depth < MAX_REFLECTIONS && coef > MIN_COEF) {
 
-						if (!lightRay.hit()) {
-							float auxicoef = coef;
-							auxicoef *= ray.getObject().getReflection();
-							c = traceRay(ray.Reflection(), depth + 1, auxicoef,
-									c);
-						}
+						float auxicoef = (1 - total)*coef;
+						c = lambertian.getColor(ray, lightRay, auxicoef, c, l
+								.getIntensity());
+						c = phong.getColor(ray, lightRay, auxicoef, c, l
+								.getIntensity());
 
 					}
 
-					
-					if(depth < MAX_REFRACTIONS && coef > MIN_COEF) { 
-
-						if (!lightRay.hit()) {
-							float auxicoef = coef;
-							auxicoef *= ray.getObject().getMaterial().getRefract();
-							Ray ref =ray.Refraction();
-							if (ref != null)
-							{
-							c = traceRay(ref, depth + 1, auxicoef,c);
-							float col[] = c.getRGBColorComponents(null); 
-							float col2[] = c.getRGBColorComponents(null);
-							  col[0] += col2[0]; col[1] += col2[1]; col[2] += col2[2];
-							  col[0] = Math.min(col[0],1); col[1] = Math.min(col[1],1);
-							  col[2] = Math.min(col[2],1); c = new Color(col[0],
-							  col[1], col[2]);
-							
-/* 								Color caux = new Color(0, 0, 0);
- 						 	float refractCoef = ray.getObject().getMaterial().getRefract();
-							col[0] = col[0] *(1- refractCoef) +refractCoef *col2[0];  
-							col[1] = col[1] *(1- refractCoef) +refractCoef *col2[1];  
-							col[2] = col[2] *(1- refractCoef) +refractCoef *col2[2];  
-							c= new Color(col[0],col[1], col[2]);
-*/
-							
-							                                						
-							}
-						}
-					}
-						
-						
-					}
 				}
 			} else
 				c = colorChooser.getColor(ray);
@@ -192,10 +181,12 @@ public class Raycaster {
 		return c;
 	}
 
+
+
 	public Ray LightHit(Ray ray, PointLight l) {
 		Vector3f n = null;
 		Primitive o = ray.getObject();
-		//esto es para el alcanze de la luz
+		//esto es para el alcance de la luz
 		float dist = ray.intersectionPoint.distance(l.getPosition());
 		if (dist > l.pow) {
 			Ray missed = new Ray(new Vector3f(), new Point3f());

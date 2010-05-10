@@ -65,7 +65,7 @@ public class Sphere extends Primitive {
 
 		float discr = (float) (Math.pow(B, 2) - 4 * C);
 
-		if (discr <= 0) {
+		if (discr < 0.1) {
 			ray.missed();
 			return false;
 		}
