@@ -305,6 +305,10 @@ public class Scene {
 				Node intensityNode = lighttNode.getElementsByTagName(
 						"intensity").item(0).getFirstChild();
 
+				Node powNode = lighttNode.getElementsByTagName(
+				"pow").item(0).getFirstChild();
+
+				
 				Scanner sc = new Scanner(posNode.getNodeValue());
 				sc.useDelimiter(";");
 
@@ -321,8 +325,13 @@ public class Scene {
 				float g = sc.nextFloat();
 				float b = sc.nextFloat();
 
+				
 				Color intensity = new Color(r, g, b);
-				lights.add(new PointLight(position, intensity));
+				
+				sc = new Scanner(powNode.getNodeValue());
+				float p = sc.nextFloat();
+
+				lights.add(new PointLight(position, intensity, p));
 
 			}
 

@@ -195,12 +195,20 @@ public class Raycaster {
 	public Ray LightHit(Ray ray, PointLight l) {
 		Vector3f n = null;
 		Primitive o = ray.getObject();
+		//esto es para el alcanze de la luz
+		float dist = ray.intersectionPoint.distance(l.getPosition());
+		if (dist > l.pow) {
+			Ray missed = new Ray(new Vector3f(), new Point3f());
+			missed.hit = true;
+			return missed;
+		}
 
+		
 		n = o.getNormal(ray.intersectionPoint);
 
-		Vector3f intersectionToLight = new Vector3f(l.getPosition().x
-				- ray.intersectionPoint.x, l.getPosition().y
-				- ray.intersectionPoint.y, l.getPosition().z
+		Vector3f intersectionToLight = new Vector3f(l.position.x
+				- ray.intersectionPoint.x, l.position.y
+				- ray.intersectionPoint.y, l.position.z
 				- ray.intersectionPoint.z);
 
 		// Si estamos opuestos no hay luz aqui
@@ -210,10 +218,12 @@ public class Raycaster {
 			return missed;
 		}
 
+		//esto reduciria linealmente la potencia de la luz.
+		l.setIntensityReduction(1-(dist/l.pow));
+		
 		// Creo un rayo de luz desde el punto de
 		// interseccion hasta la luz
 		intersectionToLight.normalize();
-
 		Ray lightRay = new Ray(intersectionToLight, ray.intersectionPoint);
 
 		for (Primitive objShadow : Scene.objects)

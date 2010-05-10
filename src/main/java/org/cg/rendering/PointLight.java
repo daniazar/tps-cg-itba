@@ -6,14 +6,27 @@ import javax.vecmath.*;
 
 public class PointLight {
 	
-	private Point3f position;
+	public Point3f position;
 	private Color intensity;
-	
-	public PointLight(Point3f position, Color intensity)
+	public Float pow;
+	public Float intensityReduction= 0.1f;
+	float[] compontents = new float[4];
+	public PointLight(Point3f position, Color intensity, Float pow)
 	{
 		this.setPosition(position);
 		this.setIntensity(intensity);
-		
+		this.pow = pow;
+	}
+	
+	public void setPow(Float pow) {
+		this.pow= pow;
+	}
+	
+	 public void setIntensityReduction(Float intensityReduction) {
+		this.intensityReduction = intensityReduction;
+	}
+	public Float getpow() {
+		return pow;
 	}
 
 	public void setPosition(Point3f position) {
@@ -29,7 +42,8 @@ public class PointLight {
 	}
 
 	public Color getIntensity() {
-		return intensity;
+		intensity.getComponents(compontents);
+		return new Color(compontents[0]*intensityReduction,compontents[1]*intensityReduction, compontents[2]*intensityReduction );
 	}
 
 }

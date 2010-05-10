@@ -208,10 +208,12 @@
 	<light>
 		<position>10;10;0</position>
 		<intensity>1;1;1.0</intensity>
+				<pow>10</pow>
 	</light>
 	<light>
 		<position>0;0;10</position>
 		<intensity>1;1;1</intensity>
+				<pow>10</pow>
 	</light>
 
 </scene>

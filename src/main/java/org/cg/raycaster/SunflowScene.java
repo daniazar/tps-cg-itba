@@ -294,7 +294,7 @@ public class SunflowScene {
 		System.out.println("parsing light");
 		Point3f position;
 		Color color;
-		Float pow;
+		Float pow = null;
 		p.checkNextToken("{");
 		p.checkNextToken("type");
 		if (p.peekNextToken("point")) {
@@ -314,7 +314,7 @@ public class SunflowScene {
 			}
 			p.checkNextToken("p");
 			position = parsePoint();
-			lights.add(new PointLight(position, color));//TODO:implements intensity
+			lights.add(new PointLight(position, color, pow));//TODO:implements intensity
 	     }else{
 	    	 String tok = p.getNextToken();
  	    	 p.parseBlock();
