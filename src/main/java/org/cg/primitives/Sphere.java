@@ -163,5 +163,41 @@ public class Sphere extends Primitive {
 	public Point3f getMiddlePoint() {
 		return center;
 	}
+	
+	public Object clone()
+	{
+		Sphere s = new Sphere(center,radius,material);
+		s.boundingBox = new  NoBoundingBox(s);
+		return s;
+		
+	}
+	
+	public float MaxX() {
+		return center.x + radius;
+	}
+
+
+	public float MaxY() {
+		return center.y + radius;
+	}
+
+	
+	public float MaxZ() {
+		return center.z + radius;
+	}
+
+	public float MinX() {
+		return center.x - radius;
+	}
+
+
+	public float MinY() {
+		return center.y - radius;
+	}
+
+	
+	public float MinZ() {
+		return center.z - radius;
+	}
 
 }

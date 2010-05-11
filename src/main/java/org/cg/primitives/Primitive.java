@@ -15,6 +15,13 @@ public abstract class Primitive implements Cloneable{
 	Boolean colorHasBeenSet = false;
 	BoundingBox boundingBox;
 	
+
+	public Boolean getColorHasBeenSet() {
+		return colorHasBeenSet;
+	}
+	public BoundingBox getBoundingBox() {
+		return boundingBox;
+	}
 	public abstract Point3f getMiddlePoint();
 	public abstract float getMaxDistanceFromMiddle();
 	

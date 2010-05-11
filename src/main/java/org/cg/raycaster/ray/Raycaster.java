@@ -2,6 +2,7 @@ package org.cg.raycaster.ray;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.Set;
 
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
@@ -14,15 +15,20 @@ import org.cg.rendering.PointLight;
 import org.cg.rendering.color.LightColorChooser;
 import org.cg.rendering.color.PhongShader;
 import org.cg.rendering.color.PlainColorChooser;
+import org.cg.spatial.Octree;
 
 public class Raycaster {
 
-	private final static int MAX_REFLECTIONS = 10;
+	private final static int MAX_REFLECTIONS = 3;
 	private final static int MAX_REFRACTIONS = 10;
 	private final static float MIN_COEF = 0.00f;
 	private final static float ANTIALIASING_RES = 16;
 	private Camera camera;
-
+	private Octree octree;
+	private boolean OCTREE_ENABLED = false;
+	//Si hay menos que esta cantidad, no tiene sentido un octree
+	private static float OCTREE_THRESHOLD = 16;
+	
 	public Camera getCamera() {
 		return camera;
 	}
@@ -39,6 +45,14 @@ public class Raycaster {
 	public BufferedImage raycast(boolean progress) {
 
 		camera.prepare();
+		
+		if(Scene.objects.size() > OCTREE_THRESHOLD)
+		{
+			octree = new Octree(Scene.objects);
+			OCTREE_ENABLED = true;
+			System.out.println("OCTREE ENABLED");
+		}
+	
 		BufferedImage im = camera.getBufferedImage();
 
 		Point3f startingPoint = camera.getStartingPoint();
@@ -88,8 +102,13 @@ public class Raycaster {
 								- camera.position.y, pixelFragPos.z
 								- camera.position.z);
 						dir.normalize();
-						Ray ray = new Ray(dir, pixelFragPos);
 						
+						if(i==400 && j== 300)
+							dir.normalize();
+						
+						
+						Ray ray = new Ray(dir, pixelFragPos);
+	
 						fragColor = traceRay(ray, level, 1.0f, fragColor);
 						float[] cComps = c.getColorComponents(null);
 						float[] fragComps = fragColor.getColorComponents(null);
@@ -124,12 +143,23 @@ public class Raycaster {
 
 	public Color traceRay(Ray ray, int depth, Float coef, Color c) {
 
-		for (Primitive o : Scene.objects) {
-			if (o.intersectsBoundingBox(ray)) {
-				o.Intersects(ray);
-			}
-		}
+		
+		if(OCTREE_ENABLED)
+		{
+			Set<Primitive> primitives = octree.GetPrimitivesFromIntersectingOctants(ray);
 
+			for(Primitive o : primitives)
+				if (o.intersectsBoundingBox(ray))
+					o.Intersects(ray);
+	
+		}
+		else
+		{
+			for (Primitive o : Scene.objects) 
+				if (o.intersectsBoundingBox(ray)) 
+					o.Intersects(ray);
+		}
+				
 		if (ray.hit()) {
 			
 			float reflectance = ray.Reflectance();
@@ -141,14 +171,15 @@ public class Raycaster {
 
 			reflectance = reflection * reflectance;
 			float total = reflectance + transmittance;
+	
 			if (total > 0) {
-				if (depth < MAX_REFLECTIONS) {
+				if (depth < MAX_REFLECTIONS && coef*reflectance > MIN_COEF) {
 					float auxicoef = coef * reflectance;
 					auxicoef *= reflection;
 					c = traceRay(ray.Reflection(), depth + 1, auxicoef,
 							c);
 				}
-				if(depth < MAX_REFRACTIONS)
+				if(depth < MAX_REFRACTIONS && coef*transmittance > MIN_COEF)
 				{
 			
 					float auxicoef = transmittance * coef;
@@ -156,7 +187,7 @@ public class Raycaster {
 					c = traceRay(ray.Refraction(),depth+1,auxicoef,c);
 				}
 			}
-
+		
 			if (islightEnabled) {
 
 				for (PointLight l : Scene.lights) {
@@ -178,11 +209,30 @@ public class Raycaster {
 				c = colorChooser.getColor(ray);
 		} else
 			coef = 0f;
+		
+
 		return c;
 	}
 
 
+	private void UnifyRay(Ray ray)
+	{
+		float aspectRatio =(float)camera.dimensions.y / (float)camera.dimensions.x;
+	//	System.out.println("i "+ray.position.x);
+		//ray.direction.x *= aspectRatio;
+		ray.position.x *= aspectRatio;
+		
+		//System.out.println("o "+ray.position.x);
+		
+	}
 
+	private void UnunifyRay(Ray ray)
+	{
+		float aspectRatio =(float)camera.dimensions.y / (float)camera.dimensions.x;
+//		ray.direction.x /= aspectRatio;
+		ray.position.x /= aspectRatio;
+
+	}
 	public Ray LightHit(Ray ray, PointLight l) {
 		Vector3f n = null;
 		Primitive o = ray.getObject();
@@ -217,8 +267,23 @@ public class Raycaster {
 		intersectionToLight.normalize();
 		Ray lightRay = new Ray(intersectionToLight, ray.intersectionPoint);
 
-		for (Primitive objShadow : Scene.objects)
-			objShadow.Intersects(lightRay);
+		
+		if(OCTREE_ENABLED)
+		{
+			Set<Primitive> primitives = octree.GetPrimitivesFromIntersectingOctants(lightRay);
+
+			for(Primitive shadow : primitives)
+				if (shadow.intersectsBoundingBox(lightRay))
+					shadow.Intersects(lightRay);
+	
+		}
+		else
+		{
+			for (Primitive shadow : Scene.objects) 
+				if (shadow.intersectsBoundingBox(lightRay)) 
+					shadow.Intersects(lightRay);
+		}
+	
 
 		return lightRay;
 

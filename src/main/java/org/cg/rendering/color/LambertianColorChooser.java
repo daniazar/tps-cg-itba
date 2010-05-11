@@ -49,6 +49,7 @@ public class LambertianColorChooser implements LightColorChooser {
 		red = Math.min(red, 1);
 		green = Math.min(green, 1);
 		blue = Math.min(blue, 1);
+
 	
 		return new Color(red,green,blue);
 	}

@@ -48,5 +48,35 @@ public class SphereBoundingBox implements BoundingBox{
 		}
 
 	}
+
+	@Override
+	public float MaxX() {
+		return center.x + radius;
+	}
+
+	@Override
+	public float MaxY() {
+		return center.y + radius;
+	}
+
+	@Override
+	public float MaxZ() {
+		return center.z + radius;
+	}
+
+	@Override
+	public float MinX() {
+		return center.x - radius;
+	}
+
+	@Override
+	public float MinY() {
+		return center.y - radius;
+	}
+
+	@Override
+	public float MinZ() {
+		return center.z - radius;
+	}
 	
 }

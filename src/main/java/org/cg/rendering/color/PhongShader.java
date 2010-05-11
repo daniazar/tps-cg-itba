@@ -41,9 +41,13 @@ public class PhongShader implements LightColorChooser {
 		blue += coef*specularRefl * Math.pow(R.dot(V),shininess)*specColors[1];
 		green += coef*specularRefl * Math.pow(R.dot(V),shininess)*specColors[2];
 		
-		red = Math.min(1, red);
-		green = Math.min(1, green);
-		blue = Math.min(1, blue);
+		red = Math.min(red, 1);
+		green = Math.min(green, 1);
+		blue = Math.min(blue, 1);
+	/*	float exposure = -0.5f;
+		red = (float) (1 - Math.exp(exposure*red));
+		green = (float) (1 - Math.exp(exposure*green));
+		blue = (float) (1 - Math.exp(exposure*blue));*/
 		
 		return new Color(red,green,blue);
 	}
