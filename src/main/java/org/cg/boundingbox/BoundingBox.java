@@ -1,7 +1,5 @@
 package org.cg.boundingbox;
 
-import javax.vecmath.Point3f;
-
 import org.cg.raycaster.ray.Ray;
 
 

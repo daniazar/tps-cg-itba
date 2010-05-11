@@ -403,9 +403,6 @@ public class Scene {
 				float g = sc.nextFloat();
 				float b = sc.nextFloat();
 
-				int a;
-				if( r == g && g == b && b == 1)
-					 a = 5;
 				Color c = new Color(r, g, b);
 				
 				sc = new Scanner(specColorNode.getNodeValue());

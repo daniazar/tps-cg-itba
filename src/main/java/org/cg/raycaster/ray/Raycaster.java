@@ -10,7 +10,6 @@ import javax.vecmath.Vector3f;
 import org.cg.primitives.Primitive;
 import org.cg.raycaster.Scene;
 import org.cg.rendering.Camera;
-import org.cg.rendering.Material;
 import org.cg.rendering.PointLight;
 import org.cg.rendering.color.LightColorChooser;
 import org.cg.rendering.color.PhongShader;
@@ -215,6 +214,7 @@ public class Raycaster {
 	}
 
 
+	@SuppressWarnings("unused")
 	private void UnifyRay(Ray ray)
 	{
 		float aspectRatio =(float)camera.dimensions.y / (float)camera.dimensions.x;
@@ -226,6 +226,7 @@ public class Raycaster {
 		
 	}
 
+	@SuppressWarnings("unused")
 	private void UnunifyRay(Ray ray)
 	{
 		float aspectRatio =(float)camera.dimensions.y / (float)camera.dimensions.x;

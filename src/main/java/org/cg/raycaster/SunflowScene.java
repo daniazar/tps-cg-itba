@@ -74,7 +74,8 @@ public class SunflowScene {
 		p.checkNextToken("type");
 		try{
 			if (p.peekNextToken("phong")) {
-	            String tex = null;
+	            @SuppressWarnings("unused")
+				String tex = null;
 	            Color diffuse = null;
 	            int samples = 0;
 	            Color specular;

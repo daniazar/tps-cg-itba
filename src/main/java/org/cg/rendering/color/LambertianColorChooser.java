@@ -5,9 +5,7 @@ import java.awt.Color;
 import javax.vecmath.Vector3f;
 
 import org.cg.primitives.Primitive;
-import org.cg.raycaster.Scene;
 import org.cg.raycaster.ray.Ray;
-import org.cg.rendering.PointLight;
 
 
 public class LambertianColorChooser implements LightColorChooser {

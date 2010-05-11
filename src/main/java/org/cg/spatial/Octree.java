@@ -1,16 +1,11 @@
 package org.cg.spatial;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.vecmath.Point3f;
-
 import org.cg.boundingbox.BoundingBox;
 import org.cg.primitives.Primitive;
-import org.cg.primitives.Sphere;
 import org.cg.raycaster.ray.Ray;
 
 public class Octree {
@@ -215,7 +210,7 @@ public class Octree {
 	 */
 	public static boolean RayIntersectsOctant(Ray ray, Octree octant)
 	{
-		float tx0, ty0, tz0, tx1, ty1,tz1, tz2;
+		float tx0, ty0, tz0, tx1, ty1,tz1;
 		float x0,y0,z0,dx,dy,dz;
 		x0 = ray.position.x;
 		y0 = ray.position.y;
