@@ -21,7 +21,7 @@ public class Raycaster {
 	private final static int MAX_REFLECTIONS = 3;
 	private final static int MAX_REFRACTIONS = 10;
 	private final static float MIN_COEF = 0.00f;
-	private final static float ANTIALIASING_RES = 16;
+	private final static float ANTIALIASING_RES = 1;
 	private Camera camera;
 	private Octree octree;
 	private boolean OCTREE_ENABLED = false;

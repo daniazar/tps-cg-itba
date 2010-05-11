@@ -34,7 +34,9 @@ public class Scene {
 
 	public static String filename = "scene.xml";
 	public static Camera cam;
-
+	public static boolean SoftShadows = true;
+	public static float DeltaShadow = 0.5f;
+	
 	private static void ParseFile(File file) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
@@ -325,6 +327,12 @@ public class Scene {
 				float g = sc.nextFloat();
 				float b = sc.nextFloat();
 
+				if(SoftShadows)
+				{
+					r /= 7;
+					g /= 7;
+					b /= 7;
+				}
 				
 				Color intensity = new Color(r, g, b);
 				
@@ -332,6 +340,23 @@ public class Scene {
 				float p = sc.nextFloat();
 
 				lights.add(new PointLight(position, intensity, p));
+				
+				if(SoftShadows)
+				{
+					
+					lights.add(new PointLight(new Point3f(position.x+DeltaShadow,position.y,position.z),
+							intensity,p));
+					lights.add(new PointLight(new Point3f(position.x-DeltaShadow,position.y,position.z),
+							intensity,p));
+					lights.add(new PointLight(new Point3f(position.x,position.y+DeltaShadow,position.z),
+							intensity,p));
+					lights.add(new PointLight(new Point3f(position.x,position.y-DeltaShadow,position.z),
+							intensity,p));
+					lights.add(new PointLight(new Point3f(position.x,position.y,position.z+DeltaShadow),
+							intensity,p));
+					lights.add(new PointLight(new Point3f(position.x,position.y,position.z-DeltaShadow),
+							intensity,p));
+				}
 
 			}
 
@@ -411,7 +436,16 @@ public class Scene {
 				g = sc.nextFloat();
 				b = sc.nextFloat();
 				
+				if(SoftShadows)
+				{
+					r /= 7;
+					g /= 7;
+					b /= 7;
+				}
+				
 				Color spec = new Color(r,g,b);
+				
+
 
 				materials.put(id, new Material(c, reflection, refraction, density,
 						specReflection,spec,shininess, refract));
