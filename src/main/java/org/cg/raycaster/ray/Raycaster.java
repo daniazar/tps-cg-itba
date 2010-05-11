@@ -101,11 +101,7 @@ public class Raycaster {
 								- camera.position.y, pixelFragPos.z
 								- camera.position.z);
 						dir.normalize();
-						
-						if(i==400 && j== 300)
-							dir.normalize();
-						
-						
+
 						Ray ray = new Ray(dir, pixelFragPos);
 	
 						fragColor = traceRay(ray, level, 1.0f, fragColor);
