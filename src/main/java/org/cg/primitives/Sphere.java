@@ -217,8 +217,8 @@ public class Sphere extends Primitive {
 			Point3f point = (Point3f) intersectionPoint.clone();
 			point.sub(this.center);
 			
-			float u = (float) (point.x / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2))) + 0.5f;
-			float v = (float) (point.z / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2))) + 0.3f;
+			float u = (float) (point.x / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2))) + 0.3f;
+			float v = 1 - ((float) (point.z / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2))) + 0.7f);
 			
 			Color color;
 			if(shader.getTexturePath() != null) {

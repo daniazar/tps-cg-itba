@@ -16,88 +16,63 @@ camera {
 light {
    type point
    color { "sRGB linear" 1.000 1.000 1.000 }
-   power 100.0
-   p 1.0 3.0 6.0
+   power 140.0
+   p 1.0 1.0 1.0
 }
 
-shader {
-  name default
-  type constant
-  color { "sRGB linear" 1 1 0 }
-}
 
 shader {
-   name texture
-   type phong
-   texture "scenes/textures/images.jpeg"
-   spec { "sRGB linear" 1.0 1.0 1.0 } 50
-}
-
-shader {
-   name earth2
+   name earth
    type phong
    texture "scenes/textures/bWorld.jpg"
    spec { "sRGB linear" 1.0 1.0 1.0 } 50
 }
-/*
-object {
-  shader default
-  type sphere
-  c 0 10 0
-  r 1
+
+shader {
+   name mars
+   type phong
+   texture "scenes/textures/mars.jpg"
+   spec { "sRGB linear" 1.0 1.0 1.0 } 50
+}
+
+shader {
+   name uranus
+   type phong
+   texture "scenes/textures/uranus.jpg"
+   spec { "sRGB linear" 1.0 1.0 1.0 } 50
+}
+
+shader {
+   name jupiter
+   type phong
+   texture "scenes/textures/jupiter.jpg"
+   spec { "sRGB linear" 1.0 1.0 1.0 } 50
 }
 
 object {
-  shader default
+  shader uranus
   type sphere
-  c 2 10 0
-  r 1
-}
-
-
-object {
-  shader default
-  type sphere
-  c 4 10 0
-  r 1
-}
-
-
-object {
-  shader default
-  type sphere
-  c 6 10 0
-  r 1
+  c 9 6 0
+  r 3.5
 }
 
 object {
-  shader default
+  shader jupiter
   type sphere
-  c 8 10 0
-  r 1
-}
-*/
-object {
-	shader earth2
-	type generic-mesh
-	name "Cylinder"
-	points 4
-		1 10 0
-		-9 10 8
-		-9 10 0
-		1 10 8
-	triangles 2
-		0 1 2
-		0 3 1
-	normals none
-	uvs facevarying
-	0.000000 1.000000 0.000000 0.000000 1.000000 0.000000
-	0.000000 1.000000 0.000000 0.000000 1.000000 0.000000
+  c -3 30 0
+  r 9
 }
 
 object {
-  shader earth2
+  shader mars
   type sphere
-  c 6 10 0
+  c 2 20 0
   r 4
+}
+
+object {
+  shader earth
+  type sphere
+  c 6 10 0
+  r 3.9
 }
