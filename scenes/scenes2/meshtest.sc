@@ -6,18 +6,18 @@ image {
 
 camera {
   type pinhole
-  eye    0 -20 0
-  target 0 1 0
-  up     0 0 1
-  fov    180
-  aspect 1.333333
+  eye    0 0 -10
+  target 0 0 1
+  up     0 1 0
+  fov    60
+  aspect 1.3333333
 }
 
 light {
    type point
    color { "sRGB linear" 1.000 1.000 1.000 }
    power 100.0
-   p 1.0 3.0 6.0
+   p 0.0 0.0 -10.0
 }
 
 shader {
@@ -66,12 +66,11 @@ object {
 object {
 	shader default
 	type generic-mesh
-	name "Cylinder"
-	points 4
-		2 10 0
-		-1 10 2
-		-1 10 0
-		3 10 1
+	name "Triangle"
+	points 3
+		-1 0 0
+		0 1 0
+		1 0 0
 	triangles 1
 		0 1 2
 	normals none

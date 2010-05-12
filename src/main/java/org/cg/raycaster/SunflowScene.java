@@ -343,7 +343,7 @@ public class SunflowScene {
 			List<Triangle> trianglesList = new ArrayList<Triangle>();
 			for(int i = 0; i < triangles.length; ) {
 				Point3f p1 = new Point3f(points[triangles[i] * 3], points[triangles[i] * 3 + 1], points[triangles[i] * 3 + 2]);
-				Point3f p2 = new Point3f(points[triangles[i + 1] * 3 + 1], points[triangles[i + 1] * 3 + 2], points[triangles[i + 1] * 3 + 2]);
+				Point3f p2 = new Point3f(points[triangles[i + 1] * 3], points[triangles[i + 1] * 3 + 1], points[triangles[i + 1] * 3 + 2]);
 				Point3f p3 = new Point3f(points[triangles[i + 2] * 3], points[triangles[i + 2] * 3 + 1], points[triangles[i + 2] * 3 + 2]);
 				
 				objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial()));
