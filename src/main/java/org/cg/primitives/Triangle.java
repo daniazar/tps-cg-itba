@@ -2,6 +2,7 @@ package org.cg.primitives;
 
 import java.awt.Color;
 
+import javax.vecmath.Point2f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
@@ -19,6 +20,9 @@ public class Triangle extends Primitive {
 	private Point3f p1;
 	private Vector3f n;
 	private Material material;
+	private Point2f uv1;
+	private Point2f uv2;
+	private Point2f uv3;
 	
 	public void setMaterial(Material material) {
 		this.material = material;
@@ -101,6 +105,47 @@ public class Triangle extends Primitive {
 		}
 
 	
+	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Material material2,
+			Point2f uv1, Point2f uv2, Point2f uv3) {
+		
+		this.uv1 = uv1;
+	 	this.uv2 = uv2;
+		this.uv3 = uv3;
+		
+		// vector form triangle pt1 to pt2
+		u = new Vector3f();
+		v = new Vector3f();
+		u.x = pt2.x - pt1.x;
+		u.y = pt2.y - pt1.y;
+		u.z = pt2.z - pt1.z;
+
+	   // vector form triangle pt1 to pt3
+		v.x = pt3.x - pt1.x;
+		v.y = pt3.y - pt1.y;
+		v.z = pt3.z - pt1.z;
+		n = new Vector3f();
+		n.cross(u, v);
+
+		p1 =pt1;
+		this.material = material2;
+		
+		middlePoint = new Point3f();
+		middlePoint.x = (pt1.x + pt2.x + pt3.x) / 3;
+		middlePoint.y = (pt1.y + pt2.y + pt3.y) / 3;
+		middlePoint.z = (pt1.z + pt2.z + pt3.z) / 3;
+		
+		maxDistanceFromMiddle = Math.max(Math.max(middlePoint.distance(pt1), middlePoint.distance(pt2)), middlePoint.distance(pt3));
+		boundingBox = new SphereBoundingBox(this);
+		
+	    uu = u.dot(u);
+	    uv = u.dot(v);
+	    vv = v.dot(v);
+
+	    D = uv * uv - uu * vv;
+		p = new Plane(n, p1, material);
+	}
+
+
 	@Override
 	public boolean Intersects(Ray ray) {
 		// Para optimizar hay que guardar el plano ya creado.

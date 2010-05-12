@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.vecmath.Matrix4f;
+import javax.vecmath.Point2f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
@@ -322,7 +323,7 @@ public class SunflowScene {
             p.checkNextToken("none");
             // parse texture coordinates
             p.checkNextToken("uvs");
-            float[] uvs;
+            float[] uvs = null;
 			if (p.peekNextToken("vertex")){
                 uvs = parseFloatArray(np * 2);
                 
@@ -346,7 +347,22 @@ public class SunflowScene {
 				Point3f p2 = new Point3f(points[triangles[i + 1] * 3], points[triangles[i + 1] * 3 + 1], points[triangles[i + 1] * 3 + 2]);
 				Point3f p3 = new Point3f(points[triangles[i + 2] * 3], points[triangles[i + 2] * 3 + 1], points[triangles[i + 2] * 3 + 2]);
 				
-				objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial()));
+				Point2f uv1;
+				Point2f uv2;
+				Point2f uv3;
+				
+				if(uvs != null){
+					uv1 = new Point2f(uvs[i*2] ,uvs[i*2+1]);
+					uv2 = new Point2f(uvs[(i+1)*2] ,uvs[(i+1)*2+1]);
+					uv3 = new Point2f(uvs[(i+2)*2] ,uvs[(i+2)*2+1]);
+				}else{
+					uv1 = new Point2f(0,0);
+					uv2 = new Point2f(1,0);
+					uv3 = new Point2f(0,1);
+				}
+				
+				
+				objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial(),uv1,uv2,uv3));					
 				i += 3;
 			}
 			//objects.addAll(trianglesList);
