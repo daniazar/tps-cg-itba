@@ -4,6 +4,8 @@ image {
   filter mitchell
 }
 
+bucket 64 row 
+
 camera {
   type pinhole
   eye    0 0 -10

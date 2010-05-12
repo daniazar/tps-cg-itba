@@ -41,6 +41,9 @@ public class SunflowScene {
 	private static Vector3f up;
 	private static float fovx;
 	private static float aspect;
+	public static int AAMax;
+	public static int AAMin;
+	public static int bucket;
 	
 	public static void startScene(String name) {
 		ParseFile(name);	
@@ -65,6 +68,8 @@ public class SunflowScene {
 	                    parseLightBlock();
 	                }else if (token.equals("object")) {
 	                    parseObjectBlock();
+	                }else if (token.equals("bucket")) {
+	                    parseBucketBlock();
 	                }else {
 	                	if(p.peekNextToken("{"))
 	                		p.parseBlock();
@@ -79,6 +84,18 @@ public class SunflowScene {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void parseBucketBlock() throws ParserException, IOException {
+
+		bucket = p.getNextInt();
+		String token = p.getNextToken();
+		if(!token.equals("row"))
+		{
+			System.out.println("Only \"row\" is implemented");
+			
+		}
+		
 	}
 
 	private static void parseShader() throws ParserException, IOException, UnsupportedException {
@@ -102,7 +119,7 @@ public class SunflowScene {
 	            if (p.peekNextToken("texture"))
 	                 shader.setTexturePath(p.getNextToken());
 	            else {
-	            	p.checkNextToken("diff");
+	            	p.checkNextToken("diffuse");
 	                diffuse = parseColor();
 	            }
 	            p.checkNextToken("spec");
@@ -175,20 +192,24 @@ public class SunflowScene {
 	private static void parseImageBlock() throws ParserException, IOException {
 		System.out.println("parsing image");
 		resolution = new Point();
-		int aaMin = 0;
-		int aaMax = 0;
+
+
 		int samples = 0;
+ 
         p.checkNextToken("{");
         if (p.peekNextToken("resolution")) {
             resolution.x= p.getNextInt();
             resolution.y= p.getNextInt();
         }
         if (p.peekNextToken("aa")) {
-            aaMin= p.getNextInt();
-            aaMax = p.getNextInt();
+            
+            AAMin = p.getNextInt();
+            AAMax = p.getNextInt();
         }
+        
         if (p.peekNextToken("samples"))
             samples = p.getNextInt();
+        
         if (p.peekNextToken("contrast")){
         	System.out.println("constrast is unsupported");
         	p.getNextFloat();
@@ -201,6 +222,7 @@ public class SunflowScene {
         	System.out.println("jitter is unsupported");
             p.getNextBoolean();
         }
+
         if (p.peekNextToken("show-aa")) {
         	System.out.println("Deprecated: show-aa ignored");
             p.getNextBoolean();
@@ -211,11 +233,10 @@ public class SunflowScene {
         }
         p.checkNextToken("}");
         
-        System.out.println("Image resolution: " + resolution + " aa min: " + aaMin + " aa max: " + aaMax + "samples" +samples );
 	}
 
 	private static void parseObjectBlock() throws IOException, ParserException, UnsupportedException {
-		System.out.println("parsing objetct");
+		System.out.println("parsing object");
 		p.checkNextToken("{");
         Matrix4f transform = null;
         String name = null;
@@ -503,7 +524,7 @@ public class SunflowScene {
 	@SuppressWarnings("serial")
 	public static class UnsupportedException extends Exception {
         private UnsupportedException(String token) {
-            super(String.format("Token %s is unsupported ", token));
+            super(String.format("Token: %s is unsupported ", token));
         }
     }	
     

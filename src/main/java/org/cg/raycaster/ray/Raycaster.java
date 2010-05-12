@@ -21,9 +21,10 @@ public class Raycaster {
 	private final static int MAX_REFLECTIONS = 3;
 	private final static int MAX_REFRACTIONS = 10;
 	private final static float MIN_COEF = 0.005f;
-	private final static float ANTIALIASING_RES = 16;
+	private static float ANTIALIASING_RES_MAX = 16;
+	private static float ANTIALIASING_RES_MIN = 1;
 	private final static int AA_RECOMPUTE = 8;
-	private final static int ROWS_PER_THREAD = 320;
+	private static int ROWS_PER_THREAD = 16;
 	private Camera camera;
 	private Octree octree;
 	private boolean OCTREE_ENABLED = false;
@@ -46,13 +47,22 @@ public class Raycaster {
 	public BufferedImage raycast(boolean progress) {
 
 		camera.prepare();
-
+		
+		ANTIALIASING_RES_MAX = (float)Math.pow(2,SunflowScene.AAMax);
+		ANTIALIASING_RES_MIN = (float)Math.pow(2,SunflowScene.AAMin);
+		if(ANTIALIASING_RES_MIN < 1)
+			ANTIALIASING_RES_MIN = 1;
+		
+		ROWS_PER_THREAD = SunflowScene.bucket;
+		
 		if (SunflowScene.objects.size() > OCTREE_THRESHOLD) {
 			octree = new Octree(SunflowScene.objects);
 			OCTREE_ENABLED = true;
 			System.out.println("OCTREE ENABLED");
 		}
-
+		System.out.println("AntiAliasing Max Resoultion:"+ANTIALIASING_RES_MAX+
+				"\nAntiAliasing Min Resolution:"+ANTIALIASING_RES_MIN+"\n" +
+						"Bucket(Rows Per Thread):"+ROWS_PER_THREAD);
 		BufferedImage im = camera.getBufferedImage();
 		Thread threads[] = new Thread[camera.dimensions.x / ROWS_PER_THREAD];
 		int k = 0;
@@ -337,12 +347,12 @@ public class Raycaster {
 			absError += Math.pow(oldComp[i] - newComp[i], 2);
 		}
 		if (absError < 0.001)
-			return 1;
+			return ANTIALIASING_RES_MIN;
 
 		else if (absError < 0.1)
-			return (float) Math.min(ANTIALIASING_RES / 4, 1);
+			return (float) Math.min(ANTIALIASING_RES_MAX / 4, ANTIALIASING_RES_MIN);
 		else
-			return (float) (ANTIALIASING_RES);
+			return (float) (ANTIALIASING_RES_MAX);
 	}
 
 	public Ray LightHit(Ray ray, PointLight l) {

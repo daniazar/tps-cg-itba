@@ -11,7 +11,7 @@ import org.cg.raycaster.ray.Ray;
 public class Octree {
 
 	public Octree children[] = new Octree[8];
-	public static int PRIM_THRESHOLD = 3;
+	public static int PRIM_THRESHOLD = 64;
 	ArrayList<Primitive> myPrimitives= new ArrayList<Primitive>();
 
 
