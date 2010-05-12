@@ -6,12 +6,13 @@ import java.util.Set;
 
 import org.cg.boundingbox.BoundingBox;
 import org.cg.primitives.Primitive;
+import org.cg.raycaster.SunflowScene;
 import org.cg.raycaster.ray.Ray;
 
 public class Octree {
 
 	public Octree children[] = new Octree[8];
-	public static int PRIM_THRESHOLD = 128;
+	public static int PRIM_THRESHOLD = Math.min(3,(int)Math.pow(SunflowScene.objects.size(),0.333333));
 	ArrayList<Primitive> myPrimitives= new ArrayList<Primitive>();
 
 

@@ -24,7 +24,9 @@ public class Raycaster {
 	private static float ANTIALIASING_RES_MAX = 16;
 	private static float ANTIALIASING_RES_MIN = 1;
 	private final static int AA_RECOMPUTE = 8;
-	private static int ROWS_PER_THREAD = 80;
+	private static int ROWS_PER_THREAD = 16;
+
+	public static int progress_bar = 0;
 	private Camera camera;
 	private Octree octree;
 	private boolean OCTREE_ENABLED = false;
@@ -61,10 +63,11 @@ public class Raycaster {
 			OCTREE_ENABLED = true;
 			System.out.println("OCTREE ENABLED");
 		}
-		System.out.println("AntiAliasing Max Resoultion:"+ANTIALIASING_RES_MAX+
+		System.out.println("AntiAliasing Max Resolution:"+ANTIALIASING_RES_MAX+
 				"\nAntiAliasing Min Resolution:"+ANTIALIASING_RES_MIN+"\n" +
 						"Bucket(Rows Per Thread):"+ROWS_PER_THREAD);
 		BufferedImage im = camera.getBufferedImage();
+		
 		Thread threads[] = new Thread[camera.dimensions.x / ROWS_PER_THREAD];
 		int k = 0;
 		for (int i = 0; i < camera.dimensions.x; i++) {
@@ -228,6 +231,7 @@ public class Raycaster {
 					// Si el pixel es valido, sigo y guardo el pixel
 					if (pixelReady) {
 
+						progress_bar++;
 						float[] cComps = c.getColorComponents(null);
 						oldColor = new Color(cComps[0], cComps[1], cComps[2]);
 						image.setRGB(i, j, c.getRGB());
@@ -237,12 +241,14 @@ public class Raycaster {
 				rightauxi.scale(-2);
 				startingPoint.add(rightauxi);
 				if (progress) {
-					int prog2 = ((i-row) * 100 / rows);
+					int prog2 = progress_bar - progress_bar %camera.dimensions.y;
+					prog2 /= camera.dimensions.x;
+					
 					if (prog != prog2) {
 						prog = prog2;
-						if (((i-row) * 100 / rows) % 5 == 0)
+						if ((prog2 ) % 5 == 0)
 							System.out.println("Progress = "
-									+ ((i-row) * 100 / rows) + "%");
+									+ (prog2 ) + "%");
 					}
 				}
 

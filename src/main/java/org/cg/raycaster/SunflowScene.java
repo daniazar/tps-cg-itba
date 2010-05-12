@@ -83,7 +83,8 @@ public class SunflowScene {
             }
             cam = new Camera(pos, dir, resolution, up, fovx);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("No se pudo encontrar el archivo "+name);
+			
 		}
 	}
 

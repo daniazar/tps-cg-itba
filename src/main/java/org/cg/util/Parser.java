@@ -13,10 +13,12 @@ public class Parser {
     private int index;
 
     public Parser(String filename) throws FileNotFoundException {
-        file = new FileReader(filename);
-        bf = new BufferedReader(file);
-        lineTokens = new String[0];
-        index = 0;
+
+    		file = new FileReader(filename);
+    		bf = new BufferedReader(file);
+    		lineTokens = new String[0];
+    		index = 0;
+    	
     }
 
     public void close() throws IOException {

@@ -223,6 +223,7 @@ public class Triangle extends Primitive {
 		u0 = Math.abs(uv0.x);
 		v0 = Math.abs(uv0.y);
 		
+
 		if(this.shader.getType() == ShaderType.PHONG) {
 			Color color;
 			if(shader.getTexturePath() != null) {
