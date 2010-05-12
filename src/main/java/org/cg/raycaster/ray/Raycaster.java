@@ -24,7 +24,7 @@ public class Raycaster {
 	private static float ANTIALIASING_RES_MAX = 16;
 	private static float ANTIALIASING_RES_MIN = 1;
 	private final static int AA_RECOMPUTE = 8;
-	private static int ROWS_PER_THREAD = 16;
+	private static int ROWS_PER_THREAD = 80;
 	private Camera camera;
 	private Octree octree;
 	private boolean OCTREE_ENABLED = false;
@@ -53,7 +53,8 @@ public class Raycaster {
 		if(ANTIALIASING_RES_MIN < 1)
 			ANTIALIASING_RES_MIN = 1;
 		
-		ROWS_PER_THREAD = SunflowScene.bucket;
+		if(SunflowScene.bucket != 0)
+			ROWS_PER_THREAD = SunflowScene.bucket;
 		
 		if (SunflowScene.objects.size() > OCTREE_THRESHOLD) {
 			octree = new Octree(SunflowScene.objects);
