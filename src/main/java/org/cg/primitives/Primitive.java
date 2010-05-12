@@ -61,6 +61,6 @@ public abstract class Primitive implements Cloneable{
 	
 	public abstract float getDistanceToClosestPoint(Point3f origin);
 	
-	public abstract Color getTextureColor(Point3f intersectionPoint);
+	public abstract Color getTextureColor(Point3f intersectionPoint, Ray ray);
 	
 }

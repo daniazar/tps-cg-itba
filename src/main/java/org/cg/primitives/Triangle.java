@@ -34,114 +34,7 @@ public class Triangle extends Primitive {
 
     float    uu, uv, vv, wu, wv, D;
     Plane p;
-	
-	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Material material) {
 
-	   // vector form triangle pt1 to pt2
-		tp1 = new Vector3f();
-		tp2 = new Vector3f();
-		tp1.x = pt3.x - pt1.x;
-		tp1.y = pt3.y - pt1.y;
-		tp1.z = pt3.z - pt1.z;
-
-	   // vector form triangle pt1 to pt3
-		tp2.x = pt2.x - pt1.x;
-		tp2.y = pt2.y - pt1.y;
-		tp2.z = pt2.z - pt1.z;
-		n = new Vector3f();
-		n.cross(tp1, tp2);
-
-		p1 =pt1;
-		this.material = material;
-		
-		middlePoint = new Point3f();
-		middlePoint.x = (pt1.x + pt2.x + pt3.x) / 3;
-		middlePoint.y = (pt1.y + pt2.y + pt3.y) / 3;
-		middlePoint.z = (pt1.z + pt2.z + pt3.z) / 3;
-		
-		maxDistanceFromMiddle = Math.max(Math.max(middlePoint.distance(pt1), middlePoint.distance(pt2)), middlePoint.distance(pt3));
-		boundingBox = new SphereBoundingBox(this);
-		
-	    uu = tp1.dot(tp1);
-	    uv = tp1.dot(tp2);
-	    vv = tp2.dot(tp2);
-
-	    D = uv * uv - uu * vv;
-		p = new Plane(n, p1, material);
-
-	}
-
-	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Material material, Shader shader) {
-
-		this.setShader(shader);
-		   // vector form triangle pt1 to pt2
-			tp1 = new Vector3f();
-			tp2 = new Vector3f();
-			tp1.x = pt2.x - pt1.x;
-			tp1.y = pt2.y - pt1.y;
-			tp1.z = pt2.z - pt1.z;
-
-		   // vector form triangle pt1 to pt3
-			tp2.x = pt3.x - pt1.x;
-			tp2.y = pt3.y - pt1.y;
-			tp2.z = pt3.z - pt1.z;
-			n = new Vector3f();
-			n.cross(tp1, tp2);
-
-			p1 =pt1;
-			this.material = material;
-			
-			middlePoint = new Point3f();
-			middlePoint.x = (pt1.x + pt2.x + pt3.x) / 3;
-			middlePoint.y = (pt1.y + pt2.y + pt3.y) / 3;
-			middlePoint.z = (pt1.z + pt2.z + pt3.z) / 3;
-			
-			maxDistanceFromMiddle = Math.max(Math.max(middlePoint.distance(pt1), middlePoint.distance(pt2)), middlePoint.distance(pt3));
-			boundingBox = new SphereBoundingBox(this);
-			
-		    uu = tp1.dot(tp1);
-		    uv = tp1.dot(tp2);
-		    vv = tp2.dot(tp2);
-
-		    D = uv * uv - uu * vv;
-			p = new Plane(n, p1, material);
-
-		}
-	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Vector3f n, Material material) {
-
-		   // vector form triangle pt1 to pt2
-			tp1 = new Vector3f();
-			tp2 = new Vector3f();
-			tp1.x = pt2.x - pt1.x;
-			tp1.y = pt2.y - pt1.y;
-			tp1.z = pt2.z - pt1.z;
-
-		   // vector form triangle pt1 to pt3
-			tp2.x = pt3.x - pt1.x;
-			tp2.y = pt3.y - pt1.y;
-			tp2.z = pt3.z - pt1.z;
-			this.n=n;
-			p1 =pt1;
-			this.material = material;
-			
-			middlePoint = new Point3f();
-			middlePoint.x = (pt1.x + pt2.x + pt3.x) / 3;
-			middlePoint.y = (pt1.y + pt2.y + pt3.y) / 3;
-			middlePoint.z = (pt1.z + pt2.z + pt3.z) / 3;
-			
-			maxDistanceFromMiddle = Math.max(Math.max(middlePoint.distance(pt1), middlePoint.distance(pt2)), middlePoint.distance(pt3));
-			boundingBox = new SphereBoundingBox(this);
-			
-		    uu = tp1.dot(tp1);
-		    uv = tp1.dot(tp2);
-		    vv = tp2.dot(tp2);
-
-		    D = uv * uv - uu * vv;
-			p = new Plane(n, p1, material);
-
-		}
-
-	
 	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Material material2,
 			Shader shader, Point2f uv1, Point2f uv2, Point2f uv3) {
 		this.shader = shader;
@@ -306,7 +199,7 @@ public class Triangle extends Primitive {
 	}
 	
 	@Override
-	public Color getTextureColor(Point3f intersectionPoint) {
+	public Color getTextureColor(Point3f intersectionPoint, Ray ray) {
 		float u0;
 		float v0;
 		
@@ -327,10 +220,9 @@ public class Triangle extends Primitive {
 		Point2f uv0 = uv1uv2;
 		uv0.add(uv1uv3);
 		
-		u0 = uv0.x;
-		v0 = uv0.y;
+		u0 = Math.abs(uv0.x);
+		v0 = Math.abs(uv0.y);
 		
-		System.out.println(u0 + "," + v0);
 		if(this.shader.getType() == ShaderType.PHONG) {
 			Color color;
 			if(shader.getTexturePath() != null) {

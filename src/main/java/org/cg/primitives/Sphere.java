@@ -212,7 +212,7 @@ public class Sphere extends Primitive {
 	}
 
 	@Override
-	public Color getTextureColor(Point3f intersectionPoint) {
+	public Color getTextureColor(Point3f intersectionPoint, Ray ray) {
 		if(this.shader.getType() == ShaderType.PHONG) {
 			Point3f point = (Point3f) intersectionPoint.clone();
 			point.sub(this.center);

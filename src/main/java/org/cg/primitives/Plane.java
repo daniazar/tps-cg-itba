@@ -178,7 +178,7 @@ public class Plane extends Primitive {
 	}
 
 	@Override
-	public Color getTextureColor(Point3f intersectionPoint) {
+	public Color getTextureColor(Point3f intersectionPoint, Ray ray) {
 		// TODO change to correct implementation
 		return getBaseColor();
 	}

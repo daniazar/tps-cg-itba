@@ -30,7 +30,9 @@ public class Texture {
 		int v0 = (int) (height * v);
 
 		try {
-			return new Color(bi.getRGB(u0, v0));
+			synchronized (bi) {
+				return new Color(bi.getRGB(u0, v0));
+			}
 		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
 			System.out.println(width + "," + height);
 			System.out.println("u " + u + " u0 " + u0);

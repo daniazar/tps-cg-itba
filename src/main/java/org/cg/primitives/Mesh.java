@@ -29,7 +29,7 @@ public class Mesh extends Primitive {
 		middlePoint = new Point3f(0,0,0);
 		int count = 0;
 		for (int i = 0; i < pts1.length; i++) {
-			list.add(new Triangle(pts1[i], pts2[i], pts3[i],normals[i], material));
+			//list.add(new Triangle(pts1[i], pts2[i], pts3[i],normals[i], material));
 			middlePoint.x+=(pts1[i].x + pts2[i].x + pts3[i].x);
 			middlePoint.y+=(pts1[i].y + pts2[i].y + pts3[i].y);
 			middlePoint.z+=(pts1[i].z + pts2[i].z + pts3[i].z);
@@ -143,7 +143,7 @@ public class Mesh extends Primitive {
 	}
 
 	@Override
-	public Color getTextureColor(Point3f intersectionPoint) {
+	public Color getTextureColor(Point3f intersectionPoint, Ray ray) {
 		// TODO change to correct implementation
 		return new Color(intersectionPoint.x, intersectionPoint.y, intersectionPoint.z);
 	}

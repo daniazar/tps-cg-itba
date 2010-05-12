@@ -37,7 +37,7 @@ public class LambertianColorChooser implements LightColorChooser {
 
 		float lambert = (lightRay.direction.dot(n)) * coef;
 
-		float[] objectColor = ray.getObject().getTextureColor(ray.intersectionPoint)
+		float[] objectColor = ray.getObject().getTextureColor(ray.intersectionPoint, ray)
 				.getColorComponents(null);
 		float[] lightColorComp = lightColor.getColorComponents(null);
 		red += lambert * objectColor[0] * lightColorComp[0];

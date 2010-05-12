@@ -367,7 +367,6 @@ public class SunflowScene {
             	throw new UnsupportedException("Shader doesn't exist " + shader);
             }
             
-			List<Triangle> trianglesList = new ArrayList<Triangle>();
 			for(int i = 0; i < triangles.length; ) {
 				Point3f p1 = new Point3f(points[triangles[i] * 3], points[triangles[i] * 3 + 1], points[triangles[i] * 3 + 2]);
 				Point3f p2 = new Point3f(points[triangles[i + 1] * 3], points[triangles[i + 1] * 3 + 1], points[triangles[i + 1] * 3 + 2]);

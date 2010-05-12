@@ -30,15 +30,8 @@ public class Box extends Primitive {
     	Point3f p8 = pt2;
     	
     	this.setShader(shader);
-		initBox(p1,p2,p3,p4,p5,p6,p7,p8, material);
+		initBox(p1,p2,p3,p4,p5,p6,p7,p8, material,shader);
     
-    }
-
-	public Box(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
-                    Point3f pt5, Point3f pt6, Point3f pt7, Point3f pt8,
-                    Material material) {
-		initBox(pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, material);
-            
     }
 
 	public Box(Point3f pt1, Point3f pt2, Material material, Shader boxShader,
@@ -63,13 +56,13 @@ public class Box extends Primitive {
     	TransformUtil.transform(p7, transform);
     	TransformUtil.transform(p8, transform);
     	
-		initBox(p1,p2,p3,p4,p5,p6,p7,p8, material, shader);
+		initBox(p1,p2,p3,p4,p5,p6,p7,p8, material, boxShader);
 	}
 	
 
 	private void initBox(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
 			Point3f pt5, Point3f pt6, Point3f pt7, Point3f pt8,
-			Material material, Shader shader2) {
+			Material material, Shader shader) {
 		q1 = new Quadrilateral(pt1, pt2, pt3, pt4, material, shader); // abajo
 		q2 = new Quadrilateral(pt6, pt5, pt8, pt7, material, shader); // arriba
 		q3 = new Quadrilateral(pt5, pt4, pt3, pt8, material, shader); // adelante
@@ -93,32 +86,6 @@ public class Box extends Primitive {
 		
 	}
 
-	private void initBox(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
-			Point3f pt5, Point3f pt6, Point3f pt7, Point3f pt8,
-			Material material) {
-		q1 = new Quadrilateral(pt1, pt2, pt3, pt4, material); // abajo
-		q2 = new Quadrilateral(pt6, pt5, pt8, pt7, material); // arriba
-		q3 = new Quadrilateral(pt5, pt4, pt3, pt8, material); // adelante
-		q4 = new Quadrilateral(pt5, pt6, pt1, pt4, material); // izq
-		q5 = new Quadrilateral(pt7, pt8, pt3, pt2, material); // derecha
-		q6 = new Quadrilateral(pt6, pt7, pt2, pt1, material); // atras
-
-            middlePoint = new Point3f();
-            middlePoint.x = (pt1.x + pt2.x +pt3.x + pt4.x + pt5.x + pt6.x) / 6;
-            middlePoint.y = (pt1.y + pt2.y +pt3.y + pt4.y + pt5.y + pt6.y) / 6;
-            middlePoint.z = (pt1.z + pt2.z +pt3.z + pt4.z + pt5.z + pt6.z) / 6;
-            
-            maxDistanceFromMiddle = Math.max(
-            							Math.max(middlePoint.distance(pt1), 
-            									Math.max(middlePoint.distance(pt2), middlePoint.distance(pt3))),
-            							Math.max(middlePoint.distance(pt4), 
-            									Math.max(middlePoint.distance(pt5), middlePoint.distance(pt6)))
-            								);
-            
-            boundingBox = new SphereBoundingBox(this);
-	}
-
-    
     
     /* (non-Javadoc)
      * @see org.cg.primitives.Primitive#Intersects(org.cg.raycaster.ray.Ray)
@@ -303,9 +270,41 @@ public class Box extends Primitive {
 	}
 
 	@Override
-	public Color getTextureColor(Point3f intersectionPoint) {
-		// TODO change to correct implementation
-		return new Color(intersectionPoint.x, intersectionPoint.y, intersectionPoint.z);
+	public Color getTextureColor(Point3f intersectionPoint, Ray ray) {
+		Quadrilateral q = q6;
+		Point3f inter = new Point3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
+		
+		if(q1.Intersects(ray)) {
+			if(ray.position.distance(inter) < ray.position.distance(ray.intersectionPoint)) {
+				q = q1;
+				inter = ray.intersectionPoint;
+			}
+		} else if(q2.Intersects(ray)) {
+			if(ray.position.distance(inter) < ray.position.distance(ray.intersectionPoint)) {
+				q = q2;
+				inter = ray.intersectionPoint;
+			}
+		} else if(q3.Intersects(ray)) {
+			if(ray.position.distance(inter) < ray.position.distance(ray.intersectionPoint)) {
+				q = q3;
+				inter = ray.intersectionPoint;
+			}
+		} else if(q4.Intersects(ray)) {
+			if(ray.position.distance(inter) < ray.position.distance(ray.intersectionPoint)) {
+				q = q4;
+				inter = ray.intersectionPoint;
+			}
+		} else if(q5.Intersects(ray)) {
+			if(ray.position.distance(inter) < ray.position.distance(ray.intersectionPoint)) {
+				q = q5;
+				inter = ray.intersectionPoint;
+			}
+		} else {
+			q = q6;
+			inter = ray.intersectionPoint;
+		}
+		
+		return q.getTextureColor(intersectionPoint, ray);
 	}
 
 	public void setShader(Shader shader) {
