@@ -70,12 +70,14 @@ public class Raycaster {
 		try {
 			for (int j = 0; j < camera.dimensions.x / ROWS_PER_THREAD; j++)
 				threads[j].join();
+			System.out.println("Progress = 100%");
+				
 		} catch (InterruptedException e) {
 
 			e.printStackTrace();
 		}
 
-		return im;
+		return im; 
 	}
 
 	class traceRayRunnable implements Runnable {
@@ -84,14 +86,20 @@ public class Raycaster {
 		int rows;
 		BufferedImage image;
 		boolean progress;
+		
 
 		public traceRayRunnable(int i, int rows, BufferedImage image,
 				boolean prog) {
 			this.row = i;
 			this.rows = rows;
 			this.image = image;
-			progress = prog;
-
+			if (row==0){
+				progress = prog;
+					
+			}
+			else{
+				progress = false;
+			}
 		}
 
 		@Override
@@ -218,17 +226,18 @@ public class Raycaster {
 				rightauxi.scale(-2);
 				startingPoint.add(rightauxi);
 				if (progress) {
-					int prog2 = (i * 100 / camera.dimensions.x);
+					int prog2 = ((i-row) * 100 / rows);
 					if (prog != prog2) {
 						prog = prog2;
-						if ((i * 100 / camera.dimensions.x) % 5 == 0)
+						if (((i-row) * 100 / rows) % 5 == 0)
 							System.out.println("Progress = "
-									+ (i * 100 / camera.dimensions.x) + "%");
+									+ ((i-row) * 100 / rows) + "%");
 					}
 				}
 
 			}
 		}
+
 
 	}
 
