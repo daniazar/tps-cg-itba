@@ -9,7 +9,7 @@ import javax.vecmath.Vector3f;
 import org.cg.boundingbox.SphereBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
-import org.cg.rendering.Shader;
+import org.cg.rendering.shader.Shader;
 import org.cg.util.TransformUtil;
 
 public class Box extends Primitive {

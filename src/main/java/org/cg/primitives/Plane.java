@@ -8,7 +8,7 @@ import javax.vecmath.Vector3f;
 import org.cg.boundingbox.NoBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
-import org.cg.rendering.Shader;
+import org.cg.rendering.shader.Shader;
 
 
 public class Plane extends Primitive {
