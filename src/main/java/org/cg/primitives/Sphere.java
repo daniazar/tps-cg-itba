@@ -9,6 +9,8 @@ import org.cg.boundingbox.NoBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
 import org.cg.rendering.shader.Shader;
+import org.cg.rendering.shader.ShaderType;
+import org.cg.rendering.shader.TextureManager;
 
 
 public class Sphere extends Primitive {
@@ -211,14 +213,22 @@ public class Sphere extends Primitive {
 
 	@Override
 	public Color getTextureColor(Point3f intersectionPoint) {
-		Point3f point = (Point3f) intersectionPoint.clone();
-		point.sub(this.center);
-		
-		float u = (float) (point.x / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2)));
-		float v = (float) (point.y / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2)));
-		
-		//return actual texture mapping
-		return new Color(Math.abs((float)Math.tanh(u)), Math.abs((float)Math.tanh(v)), Math.abs((float)Math.tanh(u + v)));
+		if(this.shader.getType() == ShaderType.PHONG) {
+			Point3f point = (Point3f) intersectionPoint.clone();
+			point.sub(this.center);
+			
+			float u = (float) (point.x / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2))) + 0.5f;
+			float v = (float) (point.z / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2))) + 0.3f;
+			
+			Color color;
+			if(shader.getTexturePath() != null) {
+				color = TextureManager.get(shader.getTexturePath()).getUV(u,v);
+			} else {
+				color = getBaseColor();
+			}
+			return color;
+		}
+		return getBaseColor();
 	}
 
 	public void setShader(Shader shader) {

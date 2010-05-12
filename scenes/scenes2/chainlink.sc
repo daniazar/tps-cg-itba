@@ -5,6 +5,13 @@ image {
 	filter box
 }
 
+light {
+   type point
+   color { "sRGB linear" 1.000 1.000 1.000 }
+   power 100.0
+   p 1.0 3.0 6.0
+}
+
 trace-depths {
 	diff 1 
 	refl 4 
@@ -15,14 +22,14 @@ bucket 64 hilbert
 
 shader {
 	name def
-	type diffuse
-	diff 1 1 1
+	type constant
+	color { "sRGB linear" 0 1 0 }
 }
 
 shader {
 	name material
       type constant
-      color { "sRGB nonlinear" 0 1 0 }
+      color { "sRGB linear" 0 1 0 }
 }
 
 camera {

@@ -8,6 +8,7 @@ import javax.vecmath.Vector3f;
 import org.cg.boundingbox.SphereBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
+import org.cg.rendering.shader.Shader;
 
 
 public class Quadrilateral extends Primitive {
@@ -34,6 +35,24 @@ public class Quadrilateral extends Primitive {
 		boundingBox = new SphereBoundingBox(this);
 	}
 
+	public Quadrilateral(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
+			Material material, Shader shader) {
+		t1 = new Triangle(pt1, pt4, pt2, material, shader);
+		t2 = new Triangle(pt4, pt3, pt2, material, shader);
+		
+		middlePoint = new Point3f();
+		middlePoint.x = (pt1.x + pt2.x + pt3.x + pt4.x) / 4;
+		middlePoint.y = (pt1.y + pt2.y + pt3.y + pt4.y) / 4;
+		middlePoint.z = (pt1.z + pt2.z + pt3.z + pt4.z) / 4;
+		
+		maxDistanceFromMiddle = Math.max(
+									Math.max(middlePoint.distance(pt1), middlePoint.distance(pt2)), 
+									Math.max(middlePoint.distance(pt3), middlePoint.distance(pt4))
+									);
+		
+		boundingBox = new SphereBoundingBox(this);
+	}
+	
 	@Override
 	public float getRefraction() {
 		return t1.getRefraction();

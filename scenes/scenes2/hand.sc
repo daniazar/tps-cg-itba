@@ -1,8 +1,36 @@
+object {
+	shader default
+	type generic-mesh
+	name "Cylinder"
+	points 5
+		12.0 10.0 0.0
+		0.0 10.0 0.0
+		10.0 10.0 2.0
+		12.0 10.0 2.0
+		11.0 12.0 1.0
+	triangles 6
+		0 1 3
+		3 1 2
+		3 2 4
+		3 4 0
+		4 1 0
+		1 4 2
+	normals none
+	uvs none
+}
+
 image {
       resolution 800 600
 	aa 0 2
 	samples 1
 	filter box
+}
+
+light {
+   type point
+   color { "sRGB linear" 1.000 1.000 1.000 }
+   power 100.0
+   p 1.0 3.0 6.0
 }
 
 trace-depths {
@@ -22,7 +50,7 @@ shader {
 shader {
 	name material
 	type constant
-	color { "sRGB nonlinear" 1 0 0 }
+	color { "sRGB linear" 1 0 0 }
 }
 
 camera {

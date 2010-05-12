@@ -23,6 +23,7 @@ import org.cg.rendering.Camera;
 import org.cg.rendering.Material;
 import org.cg.rendering.PointLight;
 import org.cg.rendering.shader.Shader;
+import org.cg.rendering.shader.ShaderType;
 import org.cg.util.Parser;
 import org.cg.util.Parser.ParserException;
 
@@ -136,6 +137,7 @@ public class SunflowScene {
 				
 				Material material = new Material(diffuse, 0, 0, 1, 0, specular, power, 1);
 				shader.setMaterial(material);
+				shader.setType(ShaderType.PHONG);
 				shadersMap.put(name, shader);
 				
 			}else if (p.peekNextToken("mirror")){
@@ -146,6 +148,7 @@ public class SunflowScene {
 		         
 		         Material material = new Material(color, 1, 0, 0, 0, color, 10, 0);
 		         shader.setMaterial(material);
+		         shader.setType(ShaderType.MIRROR);
 		         shadersMap.put(name, shader);
 		         
 			}else if (p.peekNextToken("constant")) {
@@ -156,6 +159,7 @@ public class SunflowScene {
 	            
 	            Material material = new Material(color, 0, 0, 1, 0, color, 0, 0);
 	            shader.setMaterial(material);
+	            shader.setType(ShaderType.CONSTANT);
 	            shadersMap.put(name, shader);
 	            
 	        }else if (p.peekNextToken("glass")){
@@ -176,6 +180,7 @@ public class SunflowScene {
 				System.out.println("type glass name :"+ name+" parameters:" + eta + color.toString() + absorbtionColor + absorbtionDistance);
 				Material material = new Material(color, 0, 0.99f, 1.2f, 0, color, 1, 0);
 				shader.setMaterial(material);
+				shader.setType(ShaderType.GLASS);
 				shadersMap.put(name, shader);
 		     } else{
 		    	 String tok = p.getNextToken();
@@ -382,8 +387,12 @@ public class SunflowScene {
 					uv3 = new Point2f(0,1);
 				}
 				
-				
-				objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial(),uv1,uv2,uv3));					
+				Shader triShader = shadersMap.get(shader);
+                if(triShader == null) {
+                	throw new UnsupportedException("Shader doesn't exist " + shader);
+                }
+                
+				objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial(),triShader,uv1,uv2,uv3));					
 				i += 3;
 			}
 			//objects.addAll(trianglesList);

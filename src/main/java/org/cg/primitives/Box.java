@@ -63,9 +63,35 @@ public class Box extends Primitive {
     	TransformUtil.transform(p7, transform);
     	TransformUtil.transform(p8, transform);
     	
-		initBox(p1,p2,p3,p4,p5,p6,p7,p8, material);
+		initBox(p1,p2,p3,p4,p5,p6,p7,p8, material, shader);
 	}
 	
+
+	private void initBox(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
+			Point3f pt5, Point3f pt6, Point3f pt7, Point3f pt8,
+			Material material, Shader shader2) {
+		q1 = new Quadrilateral(pt1, pt2, pt3, pt4, material, shader); // abajo
+		q2 = new Quadrilateral(pt6, pt5, pt8, pt7, material, shader); // arriba
+		q3 = new Quadrilateral(pt5, pt4, pt3, pt8, material, shader); // adelante
+		q4 = new Quadrilateral(pt5, pt6, pt1, pt4, material, shader); // izq
+		q5 = new Quadrilateral(pt7, pt8, pt3, pt2, material, shader); // derecha
+		q6 = new Quadrilateral(pt6, pt7, pt2, pt1, material, shader); // atras
+
+            middlePoint = new Point3f();
+            middlePoint.x = (pt1.x + pt2.x +pt3.x + pt4.x + pt5.x + pt6.x) / 6;
+            middlePoint.y = (pt1.y + pt2.y +pt3.y + pt4.y + pt5.y + pt6.y) / 6;
+            middlePoint.z = (pt1.z + pt2.z +pt3.z + pt4.z + pt5.z + pt6.z) / 6;
+            
+            maxDistanceFromMiddle = Math.max(
+            							Math.max(middlePoint.distance(pt1), 
+            									Math.max(middlePoint.distance(pt2), middlePoint.distance(pt3))),
+            							Math.max(middlePoint.distance(pt4), 
+            									Math.max(middlePoint.distance(pt5), middlePoint.distance(pt6)))
+            								);
+            
+            boundingBox = new SphereBoundingBox(this);
+		
+	}
 
 	private void initBox(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
 			Point3f pt5, Point3f pt6, Point3f pt7, Point3f pt8,

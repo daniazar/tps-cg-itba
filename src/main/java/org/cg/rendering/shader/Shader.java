@@ -7,7 +7,18 @@ public class Shader {
 	String name;
 	String texturePath;
 	Material material;
+	ShaderType type;
 	
+	public ShaderType getType() {
+		return type;
+	}
+
+
+	public void setType(ShaderType type) {
+		this.type = type;
+	}
+
+
 	public Shader(String name){
 		this.name = name;
 	}
