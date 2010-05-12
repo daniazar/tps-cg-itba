@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import javax.vecmath.Matrix4f;
@@ -16,10 +17,11 @@ import org.cg.primitives.Box;
 import org.cg.primitives.Plane;
 import org.cg.primitives.Primitive;
 import org.cg.primitives.Sphere;
+import org.cg.primitives.Triangle;
 import org.cg.rendering.Camera;
 import org.cg.rendering.Material;
 import org.cg.rendering.PointLight;
-import org.cg.rendering.Shader;
+import org.cg.rendering.shader.Shader;
 import org.cg.util.Parser;
 import org.cg.util.Parser.ParserException;
 
@@ -332,6 +334,22 @@ public class SunflowScene {
             int[] faceshaders;
 			if (p.peekNextToken("face_shaders"))
 				faceshaders = parseIntArray(nt);	
+			
+			Shader triangleShader = shadersMap.get(shader);
+            if(triangleShader == null) {
+            	throw new UnsupportedException("Shader doesn't exist " + shader);
+            }
+            
+			List<Triangle> trianglesList = new ArrayList<Triangle>();
+			for(int i = 0; i < triangles.length; ) {
+				Point3f p1 = new Point3f(points[triangles[i] * 3], points[triangles[i] * 3 + 1], points[triangles[i] * 3 + 2]);
+				Point3f p2 = new Point3f(points[triangles[i + 1] * 3 + 1], points[triangles[i + 1] * 3 + 2], points[triangles[i + 1] * 3 + 2]);
+				Point3f p3 = new Point3f(points[triangles[i + 2] * 3], points[triangles[i + 2] * 3 + 1], points[triangles[i + 2] * 3 + 2]);
+				
+				objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial()));
+				i += 3;
+			}
+			//objects.addAll(trianglesList);
         }else if(type.equals("box")){        	
         	Point3f p0 = new Point3f(0,0,0);
         	Point3f p1 = new Point3f(1,1,1);
