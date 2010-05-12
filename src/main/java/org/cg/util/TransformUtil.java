@@ -13,5 +13,10 @@ public class TransformUtil {
 		p.y = v.y;
 		p.z = v.z;
 	}
+	
+	public static void transform(Point3f[] points,Matrix4f m){
+		for(int i=0; i < points.length; i++)
+			transform(points[i], m);
+	}
 
 }
