@@ -12,7 +12,7 @@ import org.cg.raycaster.ray.Ray;
 public class Octree {
 
 	public Octree children[] = new Octree[8];
-	public static int PRIM_THRESHOLD = Math.min(3,(int)Math.pow(SunflowScene.objects.size(),0.333333));
+	public static int PRIM_THRESHOLD = Math.max(3,(int)Math.pow(SunflowScene.objects.size(),0.333333));
 	ArrayList<Primitive> myPrimitives= new ArrayList<Primitive>();
 
 
