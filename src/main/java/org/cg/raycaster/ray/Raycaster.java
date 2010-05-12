@@ -21,7 +21,8 @@ public class Raycaster {
 	private final static int MAX_REFLECTIONS = 3;
 	private final static int MAX_REFRACTIONS = 10;
 	private final static float MIN_COEF = 0.00f;
-	private final static float ANTIALIASING_RES = 1;
+	private final static float ANTIALIASING_RES = 16;
+	private final static int AA_RECOMPUTE = 16;
 	private Camera camera;
 	private Octree octree;
 	private boolean OCTREE_ENABLED = false;
@@ -68,55 +69,107 @@ public class Raycaster {
 		islightEnabled = camera.isLightingEnabled();
 		colorChooser = camera.getColorchooser();
 		int prog = 0;
+		Color c = new Color(0, 0, 0);
+		Color oldColor = new Color(0,0,0);
+		
+		float resolution = AntiAliasingResolution(c, c);
+		float fragmentCoef = 1 / resolution;
+		float antiStep = 1 / (float) Math.sqrt(resolution);
+
+		boolean pixelReady = false;
+		float newRes = resolution;
+		int pixelsToRecompute = 0;
+		
 		for (int i = 0; i < camera.dimensions.x; i++) {
 
 			for (int j = 0; j < camera.dimensions.y; j++) {
 
-				int level = 0;
-				Color c = new Color(0, 0, 0);
-				float fragmentCoef = 1 / ANTIALIASING_RES;
-				Point3f pixelPos = new Point3f(startingPoint);
-
-				upauxi = new Vector3f(camera.up);
-				upauxi.scale((j) * 2);
-				pixelPos.add(upauxi);
-
-				float antiStep = 1 / (float) Math.sqrt(ANTIALIASING_RES);
-
-				for (float fragmentX = 0; fragmentX < 1; fragmentX += antiStep) {
-					for (float fragmentY = 0; fragmentY < 1; fragmentY += antiStep) {
-						Point3f pixelFragPos = new Point3f(pixelPos);
-
-						Vector3f upfragment = new Vector3f(camera.up);
-						upfragment.scale(fragmentY);
-						pixelFragPos.add(upfragment);
-
-						Vector3f rightfragment = new Vector3f(camera.right);
-						rightfragment.scale(-2 * fragmentX);
-						pixelFragPos.add(rightfragment);
-
-						Color fragColor = new Color(0, 0, 0);
-						Vector3f dir = new Vector3f(pixelFragPos.x
-								- camera.position.x, pixelFragPos.y
-								- camera.position.y, pixelFragPos.z
-								- camera.position.z);
-						dir.normalize();
-
-						Ray ray = new Ray(dir, pixelFragPos);
+					pixelReady = false;
+					int level = 0;
+					c = new Color(0, 0, 0);
+					
+					Point3f pixelPos = new Point3f(startingPoint);
 	
-						fragColor = traceRay(ray, level, 1.0f, fragColor);
-						float[] cComps = c.getColorComponents(null);
-						float[] fragComps = fragColor.getColorComponents(null);
-
-						for (int k = 0; k < 3; k++)
-							cComps[k] += fragmentCoef * fragComps[k];
-
-						c = new Color(cComps[0], cComps[1], cComps[2]);
+					upauxi = new Vector3f(camera.up);
+					upauxi.scale((j) * 2);
+					pixelPos.add(upauxi);
+	
+				//Calculo del pixel por separado por el AntiAliasing
+					for (float fragmentX = 0; fragmentX < 1; fragmentX += antiStep) {
+						for (float fragmentY = 0; fragmentY < 1; fragmentY += antiStep) {
+							Point3f pixelFragPos = new Point3f(pixelPos);
+	
+							Vector3f upfragment = new Vector3f(camera.up);
+							upfragment.scale(fragmentY);
+							pixelFragPos.add(upfragment);
+	
+							Vector3f rightfragment = new Vector3f(camera.right);
+							rightfragment.scale(-2 * fragmentX);
+							pixelFragPos.add(rightfragment);
+	
+							Color fragColor = new Color(0, 0, 0);
+							Vector3f dir = new Vector3f(pixelFragPos.x
+									- camera.position.x, pixelFragPos.y
+									- camera.position.y, pixelFragPos.z
+									- camera.position.z);
+							dir.normalize();
+	
+							Ray ray = new Ray(dir, pixelFragPos);
+		
+							fragColor = traceRay(ray, level, 1.0f, fragColor);
+							float[] cComps = c.getColorComponents(null);
+							float[] fragComps = fragColor.getColorComponents(null);
+	
+							for (int k = 0; k < 3; k++)
+								cComps[k] += fragmentCoef * fragComps[k];
+	
+							c = new Color(cComps[0], cComps[1], cComps[2]);
+							
+						}	
+							
 					}
+	
+					//Si estoy recomputando, no altero la resolucion 
+					if(pixelsToRecompute < 0)
+						newRes = AntiAliasingResolution(oldColor, c);
+		
 
-				}
-				im.setRGB(i, j, c.getRGB());
-
+				//	System.out.println("i: "+i+" j: "+j+" res: "+resolution+" newRes: "+newRes);
+						//Si la resolucion incrementa, tengo que volver a renderear los pixeles anteriores
+					//Esto se hace porque pueden tener influencia de las filas de alrededor y no solo de j
+						if(newRes > resolution && j != 0)
+						{
+							j-= AA_RECOMPUTE;
+							if(j < 0 )
+								j = -1;
+							pixelsToRecompute = AA_RECOMPUTE;
+							resolution = newRes;
+							fragmentCoef = 1 / resolution;
+							antiStep = 1 / (float) Math.sqrt(resolution);
+						}
+						//Llegue a una area igual, imprimo el pixel ya rendereado pero sigo
+						else if (newRes < resolution)
+						{
+							resolution = newRes;
+							fragmentCoef = 1 / resolution;
+							antiStep = 1 / (float) Math.sqrt(resolution);
+							pixelReady = true;
+						}
+						//No hubo cambio
+						else
+						{
+							pixelsToRecompute--;
+							pixelReady = true;
+						}
+						
+						//Si el pixel es valido, sigo y guardo el pixel
+						if(pixelReady)
+						{
+											                   
+							float[] cComps = c.getColorComponents(null);
+							oldColor = new Color(cComps[0], cComps[1], cComps[2]);
+							im.setRGB(i, j, c.getRGB());
+						}
 			}
 			rightauxi = new Vector3f(camera.right);
 			rightauxi.scale(-2);
@@ -230,6 +283,27 @@ public class Raycaster {
 		ray.position.x /= aspectRatio;
 
 	}
+	
+	private float AntiAliasingResolution(Color oldC, Color newC)
+	{
+		float absError = 0;
+		float oldComp[] = oldC.getColorComponents(null);
+		float newComp[] = newC.getColorComponents(null);
+		
+		for(int i = 0; i < 3; i++)
+		{
+			absError += Math.pow(oldComp[i] - newComp[i],2); 
+		}
+		if(absError < 0.00001)
+			return 1;
+/*		else if (absError  < 0.5)
+			return (float) Math.min(ANTIALIASING_RES/16,1);
+		else if(absError < 0.9)
+			return (float) Math.min(1,ANTIALIASING_RES/4);*/
+		else
+			return (float)(ANTIALIASING_RES);
+	}
+	
 	public Ray LightHit(Ray ray, PointLight l) {
 		Vector3f n = null;
 		Primitive o = ray.getObject();
