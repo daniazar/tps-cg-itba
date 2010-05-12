@@ -510,10 +510,12 @@ public class SunflowScene {
 	                    float s = p.getNextFloat();
 	                    t.setScale(s);
 	                } else if (p.peekNextToken("scale")) {
-	                    p.getNextToken();
-	                    p.getNextToken();
-	                    p.getNextToken();
-	                    System.out.println("scales is not supported");
+	                	float x = p.getNextFloat();
+	                    float y = p.getNextFloat();
+	                    float z = p.getNextFloat();
+	                    t.m00 = t.m00 * x;
+	                    t.m11 = t.m11 * y;
+	                    t.m22 = t.m22 * z;
 	                } else if (p.peekNextToken("rotatex")) {
 	                    float angle = p.getNextFloat();
 	                    t.rotX((float) Math.toRadians(angle));
