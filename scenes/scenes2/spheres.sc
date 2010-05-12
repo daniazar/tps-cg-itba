@@ -9,14 +9,21 @@ camera {
   eye    0 0 0
   target 0 1 0
   up     0 0 1
-  fov    60
+  fov    180
   aspect 1.333333
+}
+
+light {
+   type point
+   color { "sRGB linear" 1.000 1.000 1.000 }
+   power 100.0
+   p 1.0 3.0 6.0
 }
 
 shader {
   name default
   type constant
-  color { "sRGB nonlinear" 1 0 0 }
+  color { "sRGB linear" 1 1 0 }
 }
 
 object {
@@ -54,6 +61,13 @@ object {
   type sphere
   c 8 10 0
   r 1
+}
+
+object {
+   shader default
+   type plane
+   p 0 29 0
+   n 0 -1 0
 }
 
 

@@ -8,6 +8,7 @@ import javax.vecmath.Vector3f;
 import org.cg.boundingbox.NoBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
+import org.cg.rendering.Shader;
 
 
 public class Sphere extends Primitive {
@@ -15,7 +16,7 @@ public class Sphere extends Primitive {
 	private Point3f center;
 	private float radius;
 	private Material material;
-
+	private Shader shader;
 	public Point3f getCenter() {
 		return center;
 	}
@@ -53,6 +54,14 @@ public class Sphere extends Primitive {
 		boundingBox = new NoBoundingBox(this);
 	}
 
+	public Sphere(Point3f center, float radius, Material mat, Shader shader) {
+		this.setShader(shader);
+		this.radius = radius;
+		this.center = center;
+		this.material = mat;
+		boundingBox = new NoBoundingBox(this);
+	}
+	
 	public boolean Intersects(Ray ray) {
 
 		float B = 2 * ray.direction.x * (ray.position.x - center.x) + 2
@@ -200,4 +209,24 @@ public class Sphere extends Primitive {
 		return center.z - radius;
 	}
 
+	@Override
+	public Color getTextureColor(Point3f intersectionPoint) {
+		Point3f point = (Point3f) intersectionPoint.clone();
+		point.sub(this.center);
+		
+		float u = (float) (point.x / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2)));
+		float v = (float) (point.y / (Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2)));
+		
+		//return actual texture mapping
+		return new Color(Math.abs((float)Math.tanh(u)), Math.abs((float)Math.tanh(v)), Math.abs((float)Math.tanh(u + v)));
+	}
+
+	public void setShader(Shader shader) {
+		this.shader = shader;
+	}
+
+	public Shader getShader() {
+		return shader;
+	}
+	
 }

@@ -8,7 +8,7 @@ import java.util.Comparator;
 import javax.vecmath.Point3f;
 
 import org.cg.primitives.Primitive;
-import org.cg.raycaster.Scene;
+import org.cg.raycaster.SunflowScene;
 import org.cg.raycaster.ray.Ray;
 
 
@@ -28,7 +28,7 @@ public class DistanceColorChooser extends PlainColorChooser {
 	public DistanceColorChooser(Point3f CameraPos, ColorVariator var) {
 		super(var);
 		camPos = CameraPos;
-		assignedPrimitives = Scene.objects;
+		assignedPrimitives = SunflowScene.objects;
 		Collections.sort(assignedPrimitives, new DistanceComparator());
 
 	}

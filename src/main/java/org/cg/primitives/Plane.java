@@ -8,12 +8,14 @@ import javax.vecmath.Vector3f;
 import org.cg.boundingbox.NoBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
+import org.cg.rendering.Shader;
 
 
 public class Plane extends Primitive {
 
 	private Vector3f n;
 	private float d;
+	private Shader shader;
 	
 	public Material getMaterial() {
 		return material;
@@ -32,6 +34,30 @@ public class Plane extends Primitive {
 		this.boundingBox = new NoBoundingBox(this);
 	}
 
+	public Plane(Vector3f n, Point3f p, Material mat, Shader shader) {
+		this.d = -n.dot(new Vector3f(p));
+		this.n = n;
+		this.material = mat;
+		this.boundingBox = new NoBoundingBox(this);
+		this.setShader(shader);
+	}
+	
+	public Plane(Vector3f p0, Vector3f p1, Vector3f p2, Material mat, Shader shader) {
+		Vector3f aux1 = (Vector3f) p1.clone();
+		Vector3f aux2 = (Vector3f) p2.clone();
+		
+		aux1.sub(p0);
+		aux2.sub(p0);
+		aux1.cross(aux1, aux2);
+
+		this.n = aux1;
+		
+		this.d = -n.dot(new Vector3f(p0));
+		this.material = mat;
+		this.boundingBox = new NoBoundingBox(this);
+		this.setShader(shader);
+	}
+	
 	@Override
 	public boolean Intersects(Ray ray) {
 		float den = ray.direction.dot(n);
@@ -151,4 +177,18 @@ public class Plane extends Primitive {
 		return null;
 	}
 
+	@Override
+	public Color getTextureColor(Point3f intersectionPoint) {
+		// TODO change to correct implementation
+		return getBaseColor();
+	}
+
+	public void setShader(Shader shader) {
+		this.shader = shader;
+	}
+
+	public Shader getShader() {
+		return shader;
+	}
+	
 }

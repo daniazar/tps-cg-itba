@@ -29,8 +29,12 @@ public class Main {
 				
 			}
 		}
-		Scene.startScene(p.getInputFile());
-		Camera c = Scene.cam;
+		SunflowScene.startScene(p.getInputFile());
+		//Scene.startScene(p.getInputFile());
+		
+		Camera c = SunflowScene.cam;
+		//Camera c = Scene.cam;
+		
 		Raycaster raycaster = new Raycaster();
 		
 		c.setColorMode(p.getCm(), p.getCv());

@@ -2,28 +2,80 @@ package org.cg.primitives;
 
 import java.awt.Color;
 
+import javax.vecmath.Matrix4f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
 import org.cg.boundingbox.SphereBoundingBox;
 import org.cg.raycaster.ray.Ray;
 import org.cg.rendering.Material;
+import org.cg.rendering.Shader;
+import org.cg.util.TransformUtil;
 
 public class Box extends Primitive {
 
 	private Point3f middlePoint;
 	private float maxDistanceFromMiddle;
     private Quadrilateral q1, q2, q3, q4, q5, q6;
+    private Shader shader;
+    
+    public Box(Point3f pt1, Point3f pt2, Material material, Shader shader) {
+    	Point3f p1 = pt1;
+    	Point3f p2 = new Point3f(pt1.x, pt1.y, pt2.z);
+    	Point3f p3 = new Point3f(pt2.x, pt1.y, pt2.z);
+    	Point3f p4 = new Point3f(pt2.x, pt1.y, pt1.z);
+    	Point3f p5 = new Point3f(pt2.x, pt2.y, pt1.z);
+    	Point3f p6 = new Point3f(pt1.x, pt2.y, pt1.z);
+    	Point3f p7 = new Point3f(pt1.x, pt2.y, pt2.z);
+    	Point3f p8 = pt2;
+    	
+    	this.setShader(shader);
+		initBox(p1,p2,p3,p4,p5,p6,p7,p8, material);
+    
+    }
 
-    public Box(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
+	public Box(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
                     Point3f pt5, Point3f pt6, Point3f pt7, Point3f pt8,
                     Material material) {
-		q1 = new Quadrilateral(pt1, pt2, pt3, pt4, material);//adelante ok
-		q2 = new Quadrilateral(pt8, pt2, pt1, pt7, material);//abajo ok
-		q3 = new Quadrilateral(pt6, pt3, pt2, pt8, material);//derecha ok
-		q4 = new Quadrilateral(pt5, pt4, pt3, pt6, material);//arriba ok
-		q5 = new Quadrilateral(pt1, pt4, pt5, pt7, material);//izq ok
-		q6 = new Quadrilateral(pt5, pt6, pt8, pt7, material);//atras ok
+		initBox(pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, material);
+            
+    }
+
+	public Box(Point3f pt1, Point3f pt2, Material material, Shader boxShader,
+			Matrix4f transform) {
+		Point3f p1 = pt1;
+    	Point3f p2 = new Point3f(pt1.x, pt1.y, pt2.z);
+    	Point3f p3 = new Point3f(pt2.x, pt1.y, pt2.z);
+    	Point3f p4 = new Point3f(pt2.x, pt1.y, pt1.z);
+    	Point3f p5 = new Point3f(pt2.x, pt2.y, pt1.z);
+    	Point3f p6 = new Point3f(pt1.x, pt2.y, pt1.z);
+    	Point3f p7 = new Point3f(pt1.x, pt2.y, pt2.z);
+    	Point3f p8 = pt2;
+    	
+    	this.setShader(shader);
+    	
+    	TransformUtil.transform(p1, transform);
+    	TransformUtil.transform(p2, transform);
+    	TransformUtil.transform(p3, transform);
+    	TransformUtil.transform(p4, transform);
+    	TransformUtil.transform(p5, transform);
+    	TransformUtil.transform(p6, transform);
+    	TransformUtil.transform(p7, transform);
+    	TransformUtil.transform(p8, transform);
+    	
+		initBox(p1,p2,p3,p4,p5,p6,p7,p8, material);
+	}
+	
+
+	private void initBox(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
+			Point3f pt5, Point3f pt6, Point3f pt7, Point3f pt8,
+			Material material) {
+		q1 = new Quadrilateral(pt1, pt2, pt3, pt4, material); // abajo
+		q2 = new Quadrilateral(pt6, pt5, pt8, pt7, material); // arriba
+		q3 = new Quadrilateral(pt5, pt4, pt3, pt8, material); // adelante
+		q4 = new Quadrilateral(pt5, pt6, pt1, pt4, material); // izq
+		q5 = new Quadrilateral(pt7, pt8, pt3, pt2, material); // derecha
+		q6 = new Quadrilateral(pt6, pt7, pt2, pt1, material); // atras
 
             middlePoint = new Point3f();
             middlePoint.x = (pt1.x + pt2.x +pt3.x + pt4.x + pt5.x + pt6.x) / 6;
@@ -38,8 +90,7 @@ public class Box extends Primitive {
             								);
             
             boundingBox = new SphereBoundingBox(this);
-            
-    }
+	}
 
     
     
@@ -222,8 +273,21 @@ public class Box extends Primitive {
 
 	@Override
 	public Material getMaterial() {
-		// TODO Auto-generated method stub
-		return null;
+		return q1.getMaterial();
+	}
+
+	@Override
+	public Color getTextureColor(Point3f intersectionPoint) {
+		// TODO change to correct implementation
+		return new Color(intersectionPoint.x, intersectionPoint.y, intersectionPoint.z);
+	}
+
+	public void setShader(Shader shader) {
+		this.shader = shader;
+	}
+
+	public Shader getShader() {
+		return shader;
 	}
 
 }

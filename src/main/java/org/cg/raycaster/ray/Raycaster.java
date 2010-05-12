@@ -8,11 +8,11 @@ import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
 import org.cg.primitives.Primitive;
-import org.cg.raycaster.Scene;
+import org.cg.raycaster.SunflowScene;
 import org.cg.rendering.Camera;
 import org.cg.rendering.PointLight;
 import org.cg.rendering.color.LightColorChooser;
-import org.cg.rendering.color.PhongShader;
+import org.cg.rendering.color.PhongShading;
 import org.cg.rendering.color.PlainColorChooser;
 import org.cg.spatial.Octree;
 
@@ -40,15 +40,15 @@ public class Raycaster {
 	PlainColorChooser colorChooser;
 	boolean islightEnabled;
 	LightColorChooser lambertian;
-	LightColorChooser phong = new PhongShader();
+	LightColorChooser phong = new PhongShading();
 
 	public BufferedImage raycast(boolean progress) {
 
 		camera.prepare();
 		
-		if(Scene.objects.size() > OCTREE_THRESHOLD)
+		if(SunflowScene.objects.size() > OCTREE_THRESHOLD)
 		{
-			octree = new Octree(Scene.objects);
+			octree = new Octree(SunflowScene.objects);
 			OCTREE_ENABLED = true;
 			System.out.println("OCTREE ENABLED");
 		}
@@ -203,7 +203,7 @@ public class Raycaster {
 		}
 		else
 		{
-			for (Primitive o : Scene.objects) 
+			for (Primitive o : SunflowScene.objects) 
 				if (o.intersectsBoundingBox(ray)) 
 					o.Intersects(ray);
 		}
@@ -238,7 +238,7 @@ public class Raycaster {
 		
 			if (islightEnabled) {
 
-				for (PointLight l : Scene.lights) {
+				for (PointLight l : SunflowScene.lights) {
 
 					Ray lightRay = LightHit(ray, l);
 
@@ -350,7 +350,7 @@ public class Raycaster {
 		}
 		else
 		{
-			for (Primitive shadow : Scene.objects) 
+			for (Primitive shadow : SunflowScene.objects) 
 				if (shadow.intersectsBoundingBox(lightRay)) 
 					shadow.Intersects(lightRay);
 		}

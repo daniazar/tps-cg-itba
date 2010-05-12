@@ -9,7 +9,7 @@ public class Parameters {
 	private static final String pointSeparator = "x";
 	
 	//nombre de archivo input
-	public static String i = "scene5.xml";
+	public static String i = "scenes/scenes2/spheres.sc";
 	
 	//nombre de archivo output
 	public String o = null;

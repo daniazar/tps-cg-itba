@@ -4,21 +4,21 @@ import java.awt.Color;
 
 import javax.vecmath.Vector3f;
 
-import org.cg.raycaster.Scene;
+import org.cg.raycaster.SunflowScene;
 import org.cg.raycaster.ray.Ray;
 
 
 
-public class PhongShader implements LightColorChooser {
+public class PhongShading implements LightColorChooser {
 
 
 	@Override
 	public Color getColor(Ray ray, Ray lightRay, float coef, Color baseColor,
 			Color lightColor) {
 		//Calculo el vector V que apunta a la camara
-		Vector3f V = new Vector3f(Scene.cam.position.x - ray.getIntersectionPoint().x,
-				Scene.cam.position.y - ray.getIntersectionPoint().y,
-				Scene.cam.position.z - ray.getIntersectionPoint().z);
+		Vector3f V = new Vector3f(SunflowScene.cam.position.x - ray.getIntersectionPoint().x,
+				SunflowScene.cam.position.y - ray.getIntersectionPoint().y,
+				SunflowScene.cam.position.z - ray.getIntersectionPoint().z);
 		
 		Vector3f R = ray.Reflection().direction;
 		R.normalize();

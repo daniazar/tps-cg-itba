@@ -13,7 +13,7 @@ public class NoBoundingBox implements BoundingBox{
 
 	@Override
 	public boolean Intersects(Ray ray) {
-		return primitive.Intersects(ray);
+		return true;
 	}
 
 	@Override

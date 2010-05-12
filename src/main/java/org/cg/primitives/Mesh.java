@@ -142,4 +142,10 @@ public class Mesh extends Primitive {
 		return null;
 	}
 
+	@Override
+	public Color getTextureColor(Point3f intersectionPoint) {
+		// TODO change to correct implementation
+		return new Color(intersectionPoint.x, intersectionPoint.y, intersectionPoint.z);
+	}
+	
 }

@@ -18,8 +18,8 @@ public class Quadrilateral extends Primitive {
 
 	public Quadrilateral(Point3f pt1, Point3f pt2, Point3f pt3, Point3f pt4,
 			Material material) {
-		t1 = new Triangle(pt1, pt2, pt4, material);
-		t2 = new Triangle(pt4, pt2, pt3, material);
+		t1 = new Triangle(pt1, pt4, pt2, material);
+		t2 = new Triangle(pt4, pt3, pt2, material);
 		
 		middlePoint = new Point3f();
 		middlePoint.x = (pt1.x + pt2.x + pt3.x + pt4.x) / 4;
@@ -118,8 +118,12 @@ public class Quadrilateral extends Primitive {
 
 	@Override
 	public Material getMaterial() {
-		// TODO Auto-generated method stub
-		return null;
+		return t1.getMaterial();
 	}
 
+	@Override
+	public Color getTextureColor(Point3f intersectionPoint) {
+		// TODO change to correct implementation
+		return getBaseColor();
+	}
 }

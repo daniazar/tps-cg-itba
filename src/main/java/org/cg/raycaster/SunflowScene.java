@@ -4,16 +4,22 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import org.cg.primitives.Box;
+import org.cg.primitives.Plane;
 import org.cg.primitives.Primitive;
+import org.cg.primitives.Sphere;
 import org.cg.rendering.Camera;
 import org.cg.rendering.Material;
 import org.cg.rendering.PointLight;
+import org.cg.rendering.Shader;
 import org.cg.util.Parser;
 import org.cg.util.Parser.ParserException;
 
@@ -22,10 +28,16 @@ public class SunflowScene {
 	public static ArrayList<Primitive> objects = new ArrayList<Primitive>();
 	public static ArrayList<PointLight> lights = new ArrayList<PointLight>();
 	public static Hashtable<Integer, Material> materials = new Hashtable<Integer, Material>();
-
-	public static Camera cam;
+	public static Map<String, Shader> shadersMap = new HashMap<String, Shader>();
 	
+	public static Camera cam;
+	public static Point resolution;
 	private static Parser p;
+	private static Point3f pos;
+	private static Vector3f dir;
+	private static Vector3f up;
+	private static float fovx;
+	private static float aspect;
 	
 	public static void startScene(String name) {
 		ParseFile(name);	
@@ -60,7 +72,7 @@ public class SunflowScene {
             		System.out.println(e.getMessage());
             	}
             }
-            
+            cam = new Camera(pos, dir, resolution, up, fovx);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,6 +83,9 @@ public class SunflowScene {
 		p.checkNextToken("{");
 		p.checkNextToken("name");
 		String name = p.getNextToken();
+		
+		Shader shader = new Shader(name);
+		
 		p.checkNextToken("type");
 		try{
 			if (p.peekNextToken("phong")) {
@@ -80,20 +95,28 @@ public class SunflowScene {
 	            int samples = 0;
 	            Color specular;
 	            float power;
+	            
 	            if (p.peekNextToken("texture"))
-	                 tex = p.getNextToken();
+	                 shader.setTexturePath(p.getNextToken());
 	            else {
-	                p.checkNextToken("diff");
+	            	p.checkNextToken("diff");
 	                diffuse = parseColor();
 	            }
 	            p.checkNextToken("spec");
 	            specular = parseColor();
+	            
 	            power = p.getNextFloat();
-				if (p.peekNextToken("samples"))
+				
+	            //TODO determine what this does
+	            if (p.peekNextToken("samples"))
 	                samples = p.getNextInt();
 				
 				System.out.println("type: phong name :"+ name+ " diffuse: " + diffuse + " samples: " + samples + 
 									" specular: " + specular + " power: " + power);
+				
+				Material material = new Material(diffuse, 0, 0, 1, 0, specular, power, 1);
+				shader.setMaterial(material);
+				shadersMap.put(name, shader);
 				
 			}else if (p.peekNextToken("mirror")){
 		         p.checkNextToken("refl");
@@ -101,11 +124,20 @@ public class SunflowScene {
 		         
 		         System.out.println("type: mirror name :"+ name+" color:" + color);
 		         
+		         Material material = new Material(color, 1, 0, 0, 0, color, 10, 0);
+		         shader.setMaterial(material);
+		         shadersMap.put(name, shader);
+		         
 			}else if (p.peekNextToken("constant")) {
 	            // backwards compatibility -- peek only
 	            p.peekNextToken("color");
 	            Color color = parseColor();
 	            System.out.println("type: constant name :"+ name+" color:" + color);
+	            
+	            Material material = new Material(color, 0, 0, 1, 0, color, 0, 0);
+	            shader.setMaterial(material);
+	            shadersMap.put(name, shader);
+	            
 	        }else if (p.peekNextToken("glass")){
 				 p.checkNextToken("eta");
 		         float eta = p.getNextFloat();
@@ -122,6 +154,9 @@ public class SunflowScene {
 		             absorbtionColor = parseColor();
 				 
 				System.out.println("type glass name :"+ name+" parameters:" + eta + color.toString() + absorbtionColor + absorbtionDistance);
+				Material material = new Material(color, 0, 0.99f, 1.2f, 0, color, 1, 0);
+				shader.setMaterial(material);
+				shadersMap.put(name, shader);
 		     } else{
 		    	 String tok = p.getNextToken();
 		    	 throw  new UnsupportedException(tok);
@@ -136,7 +171,7 @@ public class SunflowScene {
 
 	private static void parseImageBlock() throws ParserException, IOException {
 		System.out.println("parsing image");
-		Point resolution = new Point();
+		resolution = new Point();
 		int aaMin = 0;
 		int aaMax = 0;
 		int samples = 0;
@@ -181,7 +216,7 @@ public class SunflowScene {
 		p.checkNextToken("{");
         Matrix4f transform = null;
         String name = null;
-        String shader;
+        String shader = "";
         
         if (p.peekNextToken("noinstance"))
         	System.out.println("token noinstance is not supported");
@@ -191,6 +226,8 @@ public class SunflowScene {
             String[] shaders = new String[n];
             for (int i = 0; i < n; i++)
                 shaders[i] = p.getNextToken();
+            System.out.println("multiple shaders are not implemented");
+            shader = shaders[0];
         }else{
 	        p.checkNextToken("shader");
 	        shader = p.getNextToken();
@@ -227,20 +264,40 @@ public class SunflowScene {
             float x = p.getNextFloat();
             float y = p.getNextFloat();
             float z = p.getNextFloat();
+            Point3f c = new Point3f(x, y ,z);
             p.checkNextToken("r");
             float radius = p.getNextFloat();
- //           objects.add(new Sphere(c, radius, shader));//TODO:implemnts shaders 
+            Shader sphereShader = shadersMap.get(shader);
+            if(sphereShader == null) {
+            	throw new UnsupportedException("Shader doesn't exist " + shader);
+            }
+            objects.add(new Sphere(c, radius, sphereShader.getMaterial(), sphereShader)); 
 			
         } else if (type.equals("plane")) {
             p.checkNextToken("p");
             Point3f center = parsePoint();
             if (p.peekNextToken("n")) {
                Vector3f normal = parseVector();
+               Shader planeShader = shadersMap.get(shader);
+               if(planeShader == null) {
+               	throw new UnsupportedException("Shader doesn't exist " + shader);
+               }
+               
+               objects.add(new Plane(normal, center, planeShader.getMaterial(), planeShader));
+               
             } else {
                 p.checkNextToken("p");
                 Point3f point1 = parsePoint();
                 p.checkNextToken("p");
                 Point3f point2 = parsePoint();
+                
+                Shader planeShader = shadersMap.get(shader);
+                if(planeShader == null) {
+                	throw new UnsupportedException("Shader doesn't exist " + shader);
+                }
+                
+                objects.add(new Plane(new Vector3f(center),new Vector3f(point1),new Vector3f(point2), planeShader.getMaterial(), planeShader));
+                
             }
             
             
@@ -279,6 +336,13 @@ public class SunflowScene {
         	Point3f p0 = new Point3f(0,0,0);
         	Point3f p1 = new Point3f(1,1,1);
         	
+        	Shader boxShader = shadersMap.get(shader);
+            if(boxShader == null) {
+            	throw new UnsupportedException("Shader doesn't exist " + shader);
+            }
+            
+        	objects.add(new Box(p0, p1, boxShader.getMaterial(), boxShader,transform));
+        	
         	
         }else{
         	p.parseBlock();
@@ -312,7 +376,7 @@ public class SunflowScene {
 			}
 			p.checkNextToken("p");
 			position = parsePoint();
-			lights.add(new PointLight(position, color, pow));//TODO:implements intensity
+			lights.add(new PointLight(position, color, pow));
 	     }else{
 	    	 String tok = p.getNextToken();
  	    	 p.parseBlock();
@@ -337,15 +401,15 @@ public class SunflowScene {
 		String type = p.getNextToken();	        
 		if (type.equals("pinhole")) {
 			p.checkNextToken("eye");
-            Point3f pos = parsePoint();
+            pos = parsePoint();
             p.checkNextToken("target");
-            Vector3f dir = parseVector();
+            dir = parseVector();
             p.checkNextToken("up");
-            Vector3f up = parseVector();
+            up = parseVector();
             p.checkNextToken("fov");
-            float fovx = p.getNextFloat();
+            fovx = p.getNextFloat();
             p.checkNextToken("aspect");
-            float aspect = p.getNextFloat();
+            aspect = p.getNextFloat();
             
             System.out.println("eye : " + pos.toString() + " target: " + dir+ " up: "+ up+" fov: "+ fovx + "aspect: " + aspect);
 			}else {
@@ -455,14 +519,5 @@ public class SunflowScene {
 	            return m;
 	        }
 	    }
-	
-    public static void main(String[] args) throws Exception
-    {
-    	SunflowScene scene = new SunflowScene();
-    	//scene.startScene("scene.sc");
-    	scene.startScene("transforms.sc");
-    	scene.startScene("scenes/scenes2/objects.sc");
-    	
-	}
 	
 }

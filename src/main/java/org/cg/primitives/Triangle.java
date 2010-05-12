@@ -222,4 +222,11 @@ public class Triangle extends Primitive {
 		// TODO Auto-generated method stub
 		return material;
 	}
+	
+	@Override
+	public Color getTextureColor(Point3f intersectionPoint) {
+		// TODO change to correct implementation
+		return getBaseColor();
+		//return new Color((float)Math.tanh(intersectionPoint.x), (float)Math.tanh(intersectionPoint.y), (float)Math.tanh(intersectionPoint.z));
+	}
 }

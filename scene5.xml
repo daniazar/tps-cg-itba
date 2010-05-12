@@ -64,7 +64,7 @@
 	<material>
 		<id>4</id>
 		<diffuse>1;0;0</diffuse>
-		<reflection>1</reflection>
+		<reflection>0</reflection>
 		<refraction>0</refraction>
 		<density>0</density>
 		<specularColor>1;1;1</specularColor>
