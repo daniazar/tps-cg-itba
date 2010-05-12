@@ -25,7 +25,8 @@ public class Raycaster {
 	private static float ANTIALIASING_RES_MIN = 1;
 	private final static int AA_RECOMPUTE = 8;
 	private static int ROWS_PER_THREAD = 16;
-
+	int prog = 0;
+	
 	public static int progress_bar = 0;
 	private Camera camera;
 	private Octree octree;
@@ -45,7 +46,7 @@ public class Raycaster {
 	boolean islightEnabled;
 	LightColorChooser lambertian;
 	LightColorChooser phong = new PhongShading();
-
+	float pixels ;
 	public BufferedImage raycast(boolean progress) {
 
 		camera.prepare();
@@ -81,10 +82,11 @@ public class Raycaster {
 
 			}
 		}
+		pixels = camera.dimensions.x * camera.dimensions.y /100;
 		try {
 			for (int j = 0; j < camera.dimensions.x / ROWS_PER_THREAD; j++)
 				threads[j].join();
-			System.out.println("Progress = 100%");
+
 				
 		} catch (InterruptedException e) {
 
@@ -107,13 +109,8 @@ public class Raycaster {
 			this.row = i;
 			this.rows = rows;
 			this.image = image;
-			if (row==0){
 				progress = prog;
 					
-			}
-			else{
-				progress = false;
-			}
 		}
 
 		@Override
@@ -136,7 +133,6 @@ public class Raycaster {
 			lambertian = camera.getLightchooser();
 			islightEnabled = camera.isLightingEnabled();
 			colorChooser = camera.getColorchooser();
-			int prog = 0;
 			Color c = new Color(0, 0, 0);
 			Color oldColor = new Color(0, 0, 0);
 
@@ -241,14 +237,12 @@ public class Raycaster {
 				rightauxi.scale(-2);
 				startingPoint.add(rightauxi);
 				if (progress) {
-					int prog2 = progress_bar - progress_bar %camera.dimensions.y;
-					prog2 /= camera.dimensions.x;
-					
-					if (prog != prog2) {
-						prog = prog2;
-						if ((prog2 ) % 5 == 0)
+					int porcent =(int)Math.ceil(progress_bar/pixels ) ;
+					if (prog != porcent) {
+						prog = porcent;
+						if ((porcent ) % 5 == 0){
 							System.out.println("Progress = "
-									+ (prog2 ) + "%");
+									+ porcent + "%");}
 					}
 				}
 
