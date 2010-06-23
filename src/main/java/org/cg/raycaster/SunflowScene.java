@@ -45,7 +45,7 @@ public class SunflowScene {
 	public static int AAMax;
 	public static int AAMin;
 	public static int bucket;
-	public static boolean SoftShadows = true;
+	public static boolean SoftShadows = false;
 	public static float DeltaShadow = 1f;
 	public static void startScene(String name) throws Exception{
 		ParseFile(name);	
@@ -198,7 +198,7 @@ public class SunflowScene {
 
 	}
 
-	private static void parseImageBlock() throws ParserException, IOException {
+	private static void parseImageBlock() throws ParserException, IOException, UnsupportedException {
 		System.out.println("parsing image");
 		resolution = new Point();
 
@@ -214,6 +214,14 @@ public class SunflowScene {
             
             AAMin = p.getNextInt();
             AAMax = p.getNextInt();
+            if(AAMax == 1)
+            {
+            	System.out.println("AntiAliasing must be 0,2,3,4");
+            	throw new UnsupportedException("AntiAliasing value is invalid");
+            }
+            
+            	
+            
         }
         
         if (p.peekNextToken("samples"))
@@ -398,7 +406,11 @@ public class SunflowScene {
                 }
                 if(normals != null)
                 {
-                	Vector3f nVec = new Vector3f(normals[triangles[i]*3],normals[triangles[i] * 3 + 1],normals[triangles[i] * 3 + 2]);
+                	Vector3f nVec0 = new Vector3f(normals[triangles[i]*3],normals[triangles[i] * 3 + 1],normals[triangles[i] * 3 + 2]);
+                	Vector3f nVec1 = new Vector3f(normals[triangles[i+1]*3],normals[triangles[i+1] * 3 + 1],normals[triangles[i+1] * 3 + 2]);
+                	Vector3f nVec2 = new Vector3f(normals[triangles[i+2]*3],normals[triangles[i+2] * 3 + 1],normals[triangles[i+2] * 3 + 2]);
+                	Vector3f nVec = new Vector3f((nVec0.x+nVec1.x+nVec2.x)/3,(nVec0.y+nVec1.y+nVec2.y)/3,(nVec0.z+nVec1.z+nVec2.z)/3);
+                	nVec.normalize();
                 	objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial(),triShader,nVec, uv1,uv2,uv3));
                 }
                 else
@@ -512,6 +524,7 @@ public class SunflowScene {
             Vector3f target = parseVector(); 
             target.sub(pos);
             dir = target;
+            dir.normalize();
             p.checkNextToken("up");
             up = parseVector();
             p.checkNextToken("fov");

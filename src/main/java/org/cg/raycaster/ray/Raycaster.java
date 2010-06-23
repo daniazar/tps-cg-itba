@@ -352,7 +352,7 @@ public class Raycaster {
 			return ANTIALIASING_RES_MIN;
 
 		else if (absError < 0.1)
-			return (float) Math.min(ANTIALIASING_RES_MAX / 4, ANTIALIASING_RES_MIN);
+			return (float) Math.max(ANTIALIASING_RES_MAX / 4, ANTIALIASING_RES_MIN);
 		else
 			return (float) (ANTIALIASING_RES_MAX);
 	}
