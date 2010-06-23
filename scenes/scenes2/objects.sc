@@ -4,7 +4,6 @@ image {
 }
 
 accel bih
-filter mitchell
 bucket 32 row
 
 camera {
@@ -16,40 +15,49 @@ camera {
    aspect 1.333333
 }
 
+
+light {
+   type point
+   color { "sRGB linear" 1.000 1.000 1.000 }
+   power 140.0
+   p 2 -2 2
+}
+
+
 shader {
   name "box1"
   type constant
-  color { "sRGB nonlinear" 0 1 0 }
+  color { "sRGB linear" 0 1 0 }
 }
 
 shader {
   name "box2"
   type constant
-  color { "sRGB nonlinear" 1 1 0 }
+  color { "sRGB linear" 1 1 0 }
 }
 
 shader {
   name "ground"
   type constant
-  color { "sRGB nonlinear" 0.5 0.5 0.5 }
+  color { "sRGB linear" 0.5 0.5 0.5 }
 }
 
 shader {
   name "left_sphere"
   type constant
-  color { "sRGB nonlinear" 1 0 0 }
+  color { "sRGB linear" 1 0 0 }
 }
 
 shader {
   name "top_sphere"
   type constant
-  color { "sRGB nonlinear" 0 0 1 }
+  color { "sRGB linear" 0 0 1 }
 }
 
 shader {
   name "right_sphere"
   type constant
-  color { "sRGB nonlinear" 1 1 1 }
+  color { "sRGB linear" 1 1 1 }
 }
 
 object {

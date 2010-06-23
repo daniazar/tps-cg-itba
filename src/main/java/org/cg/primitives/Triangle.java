@@ -55,7 +55,7 @@ public class Triangle extends Primitive {
 		tp2.z = pt3.z - pt1.z;
 		n = new Vector3f();
 		n.cross(tp1, tp2);
-
+		n.normalize();
 		p1 =pt1;
 		this.material = material2;
 		
@@ -75,7 +75,46 @@ public class Triangle extends Primitive {
 		p = new Plane(n, p1, material);
 	}
 
+	public Triangle(Point3f pt1, Point3f pt2, Point3f pt3, Material material2,
+			Shader shader,Vector3f normal, Point2f uv1, Point2f uv2, Point2f uv3) {
+		this.shader = shader;
+		this.setUv1(uv1);
+	 	this.setUv2(uv2);
+		this.setUv3(uv3);
+		
+		// vector form triangle pt1 to pt2
+		tp1 = new Vector3f();
+		tp2 = new Vector3f();
+		tp1.x = pt2.x - pt1.x;
+		tp1.y = pt2.y - pt1.y;
+		tp1.z = pt2.z - pt1.z;
 
+	   // vector form triangle pt1 to pt3
+		tp2.x = pt3.x - pt1.x;
+		tp2.y = pt3.y - pt1.y;
+		tp2.z = pt3.z - pt1.z;
+		n = new Vector3f();
+		n = normal;
+		n.normalize();
+		p1 =pt1;
+		this.material = material2;
+		
+		middlePoint = new Point3f();
+		middlePoint.x = (pt1.x + pt2.x + pt3.x) / 3;
+		middlePoint.y = (pt1.y + pt2.y + pt3.y) / 3;
+		middlePoint.z = (pt1.z + pt2.z + pt3.z) / 3;
+		
+		maxDistanceFromMiddle = Math.max(Math.max(middlePoint.distance(pt1), middlePoint.distance(pt2)), middlePoint.distance(pt3));
+		boundingBox = new SphereBoundingBox(this);
+		
+	    uu = tp1.dot(tp1);
+	    uv = tp1.dot(tp2);
+	    vv = tp2.dot(tp2);
+
+	    D = uv * uv - uu * vv;
+		p = new Plane(n, p1, material);
+	}
+	
 	@Override
 	public boolean Intersects(Ray ray) {
 		// Para optimizar hay que guardar el plano ya creado.

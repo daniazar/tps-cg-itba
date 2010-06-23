@@ -4,6 +4,13 @@ image {
   filter mitchell
 }
 
+light {
+   type point
+   color { "sRGB linear" 1.000 1.000 1.000 }
+   power 100.0
+   p 1.0 0.0 0.0
+}
+
 camera {
   type pinhole
   eye    0 0 0
@@ -16,7 +23,7 @@ camera {
 shader {
   name default
   type constant
-  color { "sRGB nonlinear" 0 0 1 }
+  color { "sRGB linear" 0 0 1 }
 }
 
 object {

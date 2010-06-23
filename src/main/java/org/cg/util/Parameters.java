@@ -9,10 +9,10 @@ public class Parameters {
 	private static final String pointSeparator = "x";
 	
 	//nombre de archivo input
-	public static String i = "scenes/scenes2/spheres.sc";
+	public static String i = "scenes/scenes2/default.sc";
 	
 	//nombre de archivo output
-	public String o = null;
+	public String o = "default.png";
 
 	public Point size = new Point(640,480);
 	public double fov = 60;

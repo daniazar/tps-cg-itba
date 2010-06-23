@@ -9,7 +9,7 @@ bucket 64 row
 camera {
   type pinhole
   eye    0 0 -10
-  target 0 0 1
+  target 0 0 0
   up     0 1 0
   fov    60
   aspect 1.3333333
@@ -76,5 +76,23 @@ object {
 	triangles 1
 		0 1 2
 	normals none
+	uvs none
+}
+
+
+object {
+	shader default
+	type generic-mesh
+	name "Triangle"
+	points 3
+		-1 2 0
+		0 3 0
+		1 2 0
+	triangles 1
+		0 1 2
+	normals vertex
+		0 0 1
+		0 0 1
+		0 0 1
 	uvs none
 }

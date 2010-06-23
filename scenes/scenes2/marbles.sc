@@ -7,6 +7,16 @@ accel bih
 filter mitchell
 bucket 32 row
 
+
+
+light {
+   type point
+   color { "sRGB linear" 1.000 1.000 1.000 }
+   power 100.0
+   p 3.27743673325 -9.07978439331 9.93055152893
+}
+
+
 camera {
    type pinhole
    eye    3.27743673325 -9.07978439331 9.93055152893
@@ -19,61 +29,61 @@ camera {
 shader {
   name "ground"
   type constant
-  color { "sRGB nonlinear" 1 1 1 }
+  color { "sRGB linear" 1 1 1 }
 }
 
 shader {
   name "shader01"
   type constant
-  color { "sRGB nonlinear" 0 1 0 }
+  color { "sRGB linear" 0 1 0 }
 }
 
 shader {
   name "shader02"
   type constant
-  color { "sRGB nonlinear" 0 1 0 }
+  color { "sRGB linear" 0 1 0 }
 }
 
 shader {
   name "shader03"
   type constant
-  color { "sRGB nonlinear" 0 1 0 }
+  color { "sRGB linear" 0 1 0 }
 }
 
 shader {
   name "shader04"
   type constant
-  color { "sRGB nonlinear" 1 0 0 }
+  color { "sRGB linear" 1 0 0 }
 }
 
 shader {
   name "shader05"
   type constant
-  color { "sRGB nonlinear" 1 0 0 }
+  color { "sRGB linear" 1 0 0 }
 }
 
 shader {
   name "shader06"
   type constant
-  color { "sRGB nonlinear" 1 0 0 }
+  color { "sRGB linear" 1 0 0 }
 }
 
 shader {
   name "shader07"
   type constant
-  color { "sRGB nonlinear" 0 0 1 }
+  color { "sRGB linear" 0 0 1 }
 }
 
 shader {
   name "shader08"
   type constant
-  color { "sRGB nonlinear" 0 0 1 }
+  color { "sRGB linear" 0 0 1 }
 }
 
 shader {
   name "shader09"
   type constant
-  color { "sRGB nonlinear" 0 0 1 }
+  color { "sRGB linear" 0 0 1 }
 }
 
 object {
@@ -81,15 +91,8 @@ object {
    type generic-mesh
    name "Plane"
    points 8
-       3.1  3.1 0
-       3.1 -3.1 0
-      -3.1 -3.1 0
-      -3.1  3.1 0
-      -3.1  3.1 -0.61
-      -3.1 -3.1 -0.61
-       3.1 -3.1 -0.61
-       3.1  3.1 -0.61
-/*
+
+
       2.99000000954 2.98999977112 0
       2.99000000954 -2.99000000954 0
       -2.99000024796 -2.9899995327 0
@@ -98,7 +101,7 @@ object {
       -2.99000024796 -2.9899995327 -0.611932575703
       2.99000000954 -2.99000000954 -0.611932575703
       2.99000000954 2.98999977112 -0.611932575703
-*/
+
    triangles 12
       0 3 2
       0 2 1

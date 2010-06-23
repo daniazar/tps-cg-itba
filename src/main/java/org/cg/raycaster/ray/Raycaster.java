@@ -292,7 +292,7 @@ public class Raycaster {
 					c = traceRay(ray.Refraction(), depth + 1, auxicoef, c);
 				}
 			}
-
+	
 			if (islightEnabled) {
 
 				for (PointLight l : SunflowScene.lights) {
@@ -304,6 +304,7 @@ public class Raycaster {
 						float auxicoef = (1 - total) * coef;
 						c = lambertian.getColor(ray, lightRay, auxicoef, c, l
 								.getIntensity());
+				
 						c = phong.getColor(ray, lightRay, auxicoef, c, l
 								.getIntensity());
 

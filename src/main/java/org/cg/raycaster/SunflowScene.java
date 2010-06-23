@@ -45,14 +45,15 @@ public class SunflowScene {
 	public static int AAMax;
 	public static int AAMin;
 	public static int bucket;
-	
-	public static void startScene(String name) {
+	public static boolean SoftShadows = true;
+	public static float DeltaShadow = 1f;
+	public static void startScene(String name) throws Exception{
 		ParseFile(name);	
 	}
 	
-	private static void ParseFile(String name) {
+	private static void ParseFile(String name) throws Exception {
 
-		try {
+	
 			p = new Parser(name);
             while (true) {
             	try{
@@ -82,10 +83,7 @@ public class SunflowScene {
             	}
             }
             cam = new Camera(pos, dir, resolution, up, fovx);
-		} catch (Exception e) {
-			System.out.println("No se pudo encontrar el archivo "+name);
-			
-		}
+	
 	}
 
 	private static void parseBucketBlock() throws ParserException, IOException {
@@ -136,7 +134,12 @@ public class SunflowScene {
 				System.out.println("type: phong name :"+ name+ " diffuse: " + diffuse + " samples: " + samples + 
 									" specular: " + specular + " power: " + power);
 				
-				Material material = new Material(diffuse, 0, 0, 1, 0, specular, power, 1);
+				if(SoftShadows)
+				{
+					float comp[] = specular.getColorComponents(null);
+					specular = new Color(comp[0]/7,comp[1]/7,comp[2]/7);
+				}
+				Material material = new Material(diffuse, 0, 0, 1, 0.5f, specular, power, 1);
 				shader.setMaterial(material);
 				shader.setType(ShaderType.PHONG);
 				shadersMap.put(name, shader);
@@ -179,7 +182,7 @@ public class SunflowScene {
 		             absorbtionColor = parseColor();
 				 
 				System.out.println("type glass name :"+ name+" parameters:" + eta + color.toString() + absorbtionColor + absorbtionDistance);
-				Material material = new Material(color, 0, 0.99f, 1.2f, 0, color, 1, 0);
+				Material material = new Material(color, 0, eta, 0.98f, 0, color, 1, 0);
 				shader.setMaterial(material);
 				shader.setType(ShaderType.GLASS);
 				shadersMap.put(name, shader);
@@ -342,10 +345,12 @@ public class SunflowScene {
             int[] triangles = parseIntArray(nt * 3);
             // parse normals
             p.checkNextToken("normals");
+            float[] normals = null;
             if (p.peekNextToken("vertex")){
-                float[] normals = parseFloatArray(np * 3);
+                 normals = parseFloatArray(np * 3);
+                
             }else if (p.peekNextToken("facevarying")){
-                float[] normals = parseFloatArray(nt * 9);
+                normals = parseFloatArray(nt * 9);
             }else
             p.checkNextToken("none");
             // parse texture coordinates
@@ -391,8 +396,13 @@ public class SunflowScene {
                 if(triShader == null) {
                 	throw new UnsupportedException("Shader doesn't exist " + shader);
                 }
-                
-				objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial(),triShader,uv1,uv2,uv3));					
+                if(normals != null)
+                {
+                	Vector3f nVec = new Vector3f(normals[triangles[i]*3],normals[triangles[i] * 3 + 1],normals[triangles[i] * 3 + 2]);
+                	objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial(),triShader,nVec, uv1,uv2,uv3));
+                }
+                else
+                	objects.add(new Triangle(p1, p2, p3, triangleShader.getMaterial(),triShader,uv1,uv2,uv3));					
 				i += 3;
 			}
 			//objects.addAll(trianglesList);
@@ -440,7 +450,39 @@ public class SunflowScene {
 			}
 			p.checkNextToken("p");
 			position = parsePoint();
-			lights.add(new PointLight(position, color, pow));
+
+
+            if(SoftShadows)
+            {
+    			float comp[] = color.getColorComponents(null);
+    			for(int i = 0; i < 3; i++)
+    				color = new Color(comp[0]/7,comp[1]/7,comp[2]/7);
+            }
+
+            lights.add(new PointLight(position, color, pow));
+            
+            if(SoftShadows)
+            {
+
+                    lights.add(new PointLight(new Point3f(position.x+DeltaShadow,position.y,position.z),
+                    		color,pow));
+                    lights.add(new PointLight(new Point3f(position.x-DeltaShadow,position.y,position.z),
+                    		color,pow));
+                    lights.add(new PointLight(new Point3f(position.x,position.y+DeltaShadow,position.z),
+                    		color,pow));
+                    lights.add(new PointLight(new Point3f(position.x,position.y-DeltaShadow,position.z),
+                    		color,pow));
+                    lights.add(new PointLight(new Point3f(position.x,position.y,position.z+DeltaShadow),
+                    		color,pow));
+                    lights.add(new PointLight(new Point3f(position.x,position.y,position.z-DeltaShadow),
+                                    color,pow));
+            }
+
+    
+
+
+			
+
 	     }else{
 	    	 String tok = p.getNextToken();
  	    	 p.parseBlock();
@@ -467,7 +509,9 @@ public class SunflowScene {
 			p.checkNextToken("eye");
             pos = parsePoint();
             p.checkNextToken("target");
-            dir = parseVector();
+            Vector3f target = parseVector(); 
+            target.sub(pos);
+            dir = target;
             p.checkNextToken("up");
             up = parseVector();
             p.checkNextToken("fov");

@@ -12,7 +12,8 @@ import org.cg.raycaster.ray.Ray;
 public class Octree {
 
 	public Octree children[] = new Octree[8];
-	public static int PRIM_THRESHOLD = Math.max(3,(int)Math.pow(SunflowScene.objects.size(),0.333333));
+	public static int PRIM_THRESHOLD = Math.max(128,(int)Math.pow(SunflowScene.objects.size(),0.333333));
+	//public static int PRIM_THRESHOLD = Math.max(3,(int)Math.pow(SunflowScene.objects.size(),0.333333));
 	ArrayList<Primitive> myPrimitives= new ArrayList<Primitive>();
 
 
@@ -22,7 +23,7 @@ public class Octree {
 	float minY;
 	float maxX;
 	float minX;
-	float lengthX;
+	float lengthX; 
 	float lengthY;
 	float lengthZ;
 
@@ -30,6 +31,8 @@ public class Octree {
 	//determinar el espacio
 	public Octree(ArrayList<Primitive> primitives) {
 
+		System.out.println("OCTREE: Cantidad de primitivas:"+primitives.size());
+		System.out.println("Threshold:"+PRIM_THRESHOLD);
 		minX = 9999999;
 		maxX = -9999999;
 		maxY = maxX;
@@ -104,7 +107,7 @@ public class Octree {
 		 }
 		 if(myPrimitives.size()>PRIM_THRESHOLD)
 		 {
-			 for(int i = 0; i< 8; i++)
+			 for(int i = 0; i< 8; i++) 
 			 {
 				 children[i] = getOctreePerOctant(i, minX, maxX, minY, maxY, minZ, maxZ, myPrimitives);
 			 }
